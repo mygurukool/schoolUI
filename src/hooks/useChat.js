@@ -3,12 +3,17 @@ import { BASEURL, SOCKETURL } from "../constants";
 import socketIOClient from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setMessages } from "../redux/action/utilActions";
 let socket;
 
 const useChat = ({ assignmentId, userId, userName }) => {
-  const [messages, setMessages] = React.useState([]);
+  // const [messages, setMessages] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
   const [currentGroup, setCurrentGroup] = React.useState();
+  const dispatch = useDispatch()
+
+  const { messages } = useSelector(state => state.util)
 
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
@@ -75,8 +80,8 @@ const useChat = ({ assignmentId, userId, userName }) => {
     // console.log("appendMessage", upComingMessage.message.text);
     let newMessages = messages;
     newMessages.push(upComingMessage);
-    setMessages(newMessages);
-
+    // setMessages(newMessages);
+    dispatch(setMessages(newMessages))
     // console.log("message get", messages, upComingMessage);
   };
   // console.log("messages", messages);

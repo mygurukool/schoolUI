@@ -54,7 +54,7 @@ const Chat = ({ assignmentId }) => {
 
   return (
     <Card variant="outlined">
-      {connectionStatus} {id}
+      {connectionStatus}
       <Tabs
         value={value}
         onChange={handleChange}

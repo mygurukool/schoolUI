@@ -49,6 +49,8 @@ export const userTypes = {
 export const utilTypes = {
   TOGGLE_DRAWER: "TOGGLE_DRAWER",
 
+  SET_MESSAGES: "SET_MESSAGES",
+
   TOGGLE_FULL_SCREEN: "TOGGLE_FULL_SCREEN",
 
   OPEN_MODAL: "OPEN_MODAL",

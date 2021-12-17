@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import { Divider, IconButton, InputAdornment } from "@mui/material";
 import { useKey } from "react-use";
 
+
 const useStyles = makeStyles((theme) => ({
   wrapForm: {
     display: "flex",
@@ -29,14 +30,22 @@ const TextInput = ({ onSendMessage }) => {
       setValue("");
     }
   };
-  useKey("Enter", handleSend);
+  // useKey("Enter", handleSend);
+  const keyPress = (e) => {
+    if (e.keyCode == 13) {
+      setValue(e.target.value);
+      handleSend()
+    }
+  }
 
   return (
     <div className={classes.wrapForm}>
+
       <TextField
         size="small"
         ref={textInputRef}
         value={value}
+        onKeyDown={keyPress}
         onChange={({ target: { value } }) => {
           setValue(value);
         }}
@@ -58,6 +67,7 @@ const TextInput = ({ onSendMessage }) => {
                 aria-label="toggle password visibility"
                 edge="end"
                 color="primary"
+                disabled={value === ""}
                 onClick={() => {
                   handleSend();
                 }}

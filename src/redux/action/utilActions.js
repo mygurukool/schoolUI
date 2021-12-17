@@ -21,3 +21,10 @@ export const closeModal = () => {
     type: utilTypes.CLOSE_MODAL,
   };
 };
+
+export const setMessages = (data) => {
+  return {
+    type: utilTypes.SET_MESSAGES,
+    payload: data,
+  };
+};

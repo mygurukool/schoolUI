@@ -2,7 +2,7 @@ import { utilTypes } from "../types";
 const initialstate = {
   spinner: false,
   language: "gu",
-
+  messages: [],
   modalOpen: undefined,
 };
 
@@ -24,6 +24,12 @@ const utilReducer = (state = initialstate, action) => {
       return {
         ...state,
         drawerOpen: !state.drawerOpen,
+      };
+
+    case utilTypes.SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.payload,
       };
 
     case utilTypes.OPEN_MODAL:
