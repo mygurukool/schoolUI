@@ -11,9 +11,9 @@ const useChat = ({ assignmentId, userId, userName }) => {
   // const [messages, setMessages] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
   const [currentGroup, setCurrentGroup] = React.useState();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const { messages } = useSelector(state => state.util)
+  const { messages } = useSelector((state) => state.util);
 
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
@@ -66,7 +66,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
     // console.log("message", message, currentGroup);
 
     const messageToBesend = {
-      message: { text: message },
+      message: { text: message, senderName: userName },
       userId: userId,
       roomId: currentGroup.roomId,
     };
@@ -81,7 +81,8 @@ const useChat = ({ assignmentId, userId, userName }) => {
     let newMessages = messages;
     newMessages.push(upComingMessage);
     // setMessages(newMessages);
-    dispatch(setMessages(newMessages))
+    console.log("upComingMessage", newMessages.length);
+    dispatch(setMessages(newMessages));
     // console.log("message get", messages, upComingMessage);
   };
   // console.log("messages", messages);
@@ -90,7 +91,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
     const filteredGroups = await Promise.all(
       data.filter((g) => {
         const found = g.users.find((u) => {
-          return u.id === userId;
+          return u.id === userId && !groups.find((e) => e._id === g._id);
         });
         if (found) {
           return true;
@@ -99,7 +100,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
         }
       })
     );
-    setGroups([...filteredGroups]);
+    setGroups([...groups, ...filteredGroups]);
   }, []);
 
   React.useEffect(() => {
