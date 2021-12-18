@@ -11,6 +11,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
   // const [messages, setMessages] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
   const [currentGroup, setCurrentGroup] = React.useState();
+  const [reply, setReply] = React.useState()
   const dispatch = useDispatch();
 
   const { messages } = useSelector((state) => state.util);
@@ -66,15 +67,22 @@ const useChat = ({ assignmentId, userId, userName }) => {
     // console.log("message", message, currentGroup);
 
     const messageToBesend = {
-      message: { text: message, senderName: userName },
+      reply: reply ? reply : undefined,
+      message: { text: message, senderName: userName, timeStamp: new Date() },
       userId: userId,
       roomId: currentGroup.roomId,
     };
 
     socket.emit("SEND_MESSAGE", messageToBesend);
 
+    setReply()
+
     // setMessages([...messages, messageToBesend]);
   };
+
+  const removeReplyMessage = () => {
+    setReply()
+  }
 
   const appendMessage = (upComingMessage) => {
     // console.log("appendMessage", upComingMessage.message.text);
@@ -102,6 +110,10 @@ const useChat = ({ assignmentId, userId, userName }) => {
     );
     setGroups([...groups, ...filteredGroups]);
   }, []);
+
+  const replyMessage = (message) => {
+    setReply(message)
+  }
 
   React.useEffect(() => {
     intializeSocket({ assignmentId, userId });
@@ -132,6 +144,9 @@ const useChat = ({ assignmentId, userId, userName }) => {
     groups,
     connectWithTeacher,
     sendMessage,
+    replyMessage,
+    removeReplyMessage,
+    reply
   };
 };
 

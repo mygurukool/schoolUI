@@ -35,6 +35,9 @@ const Chat = ({ assignmentId }) => {
     messages,
     connectionStatus,
     sendMessage,
+    removeReplyMessage,
+    replyMessage,
+    reply,
     connectWithTeacher,
   } = useChat({
     assignmentId: assignmentId,
@@ -54,7 +57,7 @@ const Chat = ({ assignmentId }) => {
 
   return (
     <Card variant="outlined">
-      {connectionStatus} {id}
+      {connectionStatus}
       <Tabs
         value={value}
         onChange={handleChange}
@@ -108,11 +111,11 @@ const Chat = ({ assignmentId }) => {
       {groups.map((g, i) => {
         return (
           <TabPanel value={value} index={i} key={i}>
-            <MessageList messages={messages} userId={id} />
+            <MessageList messages={messages} userId={id} replyMessage={replyMessage} />
           </TabPanel>
         );
       })}
-      <ChatActions onSendMessage={sendMessage} />
+      <ChatActions onSendMessage={sendMessage} reply={reply} removeReply={removeReplyMessage} />
     </Card>
   );
 };
