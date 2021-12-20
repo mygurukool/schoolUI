@@ -2,7 +2,7 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
 import { IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import clsx from "clsx";
 import moment from "moment";
 import { DATETIMEFORMAT } from "../../constants";
@@ -32,17 +32,17 @@ const useStyles = makeStyles((theme) => ({
     borderTopRightRadius: 0,
   },
   replyMessageContainer: {
-    background: 'rgba(255,255,255,0.5)',
+    background: "rgba(255,255,255,0.5)",
     padding: theme.spacing(1),
     marginBottom: theme.spacing(1),
     borderRadius: theme.palette.radius.base,
-    borderLeft: `4px solid ${theme.palette.secondary.main}`
+    borderLeft: `4px solid ${theme.palette.secondary.main}`,
   },
 }));
 
 const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
   const classes = useStyles();
-  const messageTime = moment(message.timeStamp).fromNow()
+  const messageTime = moment(message.timeStamp).fromNow();
   return (
     <div className={clsx(classes.root, isSentByMe && classes.myRoot)}>
       <div>
@@ -50,19 +50,23 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
           <Typography variant="caption">{message.senderName}</Typography>
         )}
         <Typography variant="caption">{messageTime}</Typography>
-        <IconButton size="small" onClick={(e) => onMenuClick(e)}><MoreVertIcon /></IconButton>
+        <IconButton size="small" onClick={(e) => onMenuClick(e, message)}>
+          <MoreVertIcon />
+        </IconButton>
         <div
           className={clsx(
             classes.msgContainer,
             isSentByMe && classes.myMsgBoxContainer
           )}
         >
-          {reply &&
+          {reply && (
             <div className={classes.replyMessageContainer}>
-              <Typography variant="body2">{reply.message.senderName}</Typography>
+              <Typography variant="body2">
+                {reply.message.senderName}
+              </Typography>
               <Typography variant="caption">{reply.message.text}</Typography>
             </div>
-          }
+          )}
           <Typography variant="body2">{message.text}</Typography>
         </div>
       </div>
@@ -71,44 +75,54 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
 };
 
 const MessageList = ({ messages, userId, replyMessage }) => {
-
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [replymsg, setReplyMsg] = React.useState(null);
 
-  const handleClick = (event, index) => {
-    setAnchorEl({ [index]: event.currentTarget });
+  const handleClick = (event, msg) => {
+    setAnchorEl(event.currentTarget);
+    setReplyMsg(msg);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+    setReplyMsg();
   };
 
   return (
     <Stack direction="column">
+      <Menu
+        anchorEl={
+          // Check to see if the anchor is set.
+          anchorEl
+        }
+        keepMounted
+        open={
+          // Likewise, check here to see if the anchor is set.
+          Boolean(anchorEl)
+        }
+        onClose={handleClose}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MenuItem onClick={handleClose}>
+          <Typography variant="body2" onClick={() => replyMessage(replymsg)}>
+            Reply
+          </Typography>
+        </MenuItem>
+      </Menu>
       {messages.map((m, i) => {
-        const isSentByMe = m.userId === userId;
-        return <><MessageDisplay isSentByMe={isSentByMe} reply={m.reply} onMenuClick={(e) => handleClick(e, i)} message={m.message} />
-          <Menu
-            anchorEl={
-              // Check to see if the anchor is set.
-              anchorEl && anchorEl[i]
-            }
-            keepMounted
-            open={
-              // Likewise, check here to see if the anchor is set.
-              Boolean(anchorEl && anchorEl[i])
-            }
-            onClose={handleClose}
-            getContentAnchorEl={null}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <MenuItem
-              onClick={handleClose}
-            >
-              <Typography variant="body2" onClick={() => replyMessage(m)}>Reply</Typography>
-            </MenuItem>
-          </Menu>
-        </>;
+        const isSentByMe = m.message.senderId === userId;
+        return (
+          <>
+            <MessageDisplay
+              isSentByMe={isSentByMe}
+              reply={m.reply}
+              onMenuClick={(e, m) => handleClick(e, m)}
+              message={m.message}
+            />
+          </>
+        );
       })}
     </Stack>
   );

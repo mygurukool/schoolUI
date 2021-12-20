@@ -4,17 +4,21 @@ import socketIOClient from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setMessages } from "../redux/action/utilActions";
+import {
+  setMessages,
+  setSingleMessage,
+  cleanMessages,
+} from "../redux/action/messageAction";
 let socket;
 
 const useChat = ({ assignmentId, userId, userName }) => {
   // const [messages, setMessages] = React.useState([]);
   const [groups, setGroups] = React.useState([]);
   const [currentGroup, setCurrentGroup] = React.useState();
-  const [reply, setReply] = React.useState()
-  const dispatch = useDispatch();
+  const [page, setPage] = React.useState(0);
 
-  const { messages } = useSelector((state) => state.util);
+  const [reply, setReply] = React.useState();
+  const dispatch = useDispatch();
 
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
@@ -31,9 +35,6 @@ const useChat = ({ assignmentId, userId, userName }) => {
           const resData = res.data.data;
 
           setGroups(resData);
-          if (resData.length > 0) {
-            socket.emit("JOIN_ROOM", resData[0]);
-          }
         });
       } catch (err) {
         console.log("err");
@@ -68,52 +69,59 @@ const useChat = ({ assignmentId, userId, userName }) => {
 
     const messageToBesend = {
       reply: reply ? reply : undefined,
-      message: { text: message, senderName: userName, timeStamp: new Date() },
+      message: {
+        text: message,
+        senderName: userName,
+        timeStamp: new Date(),
+        senderId: userId,
+      },
       userId: userId,
       roomId: currentGroup.roomId,
     };
 
     socket.emit("SEND_MESSAGE", messageToBesend);
 
-    setReply()
+    setReply();
 
     // setMessages([...messages, messageToBesend]);
   };
 
   const removeReplyMessage = () => {
-    setReply()
-  }
+    setReply();
+  };
 
   const appendMessage = (upComingMessage) => {
-    // console.log("appendMessage", upComingMessage.message.text);
-    let newMessages = messages;
-    newMessages.push(upComingMessage);
-    // setMessages(newMessages);
-    console.log("upComingMessage", newMessages.length);
-    dispatch(setMessages(newMessages));
-    // console.log("message get", messages, upComingMessage);
+    console.log("append");
+    dispatch(setSingleMessage(upComingMessage));
   };
-  // console.log("messages", messages);
+
+  const appendMessages = (msgs) => {
+    dispatch(setMessages(msgs));
+  };
 
   const appendGroups = useCallback(async (data) => {
-    const filteredGroups = await Promise.all(
-      data.filter((g) => {
-        const found = g.users.find((u) => {
-          return u.id === userId && !groups.find((e) => e._id === g._id);
-        });
-        if (found) {
-          return true;
-        } else {
-          return false;
-        }
-      })
-    );
-    setGroups([...groups, ...filteredGroups]);
+    if (data && data?.length > 0) {
+      const filteredGroups = await Promise.all(
+        data.filter((g) => {
+          const found = g.users.find((u) => {
+            return u.id === userId && !groups.find((e) => e._id === g._id);
+          });
+          if (found) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
+      setGroups([...groups, ...filteredGroups]);
+    } else {
+      setGroups([]);
+    }
   }, []);
 
   const replyMessage = (message) => {
-    setReply(message)
-  }
+    setReply(message);
+  };
 
   React.useEffect(() => {
     intializeSocket({ assignmentId, userId });
@@ -121,6 +129,8 @@ const useChat = ({ assignmentId, userId, userName }) => {
     socket.on("SEND_USER_GROUPS", appendGroups);
 
     socket.on("GET_MESSAGE", appendMessage);
+
+    socket.on("GET_MESSAGES", appendMessages);
   }, [assignmentId]);
 
   React.useEffect(() => {
@@ -128,37 +138,37 @@ const useChat = ({ assignmentId, userId, userName }) => {
       const foundActive = groups.findIndex(
         (g) => g.roomId === currentGroup?.roomId
       );
-
+      dispatch(cleanMessages());
       if (foundActive > -1) {
         setCurrentGroup(groups[foundActive]);
       } else {
         setCurrentGroup(groups[0]);
       }
+    } else {
+      setCurrentGroup();
     }
   }, [groups]);
 
-  console.log("current", currentGroup);
+  React.useEffect(() => {
+    if (currentGroup) {
+      socket.emit("JOIN_ROOM", currentGroup);
+      setPage(0);
+      setTimeout(() => {
+        socket.emit("SEND_MESSAGES", { ...currentGroup, page });
+      }, 2000);
+    }
+  }, [currentGroup, page]);
+
+  // console.log("current", currentGroup);
 
   return {
-    messages,
     groups,
     connectWithTeacher,
     sendMessage,
     replyMessage,
     removeReplyMessage,
-    reply
+    reply,
   };
 };
 
 export default useChat;
-
-const defaultSingleData = {
-  ownerId: 123,
-  recepiants: [
-    {
-      name: "Jasmeet",
-      profileImage: "https://source.unsplash.com/random",
-      id: 25,
-    },
-  ],
-};

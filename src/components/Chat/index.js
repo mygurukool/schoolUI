@@ -27,12 +27,11 @@ const Chat = ({ assignmentId }) => {
   const [value, setValue] = React.useState(0);
 
   const { id, name } = useSelector((state) => state.user);
-  const { teachers } = useSelector((state) => state.common);
+  const { teachers, messages } = useSelector((state) => state.common);
 
   const courseTeachers = teachers.filter((t) => t.teacherId !== id);
   const {
     groups,
-    messages,
     connectionStatus,
     sendMessage,
     removeReplyMessage,
@@ -111,11 +110,19 @@ const Chat = ({ assignmentId }) => {
       {groups.map((g, i) => {
         return (
           <TabPanel value={value} index={i} key={i}>
-            <MessageList messages={messages} userId={id} replyMessage={replyMessage} />
+            <MessageList
+              messages={messages}
+              userId={id}
+              replyMessage={replyMessage}
+            />
           </TabPanel>
         );
       })}
-      <ChatActions onSendMessage={sendMessage} reply={reply} removeReply={removeReplyMessage} />
+      <ChatActions
+        onSendMessage={sendMessage}
+        reply={reply}
+        removeReply={removeReplyMessage}
+      />
     </Card>
   );
 };

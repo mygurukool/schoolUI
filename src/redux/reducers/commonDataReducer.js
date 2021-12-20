@@ -7,6 +7,8 @@ const initialstate = {
   teachers: [],
   students: [],
 
+  messages: [],
+
   isCourseLoading: false,
 
   isGroupsLoading: false,
@@ -58,6 +60,24 @@ const sizeReducer = (state = initialstate, action) => {
       return {
         ...state,
         isAssignmentLoading: false,
+      };
+
+    case commonTypes.SET_A_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
+      };
+
+    case commonTypes.SET_MESSAGES:
+      return {
+        ...state,
+        messages: action.payload,
+      };
+
+    case commonTypes.CLEAN_MESSAGES:
+      return {
+        ...state,
+        messages: [],
       };
 
     default:
