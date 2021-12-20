@@ -20,14 +20,21 @@ import MessageList from "./MessageList";
 import ChatActions from "./ChatActions";
 
 import { useSelector } from "react-redux";
-
+import useModal from "../../hooks/useModal";
+import AddChatUsersModal from "../Modals/AddChatUsersModal";
+import ADDICON from "@mui/icons-material/Add";
 const Chat = ({ assignmentId }) => {
   const classes = useStyles();
-
+  const {
+    open: addChatUsersPromt,
+    modalData: chatUsersAddList,
+    openModal: openaddChatUsersPromt,
+    closeModal: closeaddChatUsersPromt,
+  } = useModal();
   const [value, setValue] = React.useState(0);
 
-  const { id, name } = useSelector((state) => state.user);
-  const { teachers, messages } = useSelector((state) => state.common);
+  const { id, name, isTeacher } = useSelector((state) => state.user);
+  const { teachers, messages, students } = useSelector((state) => state.common);
 
   const courseTeachers = teachers.filter((t) => t.teacherId !== id);
   const {
@@ -38,13 +45,12 @@ const Chat = ({ assignmentId }) => {
     replyMessage,
     reply,
     connectWithTeacher,
+    addUsersToCurrentGroup,
   } = useChat({
     assignmentId: assignmentId,
     userId: id,
     userName: name,
   });
-
-  console.log("messages", messages.length);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -53,77 +59,115 @@ const Chat = ({ assignmentId }) => {
   const handleConnectTeacher = (currentTeacher) => {
     connectWithTeacher(currentTeacher);
   };
+  const onOpenAddUsersToChat = (id) => {
+    let data = [];
+    if (isTeacher) {
+      courseTeachers.forEach((t) => {
+        data.push({
+          role: "Teachers",
+          name: t.name,
+          profileImage: undefined,
+          id: t.teacherId,
+        });
+      });
+    }
+    students.forEach((t) => {
+      data.push({
+        role: "Students",
+        name: t.name,
+        profileImage: undefined,
+        id: t.studentId,
+      });
+    });
+    openaddChatUsersPromt({
+      assignmentId: id,
+      options: data,
+    });
+    // console.log("teacher", teachers, students);
+  };
 
+  const onSubmitAddUsersToChat = (users) => {
+    addUsersToCurrentGroup(users);
+    closeaddChatUsersPromt();
+  };
   return (
-    <Card variant="outlined">
-      {connectionStatus}
-      <Tabs
-        value={value}
-        onChange={handleChange}
-        variant="scrollable"
-        scrollButtons
-        allowScrollButtonsMobile
-        aria-label="scrollable force tabs example"
-      >
-        {groups.map((g, i) => {
-          const recepiants = g.users.filter((u) => u.id !== id);
-          const sliceAt = 5;
+    <>
+      <AddChatUsersModal
+        options={chatUsersAddList?.options || []}
+        open={addChatUsersPromt}
+        onClose={() => closeaddChatUsersPromt()}
+        onSubmit={(data) => onSubmitAddUsersToChat(data)}
+      />
+      <Card variant="outlined">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
+          aria-label="scrollable force tabs example"
+        >
+          {groups.length === 0 && courseTeachers.length > 0 && (
+            <Card>
+              <CardContent>
+                <Button onClick={onOpenAddUsersToChat}>
+                  <ADDICON />
+                  Add users
+                </Button>
+              </CardContent>
+            </Card>
+          )}
 
-          const label = recepiants.length > 2 ? "Group" : recepiants[0].name;
+          {groups.map((g, i) => {
+            const recepiants = g.users.filter((u) => u.id !== id);
+            const sliceAt = 5;
+
+            const label = recepiants.length > 2 ? "Group" : recepiants[0].name;
+            return (
+              <Tab
+                icon={
+                  <RenderAvatar recepiants={recepiants} sliceAt={sliceAt} />
+                }
+                iconPosition="start"
+                label={label}
+                classes={{
+                  root: classes.TabLabel,
+                }}
+                {...a11yProps(i)}
+              />
+            );
+          })}
+        </Tabs>
+        {/* {courseTeachers.length === 1 && groups.length === 0 && (
+          <Button
+            onClick={() => {
+              handleConnectTeacher(courseTeachers[0]);
+            }}
+          >
+            connect with {courseTeachers[0].name}
+          </Button>
+        )} */}
+
+        {groups.map((g, i) => {
           return (
-            <Tab
-              icon={<RenderAvatar recepiants={recepiants} sliceAt={sliceAt} />}
-              iconPosition="start"
-              label={label}
-              classes={{
-                root: classes.TabLabel,
-              }}
-              {...a11yProps(i)}
-            />
+            <TabPanel value={value} index={i} key={i}>
+              <MessageList
+                messages={messages}
+                userId={id}
+                replyMessage={replyMessage}
+              />
+            </TabPanel>
           );
         })}
-      </Tabs>
-      {courseTeachers.length === 1 && groups.length === 0 && (
-        <Button
-          onClick={() => {
-            handleConnectTeacher(courseTeachers[0]);
-          }}
-        >
-          connect with {courseTeachers[0].name}
-        </Button>
-      )}
-      {groups.length === 0 && courseTeachers.length > 1 && (
-        <Card>
-          <CardContent>
-            <Select
-              onChange={(t) => handleConnectTeacher(t.target.value)}
-              fullWidth
-              placeholder="Choose a teacher"
-            >
-              {courseTeachers.map((t) => {
-                return <MenuItem value={t}>{t.name}</MenuItem>;
-              })}
-            </Select>
-          </CardContent>
-        </Card>
-      )}
-      {groups.map((g, i) => {
-        return (
-          <TabPanel value={value} index={i} key={i}>
-            <MessageList
-              messages={messages}
-              userId={id}
-              replyMessage={replyMessage}
-            />
-          </TabPanel>
-        );
-      })}
-      <ChatActions
-        onSendMessage={sendMessage}
-        reply={reply}
-        removeReply={removeReplyMessage}
-      />
-    </Card>
+        <ChatActions
+          onSendMessage={sendMessage}
+          reply={reply}
+          removeReply={removeReplyMessage}
+          isTeacher={isTeacher}
+          onOpenAddUsersToChat={onOpenAddUsersToChat}
+        />
+      </Card>
+    </>
   );
 };
 export default Chat;

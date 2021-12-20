@@ -26,14 +26,25 @@ import SelectGroup from "./GroupSelector";
 import AssignmentList from "./AssignmentList";
 import LoadingContainer from "../../components/Spinner/LoadingContainer";
 import clsx from "clsx";
-import { openModal } from "../../redux/action/utilActions";
+import useModal from "../../hooks/useModal";
+import TeacherAcceptModal from "../../components/Modals/TeacherAccept";
+import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
+import {
+  removeUserAsTeacher,
+  setUserAsTeacher,
+} from "../../redux/action/userActions";
+import AddChatUsersModal from "../../components/Modals/AddChatUsersModal";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [group, setGroup] = React.useState();
-  const [course, setCourse] = React.useState();
-  const [selectedCourse, setSelectedCourse] = React.useState();
+
+  const {
+    open: teacherPromt,
+    openModal: openTeacherPrompt,
+    closeModal: closeTeacherPrompt,
+  } = useModal();
+
   const [isConfrence, setIsConference] = React.useState(false);
 
   const {
@@ -41,115 +52,135 @@ const Home = (props) => {
     groups,
     assignments,
     isCourseLoading,
-
+    teachers,
+    students,
     isGroupsLoading,
     isAssignmentLoading,
   } = useSelector((state) => state.common);
-  const { loginType, sectionBg } = useSelector((state) => state.user);
+  const { loginType, sectionBg, id, isTeacher } = useSelector(
+    (state) => state.user
+  );
 
   React.useEffect(() => {
     dispatch(getAllCourses());
   }, []);
 
+  React.useEffect(() => {
+    const founData = checkIfUserIsTeacher(id, teachers);
+    if (founData) {
+      openTeacherPrompt();
+    }
+  }, [teachers]);
+
   const onSelectCourse = (c) => {
-    // console.log("c", c);
-    // setSelectedCourse(c);
+    dispatch(removeUserAsTeacher());
+
     dispatch(getAssignments(c._id || c.id));
   };
 
+  const onApproveAsTeacher = () => {
+    closeTeacherPrompt(false);
+
+    dispatch(setUserAsTeacher());
+  };
+
   return (
-    <div className={classes.root}>
-      <div className={classes.bgContainer}>
-        <div className={classes.bg} />
-        <div
-          className={classes.sectionBg}
-          style={{
-            backgroundImage: `url(${sectionBg})`,
-          }}
-        />
-      </div>
-      <div className={classes.innerContainet}>
-        <Container maxWidth={isConfrence ? "xl" : "md"}>
-          {/* top section */}
-          <Grid container className={classes.container}>
-            <Grid item lg={12}>
-              <Grid container mb={2}>
-                <Grid item lg={2}>
-                  <SelectGroup groups={groups} />
+    <>
+      <TeacherAcceptModal
+        open={teacherPromt}
+        onClose={() => closeTeacherPrompt()}
+        onSubmit={() => onApproveAsTeacher()}
+      />
 
-                  {/* <Button onClick={() => dispatch(openModal("courseWork"))}>
-                    Open modal
-                  </Button> */}
-                </Grid>
-                <Grid
-                  item
-                  container
-                  justifyContent="flex-end"
-                  alignItems="center"
-                  lg={10}
-                >
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    startIcon={<ConferenceIcon />}
-                    onClick={() => {
-                      setIsConference(!isConfrence);
-                    }}
-                    style={{ marginRight: 10 }}
+      <div className={classes.root}>
+        <div className={classes.bgContainer}>
+          <div className={classes.bg} />
+          <div
+            className={classes.sectionBg}
+            style={{
+              backgroundImage: `url(${sectionBg})`,
+            }}
+          />
+        </div>
+        <div className={classes.innerContainet}>
+          <Container maxWidth={isConfrence ? "xl" : "md"}>
+            {/* top section */}
+            <Grid container className={classes.container}>
+              <Grid item lg={12}>
+                <Grid container mb={2}>
+                  <Grid item lg={2}>
+                    <SelectGroup groups={groups} />
+                  </Grid>
+                  <Grid
+                    item
+                    container
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    lg={10}
                   >
-                    {lang("conference")}
-                  </Button>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      startIcon={<ConferenceIcon />}
+                      onClick={() => {
+                        setIsConference(!isConfrence);
+                      }}
+                      style={{ marginRight: 10 }}
+                    >
+                      {lang("conference")}
+                    </Button>
 
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    startIcon={<ConferenceIcon />}
-                    onClick={() => {}}
-                  >
-                    {lang("conference")}
-                  </Button>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      startIcon={<ConferenceIcon />}
+                      onClick={() => {}}
+                    >
+                      {lang("conference")}
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
+              <Grid
+                item
+                lg={12}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <LoadingContainer isLoading={isCourseLoading}>
+                  <CoursesList
+                    courses={courses}
+                    onSelectCourse={onSelectCourse}
+                  />
+                </LoadingContainer>
+              </Grid>
             </Grid>
+
+            {/* middle section */}
             <Grid
-              item
-              lg={12}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+              container
+              className={clsx(classes.container, classes.middleContainer)}
             >
-              <LoadingContainer isLoading={isCourseLoading}>
-                <CoursesList
-                  courses={courses}
-                  onSelectCourse={onSelectCourse}
-                />
-              </LoadingContainer>
-            </Grid>
-          </Grid>
-
-          {/* middle section */}
-          <Grid
-            container
-            className={clsx(classes.container, classes.middleContainer)}
-          >
-            <Grid item lg={isConfrence ? 6 : 12}>
-              <LoadingContainer isLoading={isAssignmentLoading}>
-                <AssignmentList assignments={assignments} />
-              </LoadingContainer>
-            </Grid>
-            {isConfrence && (
-              <Grid item lg={6}>
-                <Card>
-                  <CardContent>confrenece</CardContent>
-                </Card>
+              <Grid item lg={isConfrence ? 6 : 12}>
+                <LoadingContainer isLoading={isAssignmentLoading}>
+                  <AssignmentList assignments={assignments} />
+                </LoadingContainer>
               </Grid>
-            )}
-          </Grid>
-        </Container>
+              {isConfrence && (
+                <Grid item lg={6}>
+                  <Card>
+                    <CardContent>confrenece</CardContent>
+                  </Card>
+                </Grid>
+              )}
+            </Grid>
+          </Container>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

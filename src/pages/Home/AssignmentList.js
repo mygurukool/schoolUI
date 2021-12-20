@@ -41,7 +41,7 @@ import { DUEDATETIMEFORMAT } from "../../constants";
 import createNewChat from "../../helpers/createNewChat";
 import Chat from "../../components/Chat";
 
-const AssignmentList = ({ assignments }) => {
+const AssignmentList = ({ assignments, onOpenAddUsersToChat }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
@@ -88,6 +88,7 @@ const AssignmentListItem = ({
   onSelectAssignment,
 
   setPlayingVideo,
+  onOpenAddUsersToChat,
   ...props
 }) => {
   const { title, description, materials = [], dueDate, dueTime, id } = props;

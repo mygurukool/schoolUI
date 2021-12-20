@@ -104,8 +104,12 @@ const useChat = ({ assignmentId, userId, userName }) => {
       const filteredGroups = await Promise.all(
         data.filter((g) => {
           const found = g.users.find((u) => {
-            return u.id === userId && !groups.find((e) => e._id === g._id);
+            return (
+              u.id === userId &&
+              !groups.find((e) => e._id === g._id || e.id === g.id)
+            );
           });
+
           if (found) {
             return true;
           } else {
@@ -113,6 +117,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
           }
         })
       );
+
       setGroups([...groups, ...filteredGroups]);
     } else {
       setGroups([]);
@@ -121,6 +126,25 @@ const useChat = ({ assignmentId, userId, userName }) => {
 
   const replyMessage = (message) => {
     setReply(message);
+  };
+
+  const addUsersToCurrentGroup = (users) => {
+    const dataToBesend = {
+      groupId: currentGroup?._id || currentGroup?.id,
+      users: [
+        {
+          name: userName,
+          profileImage: "https://source.unsplash.com/random",
+          id: userId,
+        },
+
+        ...users,
+      ],
+      assignmentId,
+      roomId: currentGroup?.roomId || uuidv4(),
+    };
+
+    socket.emit("ADD_USERS_TO_GROUP", dataToBesend);
   };
 
   React.useEffect(() => {
@@ -167,6 +191,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
     sendMessage,
     replyMessage,
     removeReplyMessage,
+    addUsersToCurrentGroup,
     reply,
   };
 };

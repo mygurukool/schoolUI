@@ -52,3 +52,14 @@ export const setLocalLogin = ({ loginType }) => {
     payload: loginType,
   };
 };
+
+export const setUserAsTeacher = () => {
+  return {
+    type: userTypes.SET_USER_AS_TEACHER,
+  };
+};
+export const removeUserAsTeacher = () => {
+  return {
+    type: userTypes.REMOVE_USER_AS_TEACHER,
+  };
+};

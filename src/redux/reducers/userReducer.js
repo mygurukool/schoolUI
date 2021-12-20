@@ -12,6 +12,7 @@ const initialstate = {
   loginType: undefined,
   // sectionBg: "/images/bg.jpg",
   sectionBg: "/background/bg3.jpeg",
+  isTeacher: false,
 };
 
 const sizeReducer = (state = initialstate, action) => {
@@ -78,6 +79,18 @@ const sizeReducer = (state = initialstate, action) => {
           message: action?.error?.response?.data?.message,
           status: "error",
         },
+      };
+
+    case userTypes.SET_USER_AS_TEACHER:
+      return {
+        ...state,
+        isTeacher: true,
+      };
+
+    case userTypes.REMOVE_USER_AS_TEACHER:
+      return {
+        ...state,
+        isTeacher: false,
       };
 
     case authTypes.LOGOUT_USER:
