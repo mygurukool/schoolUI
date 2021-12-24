@@ -1,17 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import {
-  Button,
-  ButtonBase,
-  Card,
-  CardContent,
-  Container,
-  Divider,
-  Grid,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Card, CardContent, Container, Grid } from "@mui/material";
 import ConferenceIcon from "@mui/icons-material/VideoCallTwoTone";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -28,22 +17,45 @@ import LoadingContainer from "../../components/Spinner/LoadingContainer";
 import clsx from "clsx";
 import useModal from "../../hooks/useModal";
 import TeacherAcceptModal from "../../components/Modals/TeacherAccept";
+import WhiteboardUrlModal from "../../components/Modals/WhiteboardUrlModal";
+
 import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
 import {
   removeUserAsTeacher,
   setUserAsTeacher,
 } from "../../redux/action/userActions";
-import AddChatUsersModal from "../../components/Modals/AddChatUsersModal";
+import useWhiteBoard from "../../hooks/useWhiteBoard";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const [currentCourse, setCurrentCourse] = React.useState();
+
+  const { loginType, sectionBg, id, isTeacher } = useSelector(
+    (state) => state.user
+  );
 
   const {
     open: teacherPromt,
     openModal: openTeacherPrompt,
     closeModal: closeTeacherPrompt,
   } = useModal();
+
+  const {
+    open: whiteBoardUrlModalOpen,
+    openModal: openWhiteBoardUrlModal,
+    closeModal: closeWhiteBoardUrlModal,
+  } = useModal();
+
+  const {
+    initializeWhiteBoard,
+
+    whiteBoardUrl,
+  } = useWhiteBoard({
+    courseId: currentCourse?._id || currentCourse?.id,
+    userId: id,
+  });
 
   const [isConfrence, setIsConference] = React.useState(false);
 
@@ -57,9 +69,6 @@ const Home = (props) => {
     isGroupsLoading,
     isAssignmentLoading,
   } = useSelector((state) => state.common);
-  const { loginType, sectionBg, id, isTeacher } = useSelector(
-    (state) => state.user
-  );
 
   React.useEffect(() => {
     dispatch(getAllCourses());
@@ -74,7 +83,7 @@ const Home = (props) => {
 
   const onSelectCourse = (c) => {
     dispatch(removeUserAsTeacher());
-
+    setCurrentCourse(c);
     dispatch(getAssignments(c._id || c.id));
   };
 
@@ -84,12 +93,23 @@ const Home = (props) => {
     dispatch(setUserAsTeacher());
   };
 
+  const onWhiteBoardUrl = (url) => {
+    initializeWhiteBoard(url);
+
+    closeWhiteBoardUrlModal(false);
+  };
+
   return (
     <>
       <TeacherAcceptModal
         open={teacherPromt}
         onClose={() => closeTeacherPrompt()}
         onSubmit={() => onApproveAsTeacher()}
+      />
+      <WhiteboardUrlModal
+        open={whiteBoardUrlModalOpen}
+        onClose={() => closeWhiteBoardUrlModal()}
+        onSubmit={(url) => onWhiteBoardUrl(url)}
       />
 
       <div className={classes.root}>
@@ -118,17 +138,19 @@ const Home = (props) => {
                     alignItems="center"
                     lg={10}
                   >
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      startIcon={<ConferenceIcon />}
-                      onClick={() => {
-                        setIsConference(!isConfrence);
-                      }}
-                      style={{ marginRight: 10 }}
-                    >
-                      {lang("conference")}
-                    </Button>
+                    {isTeacher && (
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        startIcon={<ConferenceIcon />}
+                        onClick={() => {
+                          openWhiteBoardUrlModal();
+                        }}
+                        style={{ marginRight: 10 }}
+                      >
+                        White Board
+                      </Button>
+                    )}
 
                     <Button
                       color="primary"

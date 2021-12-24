@@ -8,6 +8,7 @@ import {
   setMessages,
   setSingleMessage,
   cleanMessages,
+  setOlderMessages,
 } from "../redux/action/messageAction";
 let socket;
 
@@ -91,11 +92,13 @@ const useChat = ({ assignmentId, userId, userName }) => {
   };
 
   const appendMessage = (upComingMessage) => {
-    console.log("append");
+    // console.log("append", upComingMessage);
     dispatch(setSingleMessage(upComingMessage));
   };
 
   const appendMessages = (msgs) => {
+    // console.log("append", msgs);
+
     dispatch(setMessages(msgs));
   };
 
@@ -128,6 +131,105 @@ const useChat = ({ assignmentId, userId, userName }) => {
     setReply(message);
   };
 
+  const forwardMessage = (data) => {
+    console.log("forwardMessage", data);
+
+    if (data.type === "group") {
+      const messageToBesend = {
+        reply: reply ? reply : undefined,
+        isForwarded: true,
+        message: {
+          ...data.message.message,
+          senderName: userName,
+          timeStamp: new Date(),
+          senderId: userId,
+        },
+        userId: userId,
+        roomId: data.data.roomId,
+      };
+      socket.emit("SEND_MESSAGE", messageToBesend);
+      return;
+    }
+
+    if (data.type === "student") {
+      const filteredGroups = groups.filter((g) => g.users.length > 2);
+      const foundActive = filteredGroups.find((g) => {
+        const found = g.users.find((u) => {
+          return u.id === data.data.studentId;
+        });
+        if (found) {
+          return true;
+        }
+        return false;
+      });
+
+      console.log("foundActive", foundActive);
+      if (foundActive) {
+        const messageToBesend = {
+          reply: reply ? reply : undefined,
+          isForwarded: true,
+          message: {
+            ...data.message.message,
+            senderName: userName,
+            timeStamp: new Date(),
+            senderId: userId,
+          },
+          userId: userId,
+          roomId: foundActive.roomId,
+        };
+        socket.emit("SEND_MESSAGE", messageToBesend);
+      } else {
+        const joinData = {
+          assignmentId,
+          roomId: uuidv4(),
+          users: [
+            {
+              name: data.data.name,
+              profileImage: "https://source.unsplash.com/random",
+              id: data.data.studentId,
+            },
+            {
+              name: userName,
+              profileImage: "https://source.unsplash.com/random",
+              id: userId,
+            },
+          ],
+        };
+
+        socket.emit("JOIN_ROOM", joinData);
+
+        const messageToBesend = {
+          reply: reply ? reply : undefined,
+          isForwarded: true,
+          message: {
+            ...data.message.message,
+            senderName: userName,
+            timeStamp: new Date(),
+            senderId: userId,
+          },
+          userId: userId,
+          roomId: joinData.roomId,
+        };
+        socket.emit("SEND_MESSAGE", messageToBesend);
+      }
+
+      // console.log("groups", groups);
+
+      // const messageToBesend = {
+      //   reply: reply ? reply : undefined,
+      //   message: {
+      //     text: data.message,
+      //     senderName: userName,
+      //     timeStamp: new Date(),
+      //     senderId: userId,
+      //   },
+      //   userId: userId,
+      //   roomId: data.roomId,
+      // };
+      // socket.emit("SEND_MESSAGE", messageToBesend);
+    }
+  };
+
   const addUsersToCurrentGroup = (users) => {
     const dataToBesend = {
       groupId: currentGroup?._id || currentGroup?.id,
@@ -145,6 +247,10 @@ const useChat = ({ assignmentId, userId, userName }) => {
     };
 
     socket.emit("ADD_USERS_TO_GROUP", dataToBesend);
+  };
+
+  const incrementPage = () => {
+    setPage(page + 1);
   };
 
   React.useEffect(() => {
@@ -177,12 +283,18 @@ const useChat = ({ assignmentId, userId, userName }) => {
     if (currentGroup) {
       socket.emit("JOIN_ROOM", currentGroup);
       setPage(0);
+      dispatch(setMessages([]));
       setTimeout(() => {
         socket.emit("SEND_MESSAGES", { ...currentGroup, page });
       }, 2000);
     }
-  }, [currentGroup, page]);
+  }, [currentGroup]);
 
+  React.useEffect(() => {
+    if (page > 0) {
+      socket.emit("SEND_MESSAGES", { ...currentGroup, page });
+    }
+  }, [page]);
   // console.log("current", currentGroup);
 
   return {
@@ -190,8 +302,10 @@ const useChat = ({ assignmentId, userId, userName }) => {
     connectWithTeacher,
     sendMessage,
     replyMessage,
+    forwardMessage,
     removeReplyMessage,
     addUsersToCurrentGroup,
+    incrementPage,
     reply,
   };
 };

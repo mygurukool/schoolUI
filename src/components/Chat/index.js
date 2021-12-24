@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import useModal from "../../hooks/useModal";
 import AddChatUsersModal from "../Modals/AddChatUsersModal";
 import ADDICON from "@mui/icons-material/Add";
+import ForwardMessageModal from "../Modals/ForwardMessageModal";
 const Chat = ({ assignmentId }) => {
   const classes = useStyles();
   const {
@@ -31,6 +32,14 @@ const Chat = ({ assignmentId }) => {
     openModal: openaddChatUsersPromt,
     closeModal: closeaddChatUsersPromt,
   } = useModal();
+
+  const {
+    open: forwardMessagePromt,
+    modalData: forwardData,
+    openModal: openforwardMessagePromt,
+    closeModal: closeforwardMessagePromt,
+  } = useModal();
+
   const [value, setValue] = React.useState(0);
 
   const { id, name, isTeacher } = useSelector((state) => state.user);
@@ -43,9 +52,11 @@ const Chat = ({ assignmentId }) => {
     sendMessage,
     removeReplyMessage,
     replyMessage,
+    forwardMessage,
     reply,
     connectWithTeacher,
     addUsersToCurrentGroup,
+    incrementPage,
   } = useChat({
     assignmentId: assignmentId,
     userId: id,
@@ -86,9 +97,28 @@ const Chat = ({ assignmentId }) => {
     // console.log("teacher", teachers, students);
   };
 
+  const onForwardMessage = (msg) => {
+    openforwardMessagePromt({
+      assignmentId: assignmentId,
+      messageToForward: msg,
+      groups,
+      students,
+      teachers,
+    });
+  };
+
   const onSubmitAddUsersToChat = (users) => {
     addUsersToCurrentGroup(users);
     closeaddChatUsersPromt();
+  };
+
+  const onSubmitForwardMsg = (data) => {
+    forwardMessage({
+      ...data,
+      message: forwardData.messageToForward,
+    });
+
+    closeforwardMessagePromt();
   };
   return (
     <>
@@ -97,6 +127,13 @@ const Chat = ({ assignmentId }) => {
         open={addChatUsersPromt}
         onClose={() => closeaddChatUsersPromt()}
         onSubmit={(data) => onSubmitAddUsersToChat(data)}
+      />
+
+      <ForwardMessageModal
+        options={forwardData}
+        open={forwardMessagePromt}
+        onClose={() => closeforwardMessagePromt()}
+        onSubmit={(data) => onSubmitForwardMsg(data)}
       />
       <Card variant="outlined">
         <Tabs
@@ -155,6 +192,8 @@ const Chat = ({ assignmentId }) => {
                 messages={messages}
                 userId={id}
                 replyMessage={replyMessage}
+                forwardMessage={onForwardMessage}
+                incrementPage={incrementPage}
               />
             </TabPanel>
           );
@@ -209,7 +248,7 @@ function a11yProps(index) {
 //     />
 //   );
 // };
-const RenderAvatar = ({ recepiants, sliceAt }) => {
+export const RenderAvatar = ({ recepiants, sliceAt }) => {
   const defaultBgColor = { bgcolor: green[500], height: 20, width: 20 };
 
   return (

@@ -71,7 +71,14 @@ const sizeReducer = (state = initialstate, action) => {
     case commonTypes.SET_MESSAGES:
       return {
         ...state,
-        messages: action.payload,
+        // messages: [...state.messages, ...action.payload],
+        messages: [...action.payload, ...state.messages],
+      };
+
+    case commonTypes.SET_OLDER_MESSAGES:
+      return {
+        ...state,
+        messages: [...action.payload, ...state.messages],
       };
 
     case commonTypes.CLEAN_MESSAGES:

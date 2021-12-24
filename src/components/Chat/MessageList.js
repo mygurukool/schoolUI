@@ -1,11 +1,23 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@mui/styles";
 import Avatar from "@mui/material/Avatar";
-import { IconButton, Menu, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import clsx from "clsx";
 import moment from "moment";
 import { DATETIMEFORMAT } from "../../constants";
+
+import ReplyIcon from "@mui/icons-material/Reply";
+import ForwardIcon from "@mui/icons-material/Forward";
+import { useScroll } from "react-use";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(1, 0),
@@ -50,7 +62,12 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
           <Typography variant="caption">{message.senderName}</Typography>
         )}
         <Typography variant="caption">{messageTime}</Typography>
-        <IconButton size="small" onClick={(e) => onMenuClick(e, message)}>
+        <IconButton
+          size="small"
+          onClick={(e) =>
+            onMenuClick(e, { message: message, senderId: message.senderId })
+          }
+        >
           <MoreVertIcon />
         </IconButton>
         <div
@@ -74,57 +91,82 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
   );
 };
 
-const MessageList = ({ messages, userId, replyMessage }) => {
+const MessageList = ({
+  messages,
+  userId,
+  replyMessage,
+  forwardMessage,
+  incrementPage,
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [replymsg, setReplyMsg] = React.useState(null);
+  const [selectedMsg, setSelectedMsg] = React.useState(null);
 
   const handleClick = (event, msg) => {
     setAnchorEl(event.currentTarget);
-    setReplyMsg(msg);
+    setSelectedMsg(msg);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
-    setReplyMsg();
+    setSelectedMsg();
   };
 
+  // console.log("onScroll", x, y);
+
   return (
-    <Stack direction="column">
-      <Menu
-        anchorEl={
-          // Check to see if the anchor is set.
-          anchorEl
-        }
-        keepMounted
-        open={
-          // Likewise, check here to see if the anchor is set.
-          Boolean(anchorEl)
-        }
-        onClose={handleClose}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <MenuItem onClick={handleClose}>
-          <Typography variant="body2" onClick={() => replyMessage(replymsg)}>
+    <div style={{ maxHeight: 300, overflow: "auto" }}>
+      <Stack direction="column">
+        <Menu
+          anchorEl={
+            // Check to see if the anchor is set.
+            anchorEl
+          }
+          keepMounted
+          open={
+            // Likewise, check here to see if the anchor is set.
+            Boolean(anchorEl)
+          }
+          onClose={handleClose}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          transformOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <MenuItem onClick={handleClose}>
+            <IconButton size="small" onClick={() => replyMessage(selectedMsg)}>
+              <ReplyIcon />
+            </IconButton>
+
+            {/* <Typography variant="body2" onClick={() => replyMessage(replymsg)}>
             Reply
-          </Typography>
-        </MenuItem>
-      </Menu>
-      {messages.map((m, i) => {
-        const isSentByMe = m.message.senderId === userId;
-        return (
-          <>
-            <MessageDisplay
-              isSentByMe={isSentByMe}
-              reply={m.reply}
-              onMenuClick={(e, m) => handleClick(e, m)}
-              message={m.message}
-            />
-          </>
-        );
-      })}
-    </Stack>
+          </Typography> */}
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <IconButton
+              size="small"
+              onClick={() => forwardMessage(selectedMsg)}
+            >
+              <ForwardIcon />
+            </IconButton>
+          </MenuItem>
+        </Menu>
+        <Stack direction="row" justifyContent="center">
+          <Button onClick={() => incrementPage()}>View Older Messages</Button>
+        </Stack>
+        {messages.map((m, i) => {
+          const isSentByMe = m.message.senderId === userId;
+          return (
+            <>
+              <MessageDisplay
+                isSentByMe={isSentByMe}
+                reply={m.reply}
+                onMenuClick={(e, m) => handleClick(e, m)}
+                message={m.message}
+              />
+            </>
+          );
+        })}
+      </Stack>
+    </div>
   );
 };
 export default MessageList;

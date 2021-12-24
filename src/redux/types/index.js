@@ -31,6 +31,8 @@ export const commonTypes = {
 
   SET_MESSAGES: "SET_MESSAGES",
 
+  SET_OLDER_MESSAGES: "SET_OLDER_MESSAGES",
+
   CLEAN_MESSAGES: "CLEAN_MESSAGES",
 };
 
