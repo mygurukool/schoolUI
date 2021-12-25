@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { ButtonBase, Typography } from "@mui/material";
+import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   courseBtn: {
@@ -30,19 +31,28 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
+  activeCourse: {
+    border: `5px solid ${theme.palette.secondary.main}`,
+  },
 }));
 
-const CoursesList = ({ courses, onSelectCourse }) => {
+const CoursesList = ({ courses, onSelectCourse, currentCourse }) => {
   const classes = useStyles();
 
   const CourseBtns = ({ data }) => {
+    const isActive = data.id === currentCourse?.id;
     const imaage = "https://source.unsplash.com/random";
     return (
       <ButtonBase
-        className={classes.courseBtn}
+        className={clsx(classes.courseBtn)}
         onClick={() => onSelectCourse(data)}
       >
-        <img src={imaage} alt={data.name} style={{ marginBottom: 10 }} />
+        <img
+          src={imaage}
+          alt={data.name}
+          className={isActive && classes.activeCourse}
+          style={{ marginBottom: 10 }}
+        />
         <Typography variant="body2">{data.name}</Typography>
       </ButtonBase>
     );

@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
-const SelectGroup = ({ groups }) => {
+const SelectGroup = ({ groups, currentGroup, onChangeGroup }) => {
   const classes = useStyles();
 
   return (
@@ -18,7 +18,12 @@ const SelectGroup = ({ groups }) => {
       label="Group"
       placeholder="Choose Group"
       color="secondary"
+      value={currentGroup}
+      onChange={({ target: { value } }) => {
+        onChangeGroup(value);
+      }}
     >
+      <MenuItem value={"all"}>All Groups</MenuItem>
       {groups &&
         groups.map((g, i) => {
           return (

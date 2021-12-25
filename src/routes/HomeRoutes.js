@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router";
+import { Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Navbar from "../components/Navbar";
 const HomeRoutes = () => {

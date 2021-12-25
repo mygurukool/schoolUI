@@ -62,6 +62,14 @@ const sizeReducer = (state = initialstate, action) => {
         isAssignmentLoading: false,
       };
 
+    case commonTypes.REMOVE_ASSIGNMENT_DATA:
+      return {
+        ...state,
+        assignments: [],
+        teachers: [],
+        students: [],
+      };
+
     case commonTypes.SET_A_MESSAGE:
       return {
         ...state,

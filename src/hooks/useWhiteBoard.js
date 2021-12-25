@@ -12,7 +12,7 @@ import {
 } from "../redux/action/messageAction";
 let socket;
 
-const useWhiteBoard = ({ courseId, userId, userName }) => {
+const useWhiteBoard = ({ courseId, userId, isTeacher, userName }) => {
   // const [messages, setMessages] = React.useState([]);
   const [whiteBoardUrl, setWhiteBoardUrl] = React.useState();
 
@@ -28,8 +28,17 @@ const useWhiteBoard = ({ courseId, userId, userName }) => {
 
   //methos
 
-  const initializeWhiteBoard = (url) => {
-    socket.emit("CREATE_WHITEBOARD", { courseId, whiteBoardUrl: url });
+  const initializeWhiteBoard = () => {
+    if (isTeacher) {
+      socket.emit("CREATE_WHITEBOARD", {
+        courseId,
+        whiteBoardUrl: `https://wbo.ophir.dev/boards/VidyamandirClass8A#28112021`,
+      });
+    } else {
+      setWhiteBoardUrl(
+        `https://wbo.ophir.dev/boards/VidyamandirClass8A${userName}#28112021`
+      );
+    }
   };
 
   React.useEffect(() => {

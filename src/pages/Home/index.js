@@ -17,7 +17,6 @@ import LoadingContainer from "../../components/Spinner/LoadingContainer";
 import clsx from "clsx";
 import useModal from "../../hooks/useModal";
 import TeacherAcceptModal from "../../components/Modals/TeacherAccept";
-import WhiteboardUrlModal from "../../components/Modals/WhiteboardUrlModal";
 
 import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
 import {
@@ -25,14 +24,16 @@ import {
   setUserAsTeacher,
 } from "../../redux/action/userActions";
 import useWhiteBoard from "../../hooks/useWhiteBoard";
+import { removeAssignmentData } from "../../redux/action/commonActions";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [currentGroup, setCurrentGroup] = React.useState("all");
 
-  const [currentCourse, setCurrentCourse] = React.useState();
+  const [currentCourse, setCurrentCourse] = React.useState(null);
 
-  const { loginType, sectionBg, id, isTeacher } = useSelector(
+  const { loginType, sectionBg, id, isTeacher, name } = useSelector(
     (state) => state.user
   );
 
@@ -43,18 +44,14 @@ const Home = (props) => {
   } = useModal();
 
   const {
-    open: whiteBoardUrlModalOpen,
-    openModal: openWhiteBoardUrlModal,
-    closeModal: closeWhiteBoardUrlModal,
-  } = useModal();
-
-  const {
     initializeWhiteBoard,
 
     whiteBoardUrl,
   } = useWhiteBoard({
     courseId: currentCourse?._id || currentCourse?.id,
     userId: id,
+    isTeacher: isTeacher,
+    userName: name,
   });
 
   const [isConfrence, setIsConference] = React.useState(false);
@@ -87,17 +84,29 @@ const Home = (props) => {
     dispatch(getAssignments(c._id || c.id));
   };
 
+  const onSelectGroup = (c) => {
+    dispatch(removeUserAsTeacher());
+    dispatch(removeAssignmentData());
+    setCurrentCourse();
+    setCurrentGroup(c);
+  };
+
   const onApproveAsTeacher = () => {
     closeTeacherPrompt(false);
 
     dispatch(setUserAsTeacher());
   };
 
-  const onWhiteBoardUrl = (url) => {
-    initializeWhiteBoard(url);
+  const shouldDivideSection = whiteBoardUrl || isConfrence;
 
-    closeWhiteBoardUrlModal(false);
-  };
+  const filteredGroups = [...new Set(groups)];
+
+  const filteredCourses = courses.filter((c) => {
+    if (currentGroup === "all") return true;
+    else {
+      return c.section === currentGroup;
+    }
+  });
 
   return (
     <>
@@ -105,11 +114,6 @@ const Home = (props) => {
         open={teacherPromt}
         onClose={() => closeTeacherPrompt()}
         onSubmit={() => onApproveAsTeacher()}
-      />
-      <WhiteboardUrlModal
-        open={whiteBoardUrlModalOpen}
-        onClose={() => closeWhiteBoardUrlModal()}
-        onSubmit={(url) => onWhiteBoardUrl(url)}
       />
 
       <div className={classes.root}>
@@ -123,13 +127,17 @@ const Home = (props) => {
           />
         </div>
         <div className={classes.innerContainet}>
-          <Container maxWidth={isConfrence ? "xl" : "md"}>
+          <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
             <Grid container className={classes.container}>
               <Grid item lg={12}>
                 <Grid container mb={2}>
                   <Grid item lg={2}>
-                    <SelectGroup groups={groups} />
+                    <SelectGroup
+                      groups={filteredGroups}
+                      currentGroup={currentGroup}
+                      onChangeGroup={onSelectGroup}
+                    />
                   </Grid>
                   <Grid
                     item
@@ -138,19 +146,17 @@ const Home = (props) => {
                     alignItems="center"
                     lg={10}
                   >
-                    {isTeacher && (
-                      <Button
-                        color="primary"
-                        variant="contained"
-                        startIcon={<ConferenceIcon />}
-                        onClick={() => {
-                          openWhiteBoardUrlModal();
-                        }}
-                        style={{ marginRight: 10 }}
-                      >
-                        White Board
-                      </Button>
-                    )}
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      startIcon={<ConferenceIcon />}
+                      onClick={() => {
+                        initializeWhiteBoard();
+                      }}
+                      style={{ marginRight: 10 }}
+                    >
+                      White Board
+                    </Button>
 
                     <Button
                       color="primary"
@@ -174,8 +180,9 @@ const Home = (props) => {
               >
                 <LoadingContainer isLoading={isCourseLoading}>
                   <CoursesList
-                    courses={courses}
+                    courses={filteredCourses}
                     onSelectCourse={onSelectCourse}
+                    currentCourse={currentCourse}
                   />
                 </LoadingContainer>
               </Grid>
@@ -186,11 +193,25 @@ const Home = (props) => {
               container
               className={clsx(classes.container, classes.middleContainer)}
             >
-              <Grid item lg={isConfrence ? 6 : 12}>
+              <Grid item lg={shouldDivideSection ? 6 : 12}>
                 <LoadingContainer isLoading={isAssignmentLoading}>
                   <AssignmentList assignments={assignments} />
                 </LoadingContainer>
               </Grid>
+              {whiteBoardUrl && (
+                <Grid item lg={6}>
+                  <Card>
+                    <CardContent>
+                      <iframe
+                        src={whiteBoardUrl}
+                        width="100%"
+                        height="500px"
+                        title="W3Schools Free Online Web Tutorials"
+                      ></iframe>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              )}
               {isConfrence && (
                 <Grid item lg={6}>
                   <Card>
