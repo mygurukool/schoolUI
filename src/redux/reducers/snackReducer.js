@@ -1,6 +1,6 @@
 const initialstate = {
   message: "",
-  severity: "",
+  severity: undefined,
   open: false,
 };
 let success = "success";

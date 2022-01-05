@@ -9,10 +9,13 @@ export const setLoginType = (data) => {
   };
 };
 
-export const openModal = (data) => {
+export const openModal = (value, data) => {
   return {
     type: utilTypes.OPEN_MODAL,
-    payload: data,
+    payload: {
+      value: value,
+      data: data,
+    },
   };
 };
 

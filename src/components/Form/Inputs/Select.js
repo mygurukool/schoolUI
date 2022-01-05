@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     borderRadius: theme.palette.radius.base,
   },
-}))
+}));
 const MyTextField = React.forwardRef((props) => {
   const classes = useStyles();
   const {
@@ -24,35 +24,35 @@ const MyTextField = React.forwardRef((props) => {
     required,
     rules,
     hasDefaultOption = false,
-    onSelect
+    onSelect,
   } = props;
   return (
-    <InputContainer
-      size={size}
-    >
+    <InputContainer size={size}>
       <Controller
         control={control}
         name={name}
         {...props}
-        render={(props) => {
+        render={({ field }) => {
           return (
             <TextField
-              {...props}
+              {...field}
               select
               fullWidth
               variant="outlined"
               error={error}
               size="Normal"
-              label={`${label} ${required ? '*' : ''}`}
+              label={`${label} ${required ? "*" : ""}`}
               placeholder={placeholder}
               className={classes.textField}
-              value={props.value}
-              onChange={(e) => { props.onChange(e.target.value); onSelect && onSelect(e.target.value) }}
+              onChange={(e) => {
+                field.onChange(e.target.value);
+                onSelect && onSelect(e.target.value);
+              }}
               helperText={error}
               InputProps={{
                 classes: {
                   notchedOutline: classes.textField,
-                }
+                },
               }}
             >
               {hasDefaultOption && (
@@ -61,28 +61,27 @@ const MyTextField = React.forwardRef((props) => {
                 </MenuItem>
               )}
               {defaultOption && defaultOption()}
-              {options.length > 0 ? options?.map((opt, index) => {
-                return (
-                  <MenuItem
-                    value={optionValueProp ? opt[optionValueProp] : opt}
-                    key={index}
-                  >
-                    {opt[optionLabelProp]}
-                  </MenuItem>
-                );
-              }) :
-                (
-                  <MenuItem selected disabled>
-                    No Data
-                  </MenuItem>
-                )
-              }
+              {options.length > 0 ? (
+                options?.map((opt, index) => {
+                  return (
+                    <MenuItem
+                      value={optionValueProp ? opt[optionValueProp] : opt}
+                      key={index}
+                    >
+                      {opt[optionLabelProp]}
+                    </MenuItem>
+                  );
+                })
+              ) : (
+                <MenuItem selected disabled>
+                  No Data
+                </MenuItem>
+              )}
             </TextField>
-          )
+          );
         }} // props contain
         rules={rules}
       />
-
     </InputContainer>
   );
 });

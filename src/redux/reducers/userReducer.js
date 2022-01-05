@@ -3,6 +3,7 @@
 import { userTypes, authTypes, organizationTypes } from "../types";
 import setToken from "../../helpers/setToken";
 import removeToken from "../../helpers/removeToken";
+import { ROLES } from "../../constants";
 
 const initialstate = {
   isLogged: false,
@@ -13,6 +14,10 @@ const initialstate = {
   // sectionBg: "/images/bg.jpg",
   sectionBg: "/background/bg3.jpeg",
   isTeacher: false,
+};
+
+const checkIfTeacher = (role) => {
+  return [ROLES.organizationOwner, ROLES.teacher].includes(role);
 };
 
 const sizeReducer = (state = initialstate, action) => {
@@ -27,7 +32,7 @@ const sizeReducer = (state = initialstate, action) => {
       };
 
     case authTypes.LOGIN_USER_SUCCESS:
-      // setToken(getData().token);
+      setToken(getData().token, getData().loginType);
       return {
         ...state,
         isLoading: false,
@@ -35,6 +40,8 @@ const sizeReducer = (state = initialstate, action) => {
         role: getData().user.role,
         name: getData().user.name,
         token: getData().token,
+        isTeacher: checkIfTeacher(getData().user.role),
+
         ...getData().user,
       };
 
@@ -64,6 +71,8 @@ const sizeReducer = (state = initialstate, action) => {
         getDetailsLoading: false,
         role: getData()?.user?.role,
         name: getData()?.user?.name,
+        isTeacher: checkIfTeacher(getData().user.role),
+
         error: undefined,
         ...getData()?.user,
       };

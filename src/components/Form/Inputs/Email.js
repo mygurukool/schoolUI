@@ -9,38 +9,38 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     borderRadius: theme.palette.radius.base,
   },
-}))
+}));
 const TextBox = React.forwardRef((props, ref) => {
   const classes = useStyles();
-  const { label, control, placeholder, type, size, error, rules, required } = props;
+  const { label, control, placeholder, type, size, error, rules, required } =
+    props;
   return (
     <InputContainer size={size}>
       <Controller
         name="name"
         control={control}
         {...props}
-        render={(props) => (
+        render={({ field }) => (
           <TextField
-            {...props}
+            {...field}
             fullWidth
             variant="outlined"
             error={error}
             // size="Normal"
-            label={`${label} ${required ? '*' : ''}`}
+            label={`${label} ${required ? "*" : ""}`}
             placeholder={placeholder}
             helperText={error}
           />
         )}
         rules={{
-          ...rules, pattern: {
+          ...rules,
+          pattern: {
             value: emailRegex,
             message: "Invalid email address",
           },
         }}
       />
-
     </InputContainer>
-
   );
 });
 export default TextBox;

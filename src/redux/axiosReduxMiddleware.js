@@ -2,6 +2,7 @@ import axios from "axios";
 import axiosMiddleware from "redux-axios-middleware";
 import getToken from "../helpers/getToken";
 import { BASEURL } from "../constants/index";
+import { showSnackBar } from "./action/snackActions";
 // import getToken from './src/functions/getToken';
 // import {showerror, showDomainError} from './src/actions/userActions';
 
@@ -30,7 +31,7 @@ const options = {
             const succMessage = (res) =>
               response.data.message || sourceAction?.payload?.successMessage;
             if (succMessage()) {
-              alert(succMessage());
+              dispatch(showSnackBar(succMessage(), "success"));
             }
           }
           if (sourceAction?.payload?.cb) {
@@ -52,7 +53,7 @@ const options = {
             };
 
             if (errMessage()) {
-              alert(errMessage());
+              dispatch(showSnackBar(errMessage(), "error"));
             }
           }
 
@@ -63,8 +64,11 @@ const options = {
           dispatch({ type: "SPINNER_STOP" });
 
           if (error.message === "Network Error") {
-            alert(
-              "Network Error, Please check your internet connection or contact developer"
+            dispatch(
+              showSnackBar(
+                "Network Error, Please check your internet connection or contact developer",
+                "error"
+              )
             );
           }
           return Promise.reject(error);

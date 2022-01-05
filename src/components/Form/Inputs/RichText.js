@@ -17,9 +17,6 @@ const RichText = React.forwardRef((props, ref) => {
   const { label, name, control, placeholder, size, error, rules, required } =
     props;
 
-  const save = (data) => {
-    console.log(data);
-  };
   return (
     <InputContainer size={size} label={label}>
       <Controller

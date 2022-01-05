@@ -1,21 +1,21 @@
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import React from "react";
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from "@mui/styles";
 import InputContainer from "./InputContainer";
 import { Controller } from "react-hook-form";
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 const useStyles = makeStyles((theme) => ({
   textField: {
     borderRadius: theme.palette.radius.base,
   },
-}))
+}));
 const TextBox = React.forwardRef((props, ref) => {
   const classes = useStyles();
   const { label, control, placeholder, size, error, rules, required } = props;
   const [values, setValues] = React.useState({
-    password: '',
+    password: "",
     showPassword: false,
   });
   const handleClickShowPassword = () => {
@@ -30,21 +30,20 @@ const TextBox = React.forwardRef((props, ref) => {
         name="name"
         control={control}
         {...props}
-        render={(props) => (
+        render={({ field }) => (
           <TextField
-            {...props}
+            {...field}
             fullWidth
-            type={values.showPassword ? 'text' : 'password'}
+            type={values.showPassword ? "text" : "password"}
             variant="outlined"
             error={error}
             // size="Normal"
-            label={`${label} ${required ? '*' : ''}`}
+            label={`${label} ${required ? "*" : ""}`}
             placeholder={placeholder}
             className={classes.textField}
             helperText={error}
-
             InputProps={{
-              endAdornment:
+              endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
@@ -55,18 +54,16 @@ const TextBox = React.forwardRef((props, ref) => {
                     {values.showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              ,
+              ),
               classes: {
                 notchedOutline: classes.textField,
-              }
+              },
             }}
           />
         )} // props contain
         rules={rules}
       />
-
     </InputContainer>
-
   );
 });
 export default TextBox;

@@ -202,9 +202,9 @@ export default function NavBar() {
         className={classes.AppBar}
       >
         <Toolbar variant="dense">
-          <IconButton onClick={handleDrawerOpen} edge="start" size="small">
+          {/* <IconButton onClick={handleDrawerOpen} edge="start" size="small">
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Box
             style={{
               flex: 3,

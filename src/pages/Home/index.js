@@ -1,14 +1,19 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { Button, Card, CardContent, Container, Grid } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  Grid,
+  IconButton,
+  Stack,
+} from "@mui/material";
 import ConferenceIcon from "@mui/icons-material/VideoCallTwoTone";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  getAllCourses,
-  getAssignments,
-} from "../../redux/action/coursesActions";
 import lang from "../../hooks/useLanguage";
 import CoursesList from "./CourseList";
 import SelectGroup from "./GroupSelector";
@@ -24,168 +29,87 @@ import {
   setUserAsTeacher,
 } from "../../redux/action/userActions";
 import useWhiteBoard from "../../hooks/useWhiteBoard";
-import { removeAssignmentData } from "../../redux/action/commonActions";
+import useConference from "../../hooks/useConference";
+
+import { getAllCourses } from "../../redux/action/coursesActions";
+
+import { getAllGroups } from "../../redux/action/groupActions";
+import BackgroundImage from "./BackgroundImage";
+import TopSectionButtons from "./TopSectionButtons";
+import WhiteBoard from "./WhiteBoard";
+import Conference from "./Conference";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [currentGroup, setCurrentGroup] = React.useState("all");
-
-  const [currentCourse, setCurrentCourse] = React.useState(null);
-
-  const { loginType, sectionBg, id, isTeacher, name } = useSelector(
-    (state) => state.user
-  );
-
-  const {
-    open: teacherPromt,
-    openModal: openTeacherPrompt,
-    closeModal: closeTeacherPrompt,
-  } = useModal();
 
   const {
     initializeWhiteBoard,
 
     whiteBoardUrl,
-  } = useWhiteBoard({
-    courseId: currentCourse?._id || currentCourse?.id,
-    userId: id,
-    isTeacher: isTeacher,
-    userName: name,
-  });
-
-  const [isConfrence, setIsConference] = React.useState(false);
+    isWhiteboardMaximized,
+    toggleWhiteboardMinMax,
+    handleLeaveWhiteboard,
+  } = useWhiteBoard();
 
   const {
-    courses,
-    groups,
-    assignments,
+    initializeConference,
+    isConfrenceOpen,
+    conferenceData,
+    isConferenceMaximized,
+    toggleConferenceMinMax,
+    handleLeaveConference,
+  } = useConference();
+
+  const {
     isCourseLoading,
-    teachers,
-    students,
-    isGroupsLoading,
+
     isAssignmentLoading,
   } = useSelector((state) => state.common);
 
   React.useEffect(() => {
     dispatch(getAllCourses());
+    dispatch(getAllGroups());
   }, []);
 
-  React.useEffect(() => {
-    const founData = checkIfUserIsTeacher(id, teachers);
-    if (founData) {
-      openTeacherPrompt();
-    }
-  }, [teachers]);
+  const shouldDivideSection = whiteBoardUrl || isConfrenceOpen;
 
-  const onSelectCourse = (c) => {
-    dispatch(removeUserAsTeacher());
-    setCurrentCourse(c);
-    dispatch(getAssignments(c._id || c.id));
-  };
-
-  const onSelectGroup = (c) => {
-    dispatch(removeUserAsTeacher());
-    dispatch(removeAssignmentData());
-    setCurrentCourse();
-    setCurrentGroup(c);
-  };
-
-  const onApproveAsTeacher = () => {
-    closeTeacherPrompt(false);
-
-    dispatch(setUserAsTeacher());
-  };
-
-  const shouldDivideSection = whiteBoardUrl || isConfrence;
-
-  const filteredGroups = [...new Set(groups)];
-
-  const filteredCourses = courses.filter((c) => {
-    if (currentGroup === "all") return true;
-    else {
-      return c.section === currentGroup;
-    }
-  });
+  const isSectionMaximized = isWhiteboardMaximized || isConferenceMaximized;
 
   return (
     <>
-      <TeacherAcceptModal
-        open={teacherPromt}
-        onClose={() => closeTeacherPrompt()}
-        onSubmit={() => onApproveAsTeacher()}
-      />
+      <TeacherAcceptModal />
 
       <div className={classes.root}>
-        <div className={classes.bgContainer}>
-          <div className={classes.bg} />
-          <div
-            className={classes.sectionBg}
-            style={{
-              backgroundImage: `url(${sectionBg})`,
-            }}
-          />
-        </div>
+        <BackgroundImage />
         <div className={classes.innerContainet}>
           <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
             <Grid container className={classes.container}>
               <Grid item lg={12}>
                 <Grid container mb={2}>
-                  <Grid item lg={2}>
-                    <SelectGroup
-                      groups={filteredGroups}
-                      currentGroup={currentGroup}
-                      onChangeGroup={onSelectGroup}
-                    />
+                  <Grid item lg={3}>
+                    <SelectGroup />
                   </Grid>
                   <Grid
                     item
                     container
                     justifyContent="flex-end"
                     alignItems="center"
-                    lg={10}
+                    lg={9}
                   >
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      startIcon={<ConferenceIcon />}
-                      onClick={() => {
-                        initializeWhiteBoard();
-                      }}
-                      style={{ marginRight: 10 }}
-                    >
-                      White Board
-                    </Button>
-
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      startIcon={<ConferenceIcon />}
-                      onClick={() => {}}
-                    >
-                      {lang("conference")}
-                    </Button>
+                    <TopSectionButtons
+                      initializeWhiteBoard={initializeWhiteBoard}
+                      initializeConference={initializeConference}
+                    />
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid
-                item
-                lg={12}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
+              {!isSectionMaximized && (
                 <LoadingContainer isLoading={isCourseLoading}>
-                  <CoursesList
-                    courses={filteredCourses}
-                    onSelectCourse={onSelectCourse}
-                    currentCourse={currentCourse}
-                  />
+                  <CoursesList />
                 </LoadingContainer>
-              </Grid>
+              )}
             </Grid>
 
             {/* middle section */}
@@ -193,31 +117,30 @@ const Home = (props) => {
               container
               className={clsx(classes.container, classes.middleContainer)}
             >
-              <Grid item lg={shouldDivideSection ? 6 : 12}>
-                <LoadingContainer isLoading={isAssignmentLoading}>
-                  <AssignmentList assignments={assignments} />
-                </LoadingContainer>
-              </Grid>
-              {whiteBoardUrl && (
-                <Grid item lg={6}>
-                  <Card>
-                    <CardContent>
-                      <iframe
-                        src={whiteBoardUrl}
-                        width="100%"
-                        height="500px"
-                        title="W3Schools Free Online Web Tutorials"
-                      ></iframe>
-                    </CardContent>
-                  </Card>
+              {!isSectionMaximized && (
+                <Grid item lg={shouldDivideSection ? 6 : 12}>
+                  <LoadingContainer isLoading={isAssignmentLoading}>
+                    <AssignmentList />
+                  </LoadingContainer>
                 </Grid>
               )}
-              {isConfrence && (
-                <Grid item lg={6}>
-                  <Card>
-                    <CardContent>confrenece</CardContent>
-                  </Card>
-                </Grid>
+              {!isConfrenceOpen && whiteBoardUrl && (
+                <WhiteBoard
+                  isSectionMaximized={isSectionMaximized}
+                  isWhiteboardMaximized={isWhiteboardMaximized}
+                  toggleWhiteboardMinMax={toggleWhiteboardMinMax}
+                  handleLeaveWhiteboard={handleLeaveWhiteboard}
+                  whiteBoardUrl={whiteBoardUrl}
+                />
+              )}
+
+              {isConfrenceOpen && (
+                <Conference
+                  isSectionMaximized={isSectionMaximized}
+                  isConferenceMaximized={isConferenceMaximized}
+                  toggleConferenceMinMax={toggleConferenceMinMax}
+                  handleLeaveConference={handleLeaveConference}
+                />
               )}
             </Grid>
           </Container>
@@ -242,38 +165,6 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
   },
 
-  bgContainer: {
-    position: "absolute",
-    height: "100%",
-    left: 0,
-    zIndex: -1,
-    top: 0,
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-
-  bg: {
-    // backgroundColor: '#4158D0',
-    background: theme.palette.primary.main,
-    // backgroundColor: '#4158D0',
-    backgroundImage: "url(background/bg1.png)",
-    backgroundSize: "cover",
-    flex: 1,
-    height: 180,
-  },
-  sectionBg: {
-    // backgroundColor: '#4158D0',
-    // background: theme.palette.secondary.main,
-    // backgroundColor: '#4158D0',
-    // backgroundImage: "url(background/bg1.png)",
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
-
-    flex: 3,
-
-    width: "100%",
-  },
   container: {
     width: "100%",
     height: "auto",

@@ -33,7 +33,7 @@ export const getUserDetails = (data, cb, errorCb) => {
       },
       successMessage: "Login Succcess",
       errorMessage: "Failed to Login",
-      enableMessage: true,
+      enableMessage: false,
       cb: cb,
       errorCb: errorCb,
     },

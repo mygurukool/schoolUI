@@ -7,16 +7,20 @@ const useAutoLogin = () => {
   const [ready, setReady] = React.useState(false);
   const dispatch = useDispatch();
   const { token, loginType } = getToken();
+
   // console.log("loginType", loginType);
 
   React.useEffect(() => {
     if (loginType === "google") {
       dispatch(setLocalLogin({ loginType }));
-      dispatch(getUserDetails({ loginType: loginType }))
+      dispatch(getUserDetails({ loginType: loginType }));
       setReady(true);
       return;
     } else if (token) {
-      console.log("token");
+      // console.log("token");
+      dispatch(setLocalLogin({ loginType }));
+      dispatch(getUserDetails({ loginType: loginType }));
+
       setReady(true);
       return;
     } else {

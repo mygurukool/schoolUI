@@ -12,10 +12,20 @@ import {
 } from "../redux/action/messageAction";
 let socket;
 
-const useWhiteBoard = ({ courseId, userId, isTeacher, userName }) => {
+const useWhiteBoard = () => {
+  const currentCourse = useSelector((state) => state.common.currentCourse);
+  const {
+    id: userId,
+    isTeacher,
+    name: userName,
+  } = useSelector((state) => state.user);
+
+  const courseId = currentCourse?._id || currentCourse?.id;
+
   // const [messages, setMessages] = React.useState([]);
   const [whiteBoardUrl, setWhiteBoardUrl] = React.useState();
-
+  const [isWhiteboardMaximized, setIsWhiteboardMaximized] =
+    React.useState(false);
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
@@ -27,6 +37,14 @@ const useWhiteBoard = ({ courseId, userId, isTeacher, userName }) => {
   };
 
   //methos
+
+  const toggleWhiteboardMinMax = () => {
+    setIsWhiteboardMaximized(!isWhiteboardMaximized);
+  };
+
+  const handleLeaveWhiteboard = () => {
+    setWhiteBoardUrl();
+  };
 
   const initializeWhiteBoard = () => {
     if (isTeacher) {
@@ -53,6 +71,9 @@ const useWhiteBoard = ({ courseId, userId, isTeacher, userName }) => {
   return {
     initializeWhiteBoard,
     whiteBoardUrl,
+    isWhiteboardMaximized,
+    toggleWhiteboardMinMax,
+    handleLeaveWhiteboard,
   };
 };
 

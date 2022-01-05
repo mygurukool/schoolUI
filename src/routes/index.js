@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
+import Invitation from "../pages/Invitation";
+
 import Forgot from "../pages/Auth/Forgot";
 import { makeStyles } from "@mui/styles";
 import ProtectedRoute from "./ProtectedRoute";
@@ -15,19 +17,6 @@ import Util from "./Util";
 
 const RouteData = () => {
   const { ready } = useAutoLogin();
-  // const classes = useStyles();
-
-  // const { isLogged } = useSelector((state) => state.user);
-  // const { isLoading } = useSelector((state) => state.util);
-
-  // //getting respective home page
-  // const renderHomePage = (isLogged, props) => {
-  //   if (isLogged) {
-  //     return <Redirect to="/home" />;
-  //   } else {
-  //     return <Redirect to="/login" />;
-  //   }
-  // };
 
   return ready ? (
     <BrowserRouter>
@@ -38,6 +27,7 @@ const RouteData = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgot-password" component={Forgot} />
         <Route exact path="/register" component={Register} />
+        <Route exact path="/invitation/:type/:id" component={Invitation} />
       </AnimatedSwitch>
     </BrowserRouter>
   ) : (

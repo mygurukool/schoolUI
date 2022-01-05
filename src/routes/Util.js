@@ -1,13 +1,19 @@
 import React from "react";
+import Snack from "../components/Snack";
+import CourseModal from "../components/Modals/CourseModal";
+import GroupModal from "../components/Modals/GroupModal";
+import InvitePeople from "../components/Modals/InvitePeople";
 
-import CreateCourse from "../components/Modals/CourseModal";
-import CourseWorkModal from "../components/Modals/CourseWorkModal";
+import AssignmentModal from "../components/Modals/AssignmentModal";
 
 const Util = () => {
   return (
     <div>
-      <CreateCourse />
-      <CourseWorkModal />
+      <Snack />
+      <CourseModal />
+      <GroupModal />
+      <AssignmentModal />
+      <InvitePeople />
     </div>
   );
 };

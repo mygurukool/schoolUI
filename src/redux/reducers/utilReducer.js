@@ -3,6 +3,7 @@ const initialstate = {
   spinner: false,
   language: "gu",
   modalOpen: undefined,
+  modalData: undefined,
 };
 
 const utilReducer = (state = initialstate, action) => {
@@ -28,13 +29,15 @@ const utilReducer = (state = initialstate, action) => {
     case utilTypes.OPEN_MODAL:
       return {
         ...state,
-        modalOpen: action.payload,
+        modalOpen: action.payload.value,
+        modalData: action.payload.data,
       };
 
     case utilTypes.CLOSE_MODAL:
       return {
         ...state,
         modalOpen: undefined,
+        modalData: undefined,
       };
 
     case "SPINNER_START":

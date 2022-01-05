@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { useHistory } from "react-router-dom";
 //dynamic form  creator
-// import FormCreator from "../../components/FormCreator";
+import FormCreator from "../../components/Form/FormCreator";
 import { loginUser } from "../../redux/action/userActions";
 import { useGoogleLogin } from "react-google-login";
 
@@ -34,8 +34,7 @@ const Login = (props) => {
     onSuccess: (data) => {
       console.log("access", data, data.accessToken, data.tokenObj);
       const token = data.accessToken;
-      setToken(token, "google");
-      handleLogin(data.profileObj, "google");
+      handleLogin({ ...data.profileObj, token: token }, "google");
     },
 
     clientId:
@@ -50,22 +49,24 @@ const Login = (props) => {
 
   //login functions
   const handleLogin = (data, loginType) => {
-    dispatch(loginUser({ ...data, loginType: "google" }));
+    dispatch(loginUser({ ...data, loginType: loginType }));
   };
 
   const handleGoogleLogin = async () => {
     signIn();
   };
 
-  const handleMicrosoftLogin = () => { };
+  const handleMicrosoftLogin = () => {};
 
-  const handleRegister = () => { };
+  const handleRegister = () => {};
 
   return (
     <div className={classes.root}>
       <Card elevation={0} className={classes.card}>
         <CardContent>
-          <Typography variant="h4" mb={2} color="primary">Get Started</Typography>
+          <Typography variant="h4" mb={2} color="primary">
+            Get Started
+          </Typography>
           <Typography mb={2} color="secondary">
             Hi, Welcome back!
           </Typography>
@@ -84,9 +85,7 @@ const Login = (props) => {
                         src="images/mt.svg"
                         className={classes.icon}
                       />
-                      <Typography
-                        variant="subtitle1"
-                      >
+                      <Typography variant="subtitle1">
                         Login with Microsoft Teams
                       </Typography>
                     </CardContent>
@@ -102,9 +101,7 @@ const Login = (props) => {
                   <ButtonBase>
                     <CardContent>
                       <img src="images/gc.svg" className={classes.icon} />
-                      <Typography
-                        variant="subtitle1"
-                      >
+                      <Typography variant="subtitle1">
                         Login with Google Classroom
                       </Typography>
                     </CardContent>
@@ -120,12 +117,16 @@ const Login = (props) => {
             </div>
             <div className={classes.hrLine} />
           </div>
-          {/* <FormCreator
+          <FormCreator
             mode={"add"}
-            onSubmit={(e) => handleLogin(e)}
+            onSubmit={(e) => handleLogin(e, "mygurukool")}
             formData={formData}
             submitText="Login"
-          /> */}
+            data={{
+              email: "harsh@gmail.com",
+              password: "12345678",
+            }}
+          />
           <div
             style={{
               display: "flex",
@@ -133,13 +134,14 @@ const Login = (props) => {
               alignItems: "center",
             }}
           >
-            <Typography><Link
-              color="secondary"
-              className={classes.link}
-              onClick={() => history.push("/forgot-password")}
-            >
-              Forgot Password?
-            </Link>
+            <Typography>
+              <Link
+                color="secondary"
+                className={classes.link}
+                onClick={() => history.push("/forgot-password")}
+              >
+                Forgot Password?
+              </Link>
             </Typography>
           </div>
 
@@ -254,12 +256,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     marginBottom: theme.spacing(2),
     transition: "all 0.3s ease-in-out",
-    '& .MuiTypography-root': {
+    "& .MuiTypography-root": {
       color: theme.palette.primary.main,
     },
     "&:hover": {
       background: theme.palette.primary.main,
-      '& .MuiTypography-root': {
+      "& .MuiTypography-root": {
         color: theme.palette.white,
       },
       transform: "scale(1.01)",
@@ -304,4 +306,3 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-

@@ -9,6 +9,8 @@ export { default as textarea } from "./TextArea";
 export { default as url } from "./Url";
 export { default as switch } from "./Switch";
 export { default as dateOnly } from "./DateOnly";
+export { default as dateTime } from "./DateTime";
+
 export { default as richText } from "./RichText";
 
 export { default as none } from "./NoneInput";

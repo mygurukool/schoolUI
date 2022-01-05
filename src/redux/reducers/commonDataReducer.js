@@ -1,4 +1,13 @@
-import { userTypes, authTypes, commonTypes } from "../types";
+import {
+  userTypes,
+  authTypes,
+  commonTypes,
+  groupTypes,
+  courseTypes,
+  assignmentTypes,
+  teacherTypes,
+  studentTypes,
+} from "../types";
 
 const initialstate = {
   courses: [],
@@ -13,6 +22,10 @@ const initialstate = {
 
   isGroupsLoading: false,
   isAssignmentLoading: false,
+
+  currentGroup: undefined,
+  currentCourse: undefined,
+  invitation: undefined,
 };
 
 const sizeReducer = (state = initialstate, action) => {
@@ -25,11 +38,10 @@ const sizeReducer = (state = initialstate, action) => {
         isCourseLoading: true,
       };
 
-    case commonTypes.GET_COURSES_SUCCESS:
+    case courseTypes.GET_COURSE_SUCCESS:
       return {
         ...state,
-        courses: getData()?.courses || [],
-        groups: getData()?.groups || [],
+        courses: getData() || [],
         isCourseLoading: false,
       };
 
@@ -40,13 +52,13 @@ const sizeReducer = (state = initialstate, action) => {
       };
 
     //assignments
-    case commonTypes.GET_ASSIGNMENTS:
+    case assignmentTypes.GET_ASSIGMENT:
       return {
         ...state,
         isAssignmentLoading: true,
       };
 
-    case commonTypes.GET_ASSIGNMENTS_SUCCESS:
+    case assignmentTypes.GET_ASSIGMENT_SUCCESS:
       return {
         ...state,
         assignments: getData()?.assignments || [],
@@ -56,7 +68,7 @@ const sizeReducer = (state = initialstate, action) => {
         isAssignmentLoading: false,
       };
 
-    case commonTypes.GET_ASSIGNMENTS_FAIL:
+    case assignmentTypes.GET_ASSIGMENT_FAIL:
       return {
         ...state,
         isAssignmentLoading: false,
@@ -95,6 +107,61 @@ const sizeReducer = (state = initialstate, action) => {
         messages: [],
       };
 
+    //group
+
+    case groupTypes.GET_GROUP_SUCCESS:
+      return {
+        ...state,
+        groups: getData(),
+      };
+
+    case commonTypes.SET_CURRENT_GROUP:
+      return {
+        ...state,
+        currentGroup: action.payload,
+      };
+
+    case commonTypes.REMOVE_CURRENT_GROUP:
+      return {
+        ...state,
+        currentGroup: undefined,
+      };
+
+    //course
+
+    case commonTypes.SET_CURRENT_COURSE:
+      return {
+        ...state,
+        currentCourse: action.payload,
+      };
+
+    case commonTypes.REMOVE_CURRENT_COURSE:
+      return {
+        ...state,
+        currentCourse: undefined,
+      };
+
+    //invitation
+
+    case commonTypes.GET_INVITATION_DETAILS_SUCCESS:
+      return {
+        ...state,
+        invitation: getData(),
+      };
+
+    //TEACHERS
+
+    case teacherTypes.GET_TEACHERS_SUCCESS:
+      return {
+        ...state,
+        teachers: getData(),
+      };
+
+    case studentTypes.GET_STUDENTS_SUCCESS:
+      return {
+        ...state,
+        students: getData(),
+      };
     default:
       return state;
   }

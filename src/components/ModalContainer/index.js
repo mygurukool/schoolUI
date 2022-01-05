@@ -37,6 +37,7 @@ const ModalContainer = ({
   children,
   onSubmit,
   size,
+  submitTitle,
 }) => {
   const classes = useStyles();
 
@@ -62,7 +63,7 @@ const ModalContainer = ({
           </IconButton>
         </Box>
       </DialogTitle>
-      <DialogContent dividers>{children}</DialogContent>
+      {children && <DialogContent dividers>{children}</DialogContent>}
 
       {onSubmit && (
         <DialogActions>
@@ -84,7 +85,7 @@ const ModalContainer = ({
               {isLoading ? (
                 <CircularProgress color="inherit" size={25} />
               ) : (
-                "Save changes"
+                submitTitle || "Submit"
               )}
             </Button>
           )}

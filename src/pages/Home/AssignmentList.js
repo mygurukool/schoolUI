@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Alert,
   Avatar,
   Button,
   ButtonBase,
@@ -25,7 +26,6 @@ import {
 //icons
 import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
-import VideoIcon from "@mui/icons-material/PlayCircleFilledTwoTone";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
 import CourseMaterialList from "./CourseMaterialList";
 import { CalendarToday } from "@mui/icons-material";
@@ -37,14 +37,22 @@ import VideoModal from "./VideoModal";
 import FileCard from "./FileCard";
 import DueDateTime from "./DueDateTime";
 import moment from "moment";
-import { DUEDATETIMEFORMAT } from "../../constants";
-import createNewChat from "../../helpers/createNewChat";
+import { DUEDATETIMEFORMAT, SCOPES } from "../../constants";
 import Chat from "../../components/Chat";
-
-const AssignmentList = ({ assignments, onOpenAddUsersToChat }) => {
+import { useSelector, useDispatch } from "react-redux";
+import PermissionsGate from "../../components/PermissionGate";
+import Add from "@mui/icons-material/Add";
+import { openModal } from "../../redux/action/utilActions";
+import Edit from "@mui/icons-material/Edit";
+const AssignmentList = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
+  const { assignments, currentCourse, courses } = useSelector(
+    (state) => state.common
+  );
 
   const handleExpand = (i) => {
     if (expanded === i) {
@@ -54,33 +62,68 @@ const AssignmentList = ({ assignments, onOpenAddUsersToChat }) => {
     }
   };
 
-  return (
-    <>
-      <VideoModal
-        open={Boolean(video)}
-        onClose={() => setPlayingVideo()}
-        video={video}
-      />
-      <div className={classes.root}>
-        {assignments.map((a, i) => {
-          // console.log("a", a);
+  const onEdit = (data) => {
+    dispatch(openModal("assignment", data));
+  };
 
-          return (
-            <AssignmentListItem
-              key={i}
-              {...a}
-              expanded={expanded === i}
-              onSelectAssignment={() => handleExpand(i)}
-              setPlayingVideo={setPlayingVideo}
+  return (
+    courses?.length > 0 && (
+      <>
+        {currentCourse ? (
+          <>
+            <PermissionsGate scopes={[SCOPES.canCreate]}>
+              <ActionBar />
+            </PermissionsGate>
+
+            <VideoModal
+              open={Boolean(video)}
+              onClose={() => setPlayingVideo()}
+              video={video}
             />
-          );
-        })}
-      </div>
-    </>
+            <div className={classes.root}>
+              {assignments.map((a, i) => {
+                // console.log("a", a);
+
+                return (
+                  <AssignmentListItem
+                    key={i}
+                    {...a}
+                    expanded={expanded === i}
+                    onSelectAssignment={() => handleExpand(i)}
+                    setPlayingVideo={setPlayingVideo}
+                    onEdit={() => onEdit(a)}
+                  />
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <Alert severity="info">Please Select a course</Alert>
+        )}
+      </>
+    )
   );
 };
 
 export default AssignmentList;
+
+const ActionBar = () => {
+  const dispatch = useDispatch();
+
+  const onAddAssignment = () => {
+    dispatch(openModal("assignment"));
+  };
+  return (
+    <Stack direction="row">
+      <div />
+
+      <Button variant="contained" onClick={onAddAssignment}>
+        <Add />
+        Add new assignment
+      </Button>
+    </Stack>
+  );
+};
 
 const AssignmentListItem = ({
   expanded,
@@ -89,15 +132,26 @@ const AssignmentListItem = ({
 
   setPlayingVideo,
   onOpenAddUsersToChat,
+  onEdit,
   ...props
 }) => {
-  const { title, description, materials = [], dueDate, dueTime, id } = props;
+  const {
+    assignmentTitle,
+    instructions,
+    materials = [],
+    dueDate,
+    dueTime,
+    id,
+  } = props;
   const [enableChat, setEnableChat] = React.useState(false);
 
   const classes = useStyles();
-  const dueDateTime = dueDate
-    ? `${dueDate?.day}/${dueDate?.month}/${dueDate?.year} ${dueTime.hours}:${dueTime.minutes}`
-    : undefined;
+  // const dueDateTime = dueDate
+  //   ? `${dueDate?.day}/${dueDate?.month}/${dueDate?.year} ${dueTime.hours}:${dueTime.minutes}`
+  //   : undefined;
+  const dueDateTime = dueDate;
+  // ? `${dueDate?.day}/${dueDate?.month}/${dueDate?.year} ${dueTime.hours}:${dueTime.minutes}`
+  // : undefined;
 
   const currentDiffrence = dueDate
     ? moment(dueDateTime, DUEDATETIMEFORMAT).diff(moment(), "days")
@@ -141,8 +195,8 @@ const AssignmentListItem = ({
     >
       <AccordionSummary expandIcon={<RightIcon />}>
         <Grid container>
-          <Grid item lg={dueDateTime ? 9 : 11}>
-            <Typography>{title}</Typography>
+          <Grid item lg={dueDateTime ? 8 : 10}>
+            <Typography>{assignmentTitle}</Typography>
           </Grid>
           {dueDateTime && (
             <Grid item lg={3}>
@@ -152,6 +206,14 @@ const AssignmentListItem = ({
               />
             </Grid>
           )}
+          <PermissionsGate scopes={[SCOPES.canCreate]}>
+            <Grid item lg={1}>
+              <IconButton onClick={() => onEdit()}>
+                <Edit />
+              </IconButton>
+            </Grid>
+          </PermissionsGate>
+
           {!expanded && (
             <Grid item lg={12}>
               <Typography
@@ -159,7 +221,7 @@ const AssignmentListItem = ({
                 className={clsx(classes.description, classes.ellipses)}
                 variant="body2"
               >
-                {description}
+                {instructions}
               </Typography>
             </Grid>
           )}
@@ -173,7 +235,7 @@ const AssignmentListItem = ({
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
-            {description}
+            {instructions}
           </ItemSection>
 
           {hasAudioVideo && (

@@ -1,62 +1,69 @@
-import { commonTypes } from "../types";
+import { courseTypes } from "../types";
 import courseApi from "../api/courseApi";
-///get all or a single course
-export const getAllCourses = (courseId, cb, errorCb) => {
+
+export const getAllCourses = (data) => {
   return {
-    type: commonTypes.GET_COURSES,
+    type: courseTypes.GET_COURSE,
     payload: {
       request: {
         url: courseApi.GET_COURSES,
         method: "get",
-        params: {
-          courseId,
-        },
+        params: data,
       },
-      enableMessage: false,
-
-      cb: cb,
-      errorCb: errorCb,
     },
   };
 };
 
-export const getAssignments = (courseId, cb, errorCb) => {
+export const createCourse = (data, cb, errorCb) => {
   return {
-    type: commonTypes.GET_ASSIGNMENTS,
+    type: courseTypes.CREATE_COURSE,
     payload: {
       request: {
-        url: courseApi.GET_ASSIGNMENTS,
-        method: "get",
-        params: {
-          courseId,
-        },
+        url: courseApi.CREATE_COURSE,
+        method: "post",
+        data: data,
       },
-      enableMessage: false,
-
+      successMessage: "Course Added successfully",
+      errorMessage: "Failed to add course",
+      enableMessage: true,
       cb: cb,
       errorCb: errorCb,
     },
   };
 };
 
-// import organizationApi from "../api/organizationApi";
-// import { organizationTypes } from "../types";
+export const editCourse = (data, cb, errorCb) => {
+  return {
+    type: courseTypes.EDIT_COURSE,
+    payload: {
+      request: {
+        url: courseApi.EDIT_COURSE,
+        method: "put",
+        data: data,
+      },
+      successMessage: "Course edited successfully",
+      errorMessage: "Failed to edit course",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
 
-// export const createOrganization = (data, cb, errorCb) => {
-//   return {
-//     type: organizationTypes.CREATE_ORGANIZATION,
-//     payload: {
-//       request: {
-//         url: organizationApi.CREATE_ORGANIZATION,
-//         method: "post",
-//         data: data,
-//       },
-//       enableMessage: true,
-//       successMessage: 'Organization created successfully',
-//       errorMessage: 'Failed to create organization',
-
-//       cb: cb,
-//       errorCb: errorCb,
-//     },
-//   };
-// };
+export const deleteCourse = (data, cb, errorCb) => {
+  return {
+    type: courseTypes.DELETE_COURSE,
+    payload: {
+      request: {
+        url: courseApi.DELETE_COURSE,
+        method: "delete",
+        data: data,
+      },
+      successMessage: "Group deleted successfully",
+      errorMessage: "Failed to delete course",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};

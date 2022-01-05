@@ -40,17 +40,19 @@ const MyTextField = React.forwardRef((props, ref) => {
         name={name}
         {...props}
         render={({ field }) => {
+          console.log("field", field);
           return (
             <Autocomplete
-              {...{ field }}
+              {...field}
               multiple={multiple}
               fullWidth
               options={options}
               onChange={(e, v) => {
-                field.onChange(v);
+                console.log("onChange", v, optionValueProp, v[optionValueProp]);
+                field.onChange(v[optionValueProp]);
                 // props.onChange(optionValueProp(v));
               }}
-              getOptionLabel={(option) => optionLabelProp(option)}
+              getOptionLabel={(option) => option[optionLabelProp]}
               renderInput={(params) => (
                 <TextField
                   {...params}

@@ -94,6 +94,8 @@ const FormCreator = ({
     setFormErrors(formState.errors);
   }, [formState]);
 
+  // console.log("formState", formState);
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(localSubmit)}>

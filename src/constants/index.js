@@ -70,10 +70,6 @@ export const DUEDATECOLORS = [
 ];
 
 export const DUEDATETIMEFORMAT = `DD/MM/YYYY HH:mm`;
-export const ROLES = [
-  { title: "Admin", value: "admin" },
-  { title: "Employee", value: "employee" },
-];
 
 export const FRAMEDATA = [
   { title: "Logo", value: "logo" },
@@ -103,5 +99,29 @@ export const dateRanges = {
   "Last Month": [
     moment().subtract(1, "month").startOf("month").toDate(),
     moment().subtract(1, "month").endOf("month").toDate(),
+  ],
+};
+
+export const ROLES = {
+  organizationOwner: "ORGANIZATION_OWNER",
+  teacher: "TEACHER",
+  student: "STUDENT",
+};
+
+export const SCOPES = {
+  canCreate: "can-create",
+  canEdit: "can-edit",
+  canDelete: "can-delete",
+  canView: "can-view",
+};
+
+export const PERMISSIONS = {
+  [ROLES.student]: [SCOPES.canView],
+  [ROLES.teacher]: [SCOPES.canView, SCOPES.canEdit],
+  [ROLES.organizationOwner]: [
+    SCOPES.canView,
+    SCOPES.canEdit,
+    SCOPES.canCreate,
+    SCOPES.canDelete,
   ],
 };

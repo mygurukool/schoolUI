@@ -20,7 +20,6 @@ const TextBox = React.forwardRef((props, ref) => {
               fullWidth
               variant="outlined"
               error={error}
-              // size="Normal"
               label={`${label} ${required ? "*" : ""}`}
               placeholder={placeholder}
               helperText={error}
