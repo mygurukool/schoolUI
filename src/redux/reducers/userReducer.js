@@ -14,6 +14,7 @@ const initialstate = {
   // sectionBg: "/images/bg.jpg",
   sectionBg: "/background/bg3.jpeg",
   isTeacher: false,
+  organization: undefined,
 };
 
 const checkIfTeacher = (role) => {
@@ -43,6 +44,7 @@ const sizeReducer = (state = initialstate, action) => {
         isTeacher: checkIfTeacher(getData().user.role),
 
         ...getData().user,
+        organization: getData().organization,
       };
 
     case authTypes.LOGIN_USER_FAIL:
@@ -75,6 +77,7 @@ const sizeReducer = (state = initialstate, action) => {
 
         error: undefined,
         ...getData()?.user,
+        organization: getData().organization,
       };
 
     case userTypes.GET_USER_DETAILS_FAIL:

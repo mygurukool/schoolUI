@@ -20,6 +20,8 @@ const CreateCourse = () => {
   const dispatch = useDispatch();
   const { modalOpen, modalData } = useSelector((state) => state.util);
   const { organizationId, id } = useSelector((state) => state.user);
+  const { currentGroup } = useSelector((state) => state.common);
+
   const mode = modalData ? "edit" : "add";
   const open = modalOpen === "course";
 
@@ -58,7 +60,7 @@ const CreateCourse = () => {
         onSubmit={(e) => handleSubmit(e)}
         onCancel={handleClose}
         formData={formData}
-        data={modalData}
+        data={{ groupId: currentGroup?.id || currentGroup?._id, ...modalData }}
         optionsData={{
           groupId: groups,
         }}

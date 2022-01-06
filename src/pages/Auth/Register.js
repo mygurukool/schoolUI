@@ -1,12 +1,13 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Card, CardContent, Typography } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FormCreator from "../../components/Form/FormCreator";
 import axios from "axios";
 import { createOrganization } from "../../redux/action/organizationActions";
 import { useHistory } from "react-router";
 import { PERMISSIONS, ROLES } from "../../constants";
+import { loginUser, logoutUser } from "../../redux/action/userActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,6 +74,13 @@ const RegisterForm = () => {
   const dispatch = useDispatch();
   const [countries, setCountries] = React.useState([]);
   const history = useHistory();
+  const isLogged = useSelector((state) => state.user.isLogged);
+
+  React.useEffect(() => {
+    if (isLogged) {
+      history.push("/");
+    }
+  }, [isLogged]);
   const getCountries = async () => {
     return await axios
       .get("https://restcountries.com/v3.1/all", {
@@ -108,6 +116,7 @@ const RegisterForm = () => {
   }, []);
 
   const onAdd = (data) => {
+    dispatch(logoutUser());
     dispatch(
       createOrganization(
         {
@@ -116,7 +125,9 @@ const RegisterForm = () => {
           permissions: PERMISSIONS[ROLES.organizationOwner],
         },
         () => {
-          history.push("/login");
+          // history.push("/login");
+
+          dispatch(loginUser({ ...data, loginType: "mygurukool" }));
         }
       )
     );
@@ -152,7 +163,7 @@ export default RegisterForm;
 const formData = [
   {
     type: "text",
-    name: "firstName",
+    name: "name",
     label: "Your Name",
     placeholder: "Type a name",
     required: true,

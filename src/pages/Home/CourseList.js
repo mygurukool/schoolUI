@@ -79,7 +79,7 @@ const CoursesList = () => {
   );
 
   const filteredCourses = courses.filter((c) => {
-    if (currentGroup === "all") return true;
+    if (!currentGroup) return true;
     else {
       return c.groupId === currentGroup?.id || c.groupId === currentGroup?._id;
     }
@@ -187,12 +187,22 @@ const CoursesList = () => {
 
   return (
     <>
-      <DeleteModal
-        ref={deleteRef}
-        getTitle={(g) => g?.courseName}
-        onSubmit={(data) => handleDelete(data)}
-      />
-      <CourseMenu />
+      <PermissionGate scopes={[SCOPES.CAN_DELETE_COURSE]}>
+        <DeleteModal
+          ref={deleteRef}
+          getTitle={(g) => g?.courseName}
+          onSubmit={(data) => handleDelete(data)}
+        />
+      </PermissionGate>
+      <PermissionGate
+        scopes={[
+          SCOPES.CAN_CREATE_COURSE,
+          SCOPES.CAN_EDIT_COURSE,
+          SCOPES.CAN_DELETE_COURSE,
+        ]}
+      >
+        <CourseMenu />
+      </PermissionGate>
       <Grid
         item
         lg={12}
@@ -217,23 +227,32 @@ const CoursesList = () => {
                   position: "relative",
                 }}
               >
-                <IconButton
-                  onClick={(e) => handleOpenMenu(e, c)}
-                  style={{
-                    position: "absolute",
-                    top: -10,
-                    right: 0,
-                    zIndex: 10,
-                  }}
+                <PermissionGate
+                  scopes={[
+                    SCOPES.CAN_CREATE_COURSE,
+                    SCOPES.CAN_EDIT_COURSE,
+                    SCOPES.CAN_DELETE_COURSE,
+                  ]}
                 >
-                  <MENUICON />
-                </IconButton>
+                  <IconButton
+                    onClick={(e) => handleOpenMenu(e, c)}
+                    style={{
+                      position: "absolute",
+                      top: -10,
+                      right: 0,
+                      zIndex: 10,
+                    }}
+                  >
+                    <MENUICON />
+                  </IconButton>
+                </PermissionGate>
+
                 <CourseBtns data={c} />
               </div>
             );
           })}
         {groups.length > 0 && (
-          <PermissionGate scopes={[SCOPES.canCreate]}>
+          <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
             <AddNewCourse />
           </PermissionGate>
         )}

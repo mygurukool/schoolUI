@@ -22,7 +22,7 @@ export const removeTeacher = (data, cb, errorCb) => {
       request: {
         url: teacherApi.REMOVE_TEACHER,
         method: "delete",
-        params: { id: data },
+        params: data,
       },
       successMessage: "Teacher removed successfully",
       errorMessage: "Failed to remove teacher",

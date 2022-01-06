@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { BASEURL, SOCKETURL } from "../constants";
+import { BASEURL, SCOPES, SOCKETURL } from "../constants";
 import socketIOClient from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
@@ -10,6 +10,7 @@ import {
   cleanMessages,
   setOlderMessages,
 } from "../redux/action/messageAction";
+import { usePermissions } from "../components/PermissionGate";
 let socket;
 
 const useWhiteBoard = () => {
@@ -19,6 +20,9 @@ const useWhiteBoard = () => {
     isTeacher,
     name: userName,
   } = useSelector((state) => state.user);
+  const canCreateWhiteboard = usePermissions({
+    scopes: [SCOPES.CAN_CREATE_WHITEBOARD],
+  });
 
   const courseId = currentCourse?._id || currentCourse?.id;
 
@@ -47,15 +51,17 @@ const useWhiteBoard = () => {
   };
 
   const initializeWhiteBoard = () => {
-    if (isTeacher) {
-      socket.emit("CREATE_WHITEBOARD", {
-        courseId,
-        whiteBoardUrl: `https://wbo.ophir.dev/boards/VidyamandirClass8A#28112021`,
-      });
-    } else {
-      setWhiteBoardUrl(
-        `https://wbo.ophir.dev/boards/VidyamandirClass8A${userName}#28112021`
-      );
+    if (canCreateWhiteboard) {
+      if (isTeacher) {
+        socket.emit("CREATE_WHITEBOARD", {
+          courseId,
+          whiteBoardUrl: `https://wbo.ophir.dev/boards/VidyamandirClass8A#28112021`,
+        });
+      } else {
+        setWhiteBoardUrl(
+          `https://wbo.ophir.dev/boards/VidyamandirClass8A${userName}#28112021`
+        );
+      }
     }
   };
 

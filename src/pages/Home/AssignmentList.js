@@ -71,7 +71,7 @@ const AssignmentList = () => {
       <>
         {currentCourse ? (
           <>
-            <PermissionsGate scopes={[SCOPES.canCreate]}>
+            <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
               <ActionBar />
             </PermissionsGate>
 
@@ -206,7 +206,7 @@ const AssignmentListItem = ({
               />
             </Grid>
           )}
-          <PermissionsGate scopes={[SCOPES.canCreate]}>
+          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
             <Grid item lg={1}>
               <IconButton onClick={() => onEdit()}>
                 <Edit />

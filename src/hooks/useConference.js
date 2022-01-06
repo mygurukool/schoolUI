@@ -1,10 +1,11 @@
 /*global JitsiMeetExternalAPI*/
 
 import React, { useCallback } from "react";
-import { BASEURL, SOCKETURL } from "../constants";
+import { BASEURL, SCOPES, SOCKETURL } from "../constants";
 import socketIOClient from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
+import { usePermissions } from "../components/PermissionGate";
 
 let socket;
 
@@ -15,6 +16,9 @@ const useConference = () => {
     isTeacher,
     name: userName,
   } = useSelector((state) => state.user);
+  const canCreateConference = usePermissions({
+    scopes: [SCOPES.CAN_CREATE_CONFERENCE],
+  });
 
   const courseId = currentCourse?._id || currentCourse?.id;
 
@@ -78,50 +82,51 @@ const useConference = () => {
   };
 
   const initializeConference = async () => {
-    try {
-      setIsConferenceOpen(true);
-      setTimeout(() => {
-        const domain = "meet.jit.si";
-        const options = {
-          roomName: "GuruKoolSchoolVideoConference",
-          height: 580,
-          parentNode: document.getElementById("conference"),
-          interfaceConfigOverwrite: {
-            filmStripOnly: false,
-            SHOW_JITSI_WATERMARK: false,
-          },
-          configOverwrite: {
-            disableSimulcast: false,
-          },
-        };
+    if (canCreateConference)
+      try {
+        setIsConferenceOpen(true);
+        setTimeout(() => {
+          const domain = "meet.jit.si";
+          const options = {
+            roomName: "GuruKoolSchoolVideoConference",
+            height: 580,
+            parentNode: document.getElementById("conference"),
+            interfaceConfigOverwrite: {
+              filmStripOnly: false,
+              SHOW_JITSI_WATERMARK: false,
+            },
+            configOverwrite: {
+              disableSimulcast: false,
+            },
+          };
 
-        const api = new JitsiMeetExternalAPI(domain, options);
-        api.addEventListener("videoConferenceJoined", (data) => {
-          // console.log("Local User Joined", data, api);
+          const api = new JitsiMeetExternalAPI(domain, options);
+          api.addEventListener("videoConferenceJoined", (data) => {
+            // console.log("Local User Joined", data, api);
 
-          socket.emit("INITIALIZE_CONFERENCE", { courseId, ...data });
+            socket.emit("INITIALIZE_CONFERENCE", { courseId, ...data });
 
-          api.executeCommand("displayName", userName);
-        });
-        api.addEventListener("videoConferenceLeft", (data) => {
-          setConferenceData();
-          setIsConferenceOpen(false);
-        });
-      }, 1000);
+            api.executeCommand("displayName", userName);
+          });
+          api.addEventListener("videoConferenceLeft", (data) => {
+            setConferenceData();
+            setIsConferenceOpen(false);
+          });
+        }, 1000);
 
-      // api.addEventListener("", (data) => {
-      //   // console.log("Local User Joined", data, api);
+        // api.addEventListener("", (data) => {
+        //   // console.log("Local User Joined", data, api);
 
-      //   socket.emit("INITIALIZE_CONFERENCE", {
-      //     courseId: courseId || "dummy",
-      //     ...data,
-      //   });
+        //   socket.emit("INITIALIZE_CONFERENCE", {
+        //     courseId: courseId || "dummy",
+        //     ...data,
+        //   });
 
-      //   api.executeCommand("displayName", userName);
-      // });
-    } catch (error) {
-      console.error("Failed to load Jitsi API", error);
-    }
+        //   api.executeCommand("displayName", userName);
+        // });
+      } catch (error) {
+        console.error("Failed to load Jitsi API", error);
+      }
   };
 
   React.useEffect(() => {

@@ -11,20 +11,27 @@ const hasPermission = ({ permissions, scopes }) => {
   return permissions.some((permission) => scopesMap[permission]);
 };
 
+export const usePermissions = ({ scopes }) => {
+  const role = useSelector((state) => state.user.role);
+  const permissions = role ? PERMISSIONS[role.toUpperCase()] : [];
+  const permissionGranted = hasPermission({ permissions, scopes });
+  return permissionGranted;
+};
+
 export default function PermissionsGate({
   children,
   scopes = [],
   errorProps = null,
 }) {
-  const role = useSelector((state) => state.user.role);
+  const permissionGranted = usePermissions({ scopes: scopes });
 
-  console.log("role", role);
-  const permissions = role ? PERMISSIONS[role.toUpperCase()] : [];
+  if (permissionGranted) {
+    return children || null;
+  }
 
-  const permissionGranted = hasPermission({ permissions, scopes });
   if (!permissionGranted && errorProps)
     return cloneElement(children, { ...errorProps });
   if (!permissionGranted) return <></>;
 
-  return children;
+  // return children;
 }

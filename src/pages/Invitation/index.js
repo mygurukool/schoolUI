@@ -10,6 +10,7 @@ import {
 } from "../../redux/action/commonActions";
 import { PERMISSIONS } from "../../constants";
 import removeToken from "../../helpers/removeToken";
+import { logoutUser } from "../../redux/action/userActions";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -29,6 +30,7 @@ const Invitation = (props) => {
   const { invitation } = useSelector((state) => state.common);
 
   const handleJoin = (data) => {
+    dispatch(logoutUser());
     if (data.password !== data.repassword) {
       alert("passwords do not match");
       return;
@@ -60,9 +62,8 @@ const Invitation = (props) => {
       <Card sx={{ width: "50%" }}>
         <CardContent>
           <Typography variant="h6" textAlign="center">
-            Congratulation, You have been invited to join the class of $
-            {invitation?.groupName} by
-            {invitation?.inviteeName}
+            Congratulation, You have been invited to join the class of{" "}
+            {invitation?.groupName} by {invitation?.inviteeName}
           </Typography>
         </CardContent>
         <CardContent>

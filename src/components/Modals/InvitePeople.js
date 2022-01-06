@@ -39,7 +39,8 @@ import {
   getAllStudents,
   removeStudent,
 } from "../../redux/action/studentActions";
-import { ROLES } from "../../constants";
+import { ROLES, SCOPES } from "../../constants";
+import { usePermissions } from "../PermissionGate";
 
 const InvitePeople = () => {
   const classes = useStyles();
@@ -56,7 +57,7 @@ const InvitePeople = () => {
 
   const isLoading = useSelector((state) => state.util.spinner);
 
-  const open = modalOpen === "invitepeoples";
+  const open = modalOpen === "invitepeople";
 
   const [inviteOpen, setInviteOpen] = React.useState();
 
@@ -115,7 +116,7 @@ const InvitePeople = () => {
 
   const onDeleteTeacher = (data) => {
     dispatch(
-      removeTeacher(data, () => {
+      removeTeacher({ id: data, groupId: currentGroup.id }, () => {
         getTeachers();
       })
     );
@@ -123,7 +124,7 @@ const InvitePeople = () => {
 
   const onDeleteStudent = (data) => {
     dispatch(
-      removeStudent(data, () => {
+      removeStudent({ id: data, groupId: currentGroup.id }, () => {
         getStudents();
       })
     );
@@ -135,6 +136,8 @@ const InvitePeople = () => {
       getStudents();
     }
   }, [open]);
+  const canAddTeacher = usePermissions({ scopes: [SCOPES.CAN_CREATE_TEACHER] });
+  const canAddStudent = usePermissions({ scopes: [SCOPES.CAN_CREATE_STUDENT] });
 
   return (
     <ModalContainer
@@ -149,6 +152,7 @@ const InvitePeople = () => {
         onInvite={(data) => onInvite(data)}
         isLoading={isLoading}
         data={teachers || []}
+        enableAdd={canAddTeacher}
         name="name"
         email="email"
         avatarProp="name"
@@ -168,6 +172,7 @@ const InvitePeople = () => {
         onInvite={(data) => onInvite(data)}
         isLoading={isLoading}
         data={students || []}
+        enableAdd={canAddStudent}
         name="name"
         email="email"
         avatarProp="name"
@@ -200,6 +205,7 @@ const Section = ({
   onInviteClose,
   onInvite,
   onDelete,
+  enableAdd,
 }) => {
   const classes = useStyles();
   const AddAction = () => {
@@ -221,7 +227,7 @@ const Section = ({
 
   return (
     <Card variant="outlined" className={classes.section}>
-      <CardHeader subheader={title} action={<AddAction />} />
+      <CardHeader subheader={title} action={enableAdd && <AddAction />} />
       <Divider />
       {inviteOpen?.type === type && (
         <>

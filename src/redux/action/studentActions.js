@@ -21,7 +21,7 @@ export const removeStudent = (data, cb, errorCb) => {
       request: {
         url: studentApi.REMOVE_STUDENT,
         method: "delete",
-        params: { id: data },
+        params: data,
       },
       successMessage: "Student removed successfully",
       errorMessage: "Failed to remove student",

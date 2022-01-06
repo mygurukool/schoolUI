@@ -38,6 +38,8 @@ import BackgroundImage from "./BackgroundImage";
 import TopSectionButtons from "./TopSectionButtons";
 import WhiteBoard from "./WhiteBoard";
 import Conference from "./Conference";
+import PermissionsGate from "../../components/PermissionGate";
+import { SCOPES } from "../../constants";
 
 const Home = (props) => {
   const classes = useStyles();
@@ -89,7 +91,9 @@ const Home = (props) => {
               <Grid item lg={12}>
                 <Grid container mb={2}>
                   <Grid item lg={3}>
-                    <SelectGroup />
+                    <PermissionsGate scopes={[SCOPES.CAN_VIEW_GROUP]}>
+                      <SelectGroup />
+                    </PermissionsGate>
                   </Grid>
                   <Grid
                     item
@@ -105,11 +109,13 @@ const Home = (props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              {!isSectionMaximized && (
-                <LoadingContainer isLoading={isCourseLoading}>
-                  <CoursesList />
-                </LoadingContainer>
-              )}
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_COURSE]}>
+                {!isSectionMaximized && (
+                  <LoadingContainer isLoading={isCourseLoading}>
+                    <CoursesList />
+                  </LoadingContainer>
+                )}
+              </PermissionsGate>
             </Grid>
 
             {/* middle section */}
@@ -117,31 +123,36 @@ const Home = (props) => {
               container
               className={clsx(classes.container, classes.middleContainer)}
             >
-              {!isSectionMaximized && (
-                <Grid item lg={shouldDivideSection ? 6 : 12}>
-                  <LoadingContainer isLoading={isAssignmentLoading}>
-                    <AssignmentList />
-                  </LoadingContainer>
-                </Grid>
-              )}
-              {!isConfrenceOpen && whiteBoardUrl && (
-                <WhiteBoard
-                  isSectionMaximized={isSectionMaximized}
-                  isWhiteboardMaximized={isWhiteboardMaximized}
-                  toggleWhiteboardMinMax={toggleWhiteboardMinMax}
-                  handleLeaveWhiteboard={handleLeaveWhiteboard}
-                  whiteBoardUrl={whiteBoardUrl}
-                />
-              )}
-
-              {isConfrenceOpen && (
-                <Conference
-                  isSectionMaximized={isSectionMaximized}
-                  isConferenceMaximized={isConferenceMaximized}
-                  toggleConferenceMinMax={toggleConferenceMinMax}
-                  handleLeaveConference={handleLeaveConference}
-                />
-              )}
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_ASSIGNMENT]}>
+                {!isSectionMaximized && (
+                  <Grid item lg={shouldDivideSection ? 6 : 12}>
+                    <LoadingContainer isLoading={isAssignmentLoading}>
+                      <AssignmentList />
+                    </LoadingContainer>
+                  </Grid>
+                )}
+              </PermissionsGate>
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}>
+                {!isConfrenceOpen && whiteBoardUrl && (
+                  <WhiteBoard
+                    isSectionMaximized={isSectionMaximized}
+                    isWhiteboardMaximized={isWhiteboardMaximized}
+                    toggleWhiteboardMinMax={toggleWhiteboardMinMax}
+                    handleLeaveWhiteboard={handleLeaveWhiteboard}
+                    whiteBoardUrl={whiteBoardUrl}
+                  />
+                )}
+              </PermissionsGate>
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_CONFERENCE]}>
+                {isConfrenceOpen && (
+                  <Conference
+                    isSectionMaximized={isSectionMaximized}
+                    isConferenceMaximized={isConferenceMaximized}
+                    toggleConferenceMinMax={toggleConferenceMinMax}
+                    handleLeaveConference={handleLeaveConference}
+                  />
+                )}
+              </PermissionsGate>
             </Grid>
           </Container>
         </div>

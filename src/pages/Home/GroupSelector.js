@@ -2,11 +2,15 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import {
   Divider,
+  FormControl,
+  FormControlLabel,
   IconButton,
+  InputLabel,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
+  Select,
   Stack,
   TextField,
 } from "@mui/material";
@@ -28,6 +32,8 @@ import {
   removeCurrentCourse,
   setCurrentGroup,
 } from "../../redux/action/commonActions";
+import PermissionsGate from "../../components/PermissionGate";
+import { SCOPES } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -57,7 +63,8 @@ const SelectGroup = () => {
     handleCloseMenu();
   };
   const handleInvite = (data) => {
-    dispatch(openModal("invitepeople", data));
+    handleCloseMenu();
+    dispatch(openModal("invitepeople"));
   };
 
   const handleDelete = (data) => {
@@ -89,82 +96,116 @@ const SelectGroup = () => {
   const GroupMenu = () => {
     return (
       <Menu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
-        <MenuItem onClick={() => handleEdit()}>
-          <ListItemIcon>
-            <ADDICON fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Add group</ListItemText>
-        </MenuItem>
-        {currentGroup !== "all" && (
+        <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
+          <MenuItem onClick={() => handleEdit()}>
+            <ListItemIcon>
+              <ADDICON fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Add group</ListItemText>
+          </MenuItem>
+        </PermissionsGate>
+
+        {currentGroup && (
           <>
-            <MenuItem onClick={() => handleEdit(currentGroup)}>
-              <ListItemIcon>
-                <EDITICON fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
-            </MenuItem>
-            <MenuItem onClick={() => onDelete()}>
-              <ListItemIcon>
-                <DELETEICON fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
-            </MenuItem>
+            <PermissionsGate scopes={[SCOPES.CAN_EDIT_GROUP]}>
+              <MenuItem onClick={() => handleEdit(currentGroup)}>
+                <ListItemIcon>
+                  <EDITICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
+            <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
+              <MenuItem onClick={() => onDelete()}>
+                <ListItemIcon>
+                  <DELETEICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
+            <Divider />
+            <PermissionsGate
+              scopes={[SCOPES.CAN_INVITE_TEACHER, SCOPES.CAN_INVITE_STUDENT]}
+            >
+              <MenuItem onClick={() => handleInvite()}>
+                <ListItemIcon>
+                  <INVITEICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Invite People</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
           </>
         )}
-        <Divider />
-        <MenuItem onClick={() => handleInvite()}>
-          <ListItemIcon>
-            <INVITEICON fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Invite People</ListItemText>
-        </MenuItem>
       </Menu>
     );
   };
 
   return (
     <>
-      <DeleteModal
-        ref={deleteRef}
-        getTitle={(g) => g?.groupName}
-        onSubmit={(data) => handleDelete(data)}
-      />
+      <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
+        <DeleteModal
+          ref={deleteRef}
+          getTitle={(g) => g?.groupName}
+          onSubmit={(data) => handleDelete(data)}
+        />
+      </PermissionsGate>
+
       <Stack direction="row">
-        <TextField
-          ref={fieldRef}
-          select
-          fullWidth
-          variant="outlined"
-          size="small"
-          label="Group"
-          placeholder="Choose Group"
-          color="secondary"
-          value={currentGroup}
-          onChange={({ target: { value } }) => {
-            handleChange(value);
-          }}
+        <FormControl fullWidth>
+          <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+            Group
+          </InputLabel>
+          <Select
+            ref={fieldRef}
+            fullWidth
+            variant="outlined"
+            size="small"
+            label="Group"
+            placeholder="Choose Group"
+            color="secondary"
+            value={currentGroup}
+            defaultValue="all"
+            onChange={({ target: { value } }) => {
+              handleChange(value);
+            }}
+          >
+            {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}
+
+            {/* </PermissionGate> */}
+
+            {filteredGroups.length > 0 ? (
+              <MenuItem value={"all"}>All Groups</MenuItem>
+            ) : (
+              <MenuItem value="" disabled selected>
+                No Groups available
+              </MenuItem>
+            )}
+
+            {filteredGroups &&
+              filteredGroups.map((g, i) => {
+                return (
+                  <MenuItem key={i} value={g}>
+                    {g.groupName}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        </FormControl>
+
+        <PermissionsGate
+          scopes={[
+            SCOPES.CAN_CREATE_GROUP,
+            SCOPES.CAN_EDIT_GROUP,
+            SCOPES.CAN_DELETE_GROUP,
+            SCOPES.CAN_INVITE_STUDENT,
+            SCOPES.CAN_INVITE_TEACHER,
+          ]}
         >
-          {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}
-
-          {/* </PermissionGate> */}
-
-          {filteredGroups.length > 0 && (
-            <MenuItem value={"all"}>All Groups</MenuItem>
-          )}
-
-          {filteredGroups &&
-            filteredGroups.map((g, i) => {
-              return (
-                <MenuItem key={i} value={g}>
-                  {g.groupName}
-                </MenuItem>
-              );
-            })}
-        </TextField>
-        <IconButton onClick={handleOpenMenu}>
-          <MENUICON />
-        </IconButton>
-        <GroupMenu />
+          <IconButton onClick={handleOpenMenu}>
+            <MENUICON />
+          </IconButton>
+          <GroupMenu />
+        </PermissionsGate>
       </Stack>
     </>
   );
