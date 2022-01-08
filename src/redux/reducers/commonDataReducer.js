@@ -62,8 +62,6 @@ const sizeReducer = (state = initialstate, action) => {
       return {
         ...state,
         assignments: getData()?.assignments || [],
-        teachers: getData()?.teachers || [],
-        students: getData()?.students || [],
 
         isAssignmentLoading: false,
       };
@@ -162,6 +160,9 @@ const sizeReducer = (state = initialstate, action) => {
         ...state,
         students: getData(),
       };
+
+    case authTypes.LOGOUT_USER:
+      return initialstate;
     default:
       return state;
   }

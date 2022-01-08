@@ -19,11 +19,19 @@ const useModal = () => {
       data: undefined,
     });
   };
+
+  const setModalData = (data) => {
+    setState({
+      ...state,
+      data: data,
+    });
+  };
   return {
     open: state.open,
     modalData: state.data,
     openModal,
     closeModal,
+    setModalData,
   };
 };
 

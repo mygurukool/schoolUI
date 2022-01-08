@@ -20,13 +20,18 @@ export const getAssignments = (data, cb, errorCb) => {
 };
 
 export const createAssignmet = (data, cb, errorCb) => {
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => formData.append(key, data[key]));
   return {
     type: assignmentTypes.CREATE_ASSIGMENT,
     payload: {
       request: {
         url: assignmentApi.CREATE_ASSIGNMENT,
         method: "post",
-        data: data,
+        data: formData,
+        headers: {
+          "Content-type": "application/json",
+        },
       },
       successMessage: "Assignmet Added successfully",
       errorMessage: "Failed to add assignment",

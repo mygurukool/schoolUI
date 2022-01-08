@@ -28,6 +28,8 @@ import { deleteCourse, getAllCourses } from "../../redux/action/coursesActions";
 import { removeUserAsTeacher } from "../../redux/action/userActions";
 import { setCurrentCourse } from "../../redux/action/commonActions";
 import { getAssignments } from "../../redux/action/assignmentActions";
+import { getAllStudents } from "../../redux/action/studentActions";
+import { getAllTeachers } from "../../redux/action/teacherActions";
 
 const useStyles = makeStyles((theme) => ({
   courseBtn: {
@@ -78,6 +80,7 @@ const CoursesList = () => {
     (state) => state.common
   );
 
+  const loginType = useSelector((state) => state.user.loginType);
   const filteredCourses = courses.filter((c) => {
     if (!currentGroup) return true;
     else {
@@ -90,6 +93,20 @@ const CoursesList = () => {
     dispatch(setCurrentCourse(c));
 
     dispatch(getAssignments(c._id || c.id));
+    if (loginType === "mygurukool") {
+      dispatch(
+        getAllStudents({
+          groupId: c.groupId,
+          // courseId: c?.id || c?._id,
+        })
+      );
+      dispatch(
+        getAllTeachers({
+          groupId: c.groupId,
+          // courseId: c?.id || c?._id,
+        })
+      );
+    }
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);

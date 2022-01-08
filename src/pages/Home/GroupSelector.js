@@ -34,6 +34,8 @@ import {
 } from "../../redux/action/commonActions";
 import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
+import { getAllStudents } from "../../redux/action/studentActions";
+import { getAllTeachers } from "../../redux/action/teacherActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -42,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const SelectGroup = () => {
   const dispatch = useDispatch();
   const { currentGroup, groups } = useSelector((state) => state.common);
+  const loginType = useSelector((state) => state.user.loginType);
 
   const filteredGroups = [...new Set(groups)];
 

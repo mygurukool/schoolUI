@@ -10,6 +10,7 @@ import {
   DialogActions,
   Button,
   CircularProgress,
+  Divider,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/CloseOutlined";
 
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.palette.fontSizes.md,
     color: theme.palette.text.primary,
   },
+  fullScreen: {
+    borderRadius: 0,
+  },
 }));
 
 const ModalContainer = ({
@@ -38,6 +42,8 @@ const ModalContainer = ({
   onSubmit,
   size,
   submitTitle,
+  fullScreen,
+  hideButtons,
 }) => {
   const classes = useStyles();
 
@@ -48,6 +54,7 @@ const ModalContainer = ({
       maxWidth={size || "lg"}
       aria-labelledby="customized-dialog-title"
       open={open}
+      fullScreen={fullScreen}
     >
       <DialogTitle style={{ padding: "5px 15px" }}>
         <Box
@@ -65,31 +72,36 @@ const ModalContainer = ({
       </DialogTitle>
       {children && <DialogContent dividers>{children}</DialogContent>}
 
-      {onSubmit && (
-        <DialogActions>
-          <Button
-            disabled={isLoading}
-            variant="outlined"
-            onClick={onClose}
-            color="secondary"
-          >
-            Cancel
-          </Button>
-          {onSubmit && (
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              onClick={onSubmit}
-            >
-              {isLoading ? (
-                <CircularProgress color="inherit" size={25} />
-              ) : (
-                submitTitle || "Submit"
-              )}
-            </Button>
-          )}
-        </DialogActions>
+      {!hideButtons && (
+        <>
+          <Divider />
+          <DialogActions>
+            {onClose && (
+              <Button
+                disabled={isLoading}
+                variant="outlined"
+                onClick={onClose}
+                color="secondary"
+              >
+                Cancel
+              </Button>
+            )}
+            {onSubmit && (
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                onClick={onSubmit}
+              >
+                {isLoading ? (
+                  <CircularProgress color="inherit" size={25} />
+                ) : (
+                  submitTitle || "Submit"
+                )}
+              </Button>
+            )}
+          </DialogActions>
+        </>
       )}
     </Dialog>
   );
