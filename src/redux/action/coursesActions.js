@@ -2,13 +2,14 @@ import { courseTypes } from "../types";
 import courseApi from "../api/courseApi";
 
 export const getAllCourses = (data) => {
+  const groupId = data?.groupId;
   return {
     type: courseTypes.GET_COURSE,
     payload: {
       request: {
         url: courseApi.GET_COURSES,
         method: "get",
-        params: data,
+        params: { groupId: groupId },
       },
     },
   };

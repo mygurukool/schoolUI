@@ -80,6 +80,7 @@ const CoursesList = () => {
     (state) => state.common
   );
 
+  const groupId = currentGroup?.id || currentGroup?._id;
   const loginType = useSelector((state) => state.user.loginType);
   const filteredCourses = courses.filter((c) => {
     if (!currentGroup) return true;
@@ -97,13 +98,22 @@ const CoursesList = () => {
       dispatch(
         getAllStudents({
           groupId: c.groupId,
-          // courseId: c?.id || c?._id,
         })
       );
       dispatch(
         getAllTeachers({
           groupId: c.groupId,
-          // courseId: c?.id || c?._id,
+        })
+      );
+    } else {
+      dispatch(
+        getAllStudents({
+          courseId: c?.id || c?._id,
+        })
+      );
+      dispatch(
+        getAllTeachers({
+          courseId: c?.id || c?._id,
         })
       );
     }
@@ -129,7 +139,7 @@ const CoursesList = () => {
     // dispatch(openModal("group", data));
     dispatch(
       deleteCourse(menuData, () => {
-        dispatch(getAllCourses());
+        dispatch(getAllCourses({ groupId }));
       })
     );
   };

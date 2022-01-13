@@ -36,6 +36,7 @@ import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
 import { getAllStudents } from "../../redux/action/studentActions";
 import { getAllTeachers } from "../../redux/action/teacherActions";
+import { getAllCourses } from "../../redux/action/coursesActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -59,6 +60,7 @@ const SelectGroup = () => {
     dispatch(removeAssignmentData());
     dispatch(removeCurrentCourse());
     dispatch(setCurrentGroup(value));
+    dispatch(getAllCourses(value?._id || value?.id));
   };
 
   const handleEdit = (data) => {
@@ -176,9 +178,7 @@ const SelectGroup = () => {
 
             {/* </PermissionGate> */}
 
-            {filteredGroups.length > 0 ? (
-              <MenuItem value={"all"}>All Groups</MenuItem>
-            ) : (
+            {filteredGroups.length > 0 && (
               <MenuItem value="" disabled selected>
                 No Groups available
               </MenuItem>

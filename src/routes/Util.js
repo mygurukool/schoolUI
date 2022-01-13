@@ -5,6 +5,7 @@ import GroupModal from "../components/Modals/GroupModal";
 import InvitePeople from "../components/Modals/InvitePeople";
 
 import AssignmentModal from "../components/Modals/AssignmentModal";
+import VideoPlayerModal from "../components/Modals/VideoPlayerModal";
 
 const Util = () => {
   return (
@@ -14,6 +15,7 @@ const Util = () => {
       <GroupModal />
       <AssignmentModal />
       <InvitePeople />
+      <VideoPlayerModal />
     </div>
   );
 };

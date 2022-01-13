@@ -19,9 +19,11 @@ const useWhiteBoard = () => {
     id: userId,
     isTeacher,
     name: userName,
+    loginType,
   } = useSelector((state) => state.user);
   const canCreateWhiteboard = usePermissions({
     scopes: [SCOPES.CAN_CREATE_WHITEBOARD],
+    exceptionLogin: "google",
   });
 
   const courseId = currentCourse?._id || currentCourse?.id;

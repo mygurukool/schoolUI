@@ -18,6 +18,7 @@ const useConference = () => {
   } = useSelector((state) => state.user);
   const canCreateConference = usePermissions({
     scopes: [SCOPES.CAN_CREATE_CONFERENCE],
+    exceptionLogin: "google",
   });
 
   const courseId = currentCourse?._id || currentCourse?.id;

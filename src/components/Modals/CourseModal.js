@@ -21,6 +21,7 @@ const CreateCourse = () => {
   const { modalOpen, modalData } = useSelector((state) => state.util);
   const { organizationId, id } = useSelector((state) => state.user);
   const { currentGroup } = useSelector((state) => state.common);
+  const groupId = currentGroup?.id || currentGroup?._id;
 
   const mode = modalData ? "edit" : "add";
   const open = modalOpen === "course";
@@ -34,14 +35,14 @@ const CreateCourse = () => {
     if (mode === "add")
       dispatch(
         createCourse({ ...data, organizationId, userId: id }, () => {
-          dispatch(getAllCourses());
+          dispatch(getAllCourses({ groupId }));
           handleClose();
         })
       );
     else {
       dispatch(
         editCourse({ ...data, organizationId, userId: id }, () => {
-          dispatch(getAllCourses());
+          dispatch(getAllCourses({ groupId }));
           handleClose();
         })
       );

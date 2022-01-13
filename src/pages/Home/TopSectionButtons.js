@@ -14,7 +14,10 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
   const classes = useStyles();
   return (
     <Stack direction="row" space="2">
-      <PermissionsGate scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}>
+      <PermissionsGate
+        scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
+        exceptionLogin={"google"}
+      >
         <Button
           color="primary"
           variant="contained"
@@ -27,7 +30,10 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           White Board
         </Button>
       </PermissionsGate>
-      <PermissionsGate scopes={[SCOPES.CAN_VIEW_CONFERENCE]}>
+      <PermissionsGate
+        scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
+        exceptionLogin={"google"}
+      >
         <Button
           color="primary"
           variant="contained"

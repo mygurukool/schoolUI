@@ -11,8 +11,14 @@ const hasPermission = ({ permissions, scopes }) => {
   return permissions.some((permission) => scopesMap[permission]);
 };
 
-export const usePermissions = ({ scopes }) => {
+export const usePermissions = ({ scopes, exceptionLogin }) => {
   const role = useSelector((state) => state.user.role);
+  const loginType = useSelector((state) => state.user.loginType);
+
+  if (exceptionLogin === loginType) {
+    return true;
+  }
+
   const permissions = role ? PERMISSIONS[role.toUpperCase()] : [];
   const permissionGranted = hasPermission({ permissions, scopes });
   return permissionGranted;
@@ -22,8 +28,12 @@ export default function PermissionsGate({
   children,
   scopes = [],
   errorProps = null,
+  exceptionLogin,
 }) {
-  const permissionGranted = usePermissions({ scopes: scopes });
+  const permissionGranted = usePermissions({
+    scopes: scopes,
+    exceptionLogin,
+  });
 
   if (permissionGranted) {
     return children || null;

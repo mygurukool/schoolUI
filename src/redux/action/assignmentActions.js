@@ -21,7 +21,18 @@ export const getAssignments = (data, cb, errorCb) => {
 
 export const createAssignmet = (data, cb, errorCb) => {
   const formData = new FormData();
-  Object.keys(data).forEach((key) => formData.append(key, data[key]));
+  Object.keys(data).forEach((key) => {
+    if (key === "uploadExercises") {
+      data.uploadExercises.forEach((f) => {
+        console.log("loop", f.metaData);
+        formData.append("uploadExercises", f.metaData);
+      });
+    } else if (key === "audioVideo") {
+      formData.append("audioVideo", JSON.stringify(data.audioVideo));
+    } else {
+      formData.append(key, data[key]);
+    }
+  });
   return {
     type: assignmentTypes.CREATE_ASSIGMENT,
     payload: {

@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Uploadexercise = ({ ...props }) => {
   const classes = useStyles();
+  const title = getTitle(props);
+
+  const onDownloadFile = () => {};
+
   return (
     <>
       <Accordion className={classes.root} elevation={0}>
@@ -54,7 +58,7 @@ const Uploadexercise = ({ ...props }) => {
               width: "100%",
             }}
           >
-            <Typography variant="subtitle2">{props.title}</Typography>
+            <Typography variant="subtitle2">{title}</Typography>
             <div>
               <IconButton
                 color="secondary"
@@ -83,10 +87,10 @@ const Uploadexercise = ({ ...props }) => {
               <ListItem>
                 <ListItemText primary="Single-line item" />
                 <ListItemSecondaryAction>
-                  <IconButton color="primary">
+                  {/* <IconButton color="primary">
                     <ViewIcon fontSize="small" />
-                  </IconButton>
-                  <IconButton color="primary">
+                  </IconButton> */}
+                  <IconButton color="primary" onClick={onDownloadFile}>
                     <DownloadIcon fontSize="small" />
                   </IconButton>
                   <IconButton color="primary">
@@ -103,3 +107,15 @@ const Uploadexercise = ({ ...props }) => {
 };
 
 export default Uploadexercise;
+
+const getTitle = (a) => {
+  return a.filename;
+  // switch (a.type) {
+  //   case :
+
+  //     break;
+
+  //   default:
+  //     break;
+  // }
+};

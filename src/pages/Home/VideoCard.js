@@ -24,16 +24,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Videocard = ({ onClick, ...props }) => {
+const Videocard = ({ onClick, title, ...props }) => {
   const classes = useStyles();
+  console.log("card props", props);
   return (
-    <Grid
-      item
-      lg={6}
-      onClick={() => {
-        alert("hello");
-      }}
-    >
+    <Grid item lg={6}>
       <ButtonBase onClick={onClick}>
         <Card className={classes.root} elevation={0}>
           <CardMedia
@@ -42,7 +37,7 @@ const Videocard = ({ onClick, ...props }) => {
             title="Live from space album cover"
           />
           <CardContent className={classes.content}>
-            <Typography variant="subtitle2">{props.title}</Typography>
+            <Typography variant="subtitle2">{title}</Typography>
           </CardContent>
         </Card>
       </ButtonBase>

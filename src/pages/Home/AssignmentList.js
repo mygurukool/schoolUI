@@ -44,6 +44,9 @@ import PermissionsGate from "../../components/PermissionGate";
 import Add from "@mui/icons-material/Add";
 import { openModal } from "../../redux/action/utilActions";
 import Edit from "@mui/icons-material/Edit";
+
+import parse from "html-react-parser";
+import AudioVideoCard from "./AudioVideoCard";
 const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -139,6 +142,8 @@ const AssignmentListItem = ({
     assignmentTitle,
     instructions,
     materials = [],
+    audioVideo,
+    uploadExercises,
     dueDate,
     dueTime,
     id,
@@ -156,6 +161,7 @@ const AssignmentListItem = ({
   const currentDiffrence = dueDate
     ? moment(dueDateTime, DUEDATETIMEFORMAT).diff(moment(), "days")
     : undefined;
+
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
 
@@ -221,7 +227,7 @@ const AssignmentListItem = ({
                 className={clsx(classes.description, classes.ellipses)}
                 variant="body2"
               >
-                {instructions}
+                {parse(`<div> ${instructions}</div>`)}
               </Typography>
             </Grid>
           )}
@@ -235,7 +241,7 @@ const AssignmentListItem = ({
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
-            {instructions}
+            {parse(`<div> ${instructions}</div>`)}
           </ItemSection>
 
           {hasAudioVideo && (
@@ -245,6 +251,9 @@ const AssignmentListItem = ({
             >
               <Grid container>
                 <Grid item container lg={6} md={6} sm={12} xs={12}>
+                  {audioVideo?.map((a, ai) => {
+                    return <AudioVideoCard key={ai} {...a} />;
+                  })}
                   {hasAudioVideo.map((a, i) => {
                     return (
                       <Videocard
@@ -267,6 +276,9 @@ const AssignmentListItem = ({
           {hasDocuments && (
             <ItemSection title=" Upload Exercises">
               <Grid container>
+                {uploadExercises?.map((a, ai) => {
+                  return <FileCard key={ai} {...a} />;
+                })}
                 {hasDocuments.map((a, i) => {
                   return (
                     <FileCard

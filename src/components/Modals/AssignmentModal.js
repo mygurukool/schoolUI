@@ -25,6 +25,8 @@ import {
   List,
   ListItem,
   ListItemButton,
+  ListItemIcon,
+  ListItemSecondaryAction,
   ListItemText,
   Stack,
   TextField,
@@ -35,19 +37,24 @@ import { Controller, useForm } from "react-hook-form";
 import SunEditor, { buttonList } from "suneditor-react";
 import "suneditor/dist/css/suneditor.min.css";
 import {
+  AddLink,
   Close,
   Delete,
+  FiberDvr,
+  FileDownload,
   Link,
   Upload,
   UploadFile,
   YouTube,
 } from "@mui/icons-material";
-import { borderRadius, Box } from "@mui/system";
 import useModal from "../../hooks/useModal";
 import AdapterMoment from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DateTimePicker from "@mui/lab/DateTimePicker";
 import StudentSelectorDrawer from "./StudentSelectorDrawer";
+import AddYoutubeLink from "./AddYoutubeLink";
+import AddUrlLink from "./AddUrlLink";
+
 const AssignmentModal = () => {
   const {
     control,
@@ -56,18 +63,21 @@ const AssignmentModal = () => {
     register,
     getValues,
     formState: { errors },
+    reset,
   } = useForm({});
-
-  const {
-    open: linkOpen,
-    openModal: openLinkModal,
-    closeModal: closeLinkModal,
-  } = useModal();
 
   const {
     open: youtubeOpen,
     openModal: openYoutubeModal,
     closeModal: closeYoutubeModal,
+    modalData: youtubeModalData,
+  } = useModal();
+
+  const {
+    open: linkOpen,
+    openModal: openLinkModal,
+    closeModal: closeLinkModal,
+    modalData: linkModalData,
   } = useModal();
 
   const {
@@ -80,6 +90,8 @@ const AssignmentModal = () => {
   const dispatch = useDispatch();
   const { modalOpen, modalData } = useSelector((state) => state.util);
   const { organizationId, id } = useSelector((state) => state.user);
+  const [explanationFiles, setExplanationFiles] = React.useState([]);
+  const [uploadedFiles, setUploadedFiles] = React.useState([]);
 
   const { groups, currentCourse, currentGroup, students } = useSelector(
     (state) => state.common
@@ -92,53 +104,72 @@ const AssignmentModal = () => {
 
   const open = modalOpen === "assignment";
   const handleClose = () => {
+    reset();
+    setUploadedFiles([]);
+    setExplanationFiles([]);
+
     dispatch(closeModal());
   };
 
-  // const handleSubmit = (data) => {
-  //   if (mode === "add")
-  //     dispatch(
-  //       createAssignmet(
-  //         {
-  //           ...data,
-  //           organizationId,
+  const handleYoutubeModal = (link) => {
+    openYoutubeModal(link);
+  };
+  const handleCloseYoutubeModal = (link) => {
+    closeYoutubeModal();
+  };
 
-  //           courseId,
-  //           groupId,
-  //           userId: id,
-  //         },
-  //         () => {
-  //           dispatch(getAssignments(courseId));
-  //           handleClose();
-  //         }
-  //       )
-  //     );
-  //   else {
-  //     dispatch(
-  //       editAssignmet(
-  //         {
-  //           ...data,
-  //           organizationId,
-  //           courseId,
-  //           groupId,
+  const handleCloseLinkModal = (link) => {
+    closeLinkModal();
+  };
 
-  //           userId: id,
-  //         },
-  //         () => {
-  //           dispatch(getAssignments(courseId));
-  //           handleClose();
-  //         }
-  //       )
-  //     );
-  //   }
-  // };
+  const handleSubmitExplanationModal = (link) => {
+    setExplanationFiles([...explanationFiles, link]);
+  };
+  const handleDeleteExplanationFile = (file, fileIndex) => {
+    setExplanationFiles(explanationFiles.filter((d) => d !== file));
+  };
+
+  const handleDeleteUploadFile = (file, fileIndex) => {
+    setUploadedFiles(uploadedFiles.filter((d) => d !== file));
+  };
 
   const onSubmit = (data) => {
     console.log("submit data", data);
-    dispatch(createAssignmet(data));
+    if (data.students.length === 0) {
+      alert("Please select students");
+      return;
+    }
+    dispatch(
+      createAssignmet(
+        {
+          ...data,
+          groupId: currentGroup?._id || currentGroup?.id,
+          courseId: currentCourse?._id || currentCourse?.id,
+
+          audioVideo: explanationFiles,
+          uploadExercises: uploadedFiles,
+        },
+        () => {
+          handleClose();
+          dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
+        }
+      )
+    );
   };
   const formRef = React.useRef();
   const uploadInputRef = React.useRef();
+
+  React.useEffect(() => {
+    if (open && modalData) {
+      reset(modalData);
+      if (modalData?.audioVideo) {
+        setExplanationFiles(modalData?.audioVideo);
+      }
+      if (modalData?.uploadExercises) {
+        setUploadedFiles(modalData?.uploadExercises);
+      }
+    }
+  }, [open]);
 
   return (
     <ModalContainer
@@ -154,8 +185,26 @@ const AssignmentModal = () => {
       //   formRef.current.submit();
       // }}
     >
+      <AddYoutubeLink
+        open={youtubeOpen}
+        onClose={handleCloseYoutubeModal}
+        onSubmit={handleSubmitExplanationModal}
+        data={youtubeModalData}
+      />
+      <AddUrlLink
+        open={linkOpen}
+        onClose={handleCloseLinkModal}
+        onSubmit={handleSubmitExplanationModal}
+        data={linkModalData}
+      />
+
       <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-        <Grid container direction="row">
+        <Grid
+          container
+          direction="row"
+          spacing={2}
+          className={classes.gridContainer}
+        >
           <Grid item lg={9}>
             <Stack direction="column" spacing={2}>
               <Controller
@@ -185,127 +234,87 @@ const AssignmentModal = () => {
               <Controller
                 name="instructions"
                 control={control}
-                render={({ field }) => (
-                  <>
-                    <InputLabel id="instruction" variant="standard">
-                      Instructions
-                    </InputLabel>
-                    <SunEditor
-                      width="100%"
-                      height="100%"
-                      placeholder="Please type instructions here..."
-                      setOptions={{
-                        buttonList: buttonList.complex,
-                      }}
-                      defaultValue={field.value}
-                      onChange={(e) => {
-                        field.onChange(e);
-                      }}
-                    />
-                  </>
-                )}
+                render={({ field }) => {
+                  console.log("field", field);
+                  return (
+                    <>
+                      <InputLabel id="instruction" variant="standard">
+                        Instructions
+                      </InputLabel>
+                      <SunEditor
+                        width="100%"
+                        height="100%"
+                        placeholder="Please type instructions here..."
+                        setOptions={{
+                          buttonList: buttonList.complex,
+                        }}
+                        defaultValue="<p>The editor's default value</p>"
+                        onChange={(e) => {
+                          field.onChange(e);
+                        }}
+                      />
+                    </>
+                  );
+                }}
               />
 
               <Stack>
-                <InputLabel>Uploads</InputLabel>
+                <InputLabel>Audio/Video Explanation</InputLabel>
 
-                <Stack direction="row" spacing={2}>
-                  <Controller
-                    name="file"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <input
-                          ref={uploadInputRef}
-                          hidden
-                          type="file"
-                          onChange={(e) => {
-                            setValue("file", e.target.files[0]);
-                          }}
-                          // {...register("file")}
-                        />
-                        <ToolTipIconButton
-                          title="Upload file"
-                          icon={<UploadFile />}
-                          onClick={() => uploadInputRef.current.click()}
-                          value={field.value?.name}
-                          onDelete={() => setValue("file", undefined)}
-                        />
-                      </>
-                    )}
+                <Stack direction="row" spacing={2} mt={2}>
+                  <ToolTipIconButton
+                    title="Add  Youtube Link"
+                    icon={<YouTube />}
+                    onClick={() => openYoutubeModal()}
                   />
 
-                  <Controller
-                    name="link"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <ModalContainer
-                          open={linkOpen}
-                          onClose={() => {
-                            setValue("link", undefined);
-                            closeLinkModal();
-                          }}
-                          onSubmit={closeLinkModal}
-                          title="Add Link"
-                          size="sm"
-                        >
-                          <TextField
-                            label="Link"
-                            variant="outlined"
-                            fullWidth
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                          />
-                        </ModalContainer>
-                        <ToolTipIconButton
-                          title="Add Link"
-                          icon={<Link />}
-                          onClick={() => openLinkModal()}
-                          value={field.value}
-                          onDelete={() => setValue("link", undefined)}
-                        />
-                      </>
-                    )}
+                  <ToolTipIconButton
+                    title="Add Any Website Link"
+                    icon={<AddLink />}
+                    onClick={() => openLinkModal()}
                   />
-                  <Controller
-                    name="youtubeLink"
-                    control={control}
-                    render={({ field }) => (
-                      <>
-                        <ModalContainer
-                          open={youtubeOpen}
-                          onClose={() => {
-                            setValue("youtubeLink", undefined);
-                            closeYoutubeModal();
-                          }}
-                          onSubmit={closeYoutubeModal}
-                          title="Add Youtube Video Link"
-                          size="sm"
-                        >
-                          <TextField
-                            label="Youtube Video Link"
-                            variant="outlined"
-                            fullWidth
-                            value={field.value}
-                            onChange={(e) => field.onChange(e)}
-                            InputProps={{
-                              startAdornment: <YouTube color="secondary" />,
-                            }}
-                          />
-                        </ModalContainer>
-                        <ToolTipIconButton
-                          title="Add  Youtube Link"
-                          icon={<YouTube />}
-                          onClick={() => openYoutubeModal()}
-                          value={field.value}
-                          onDelete={() => setValue("youtubeLink", undefined)}
-                        />
-                      </>
-                    )}
+                </Stack>
+
+                <Stack>
+                  <ItemList
+                    data={explanationFiles}
+                    onDelete={(d) => handleDeleteExplanationFile(d)}
                   />
                 </Stack>
               </Stack>
+              <Stack>
+                <InputLabel>Upload Excersice</InputLabel>
+
+                <Stack direction="row" spacing={2} mt={2}>
+                  <input
+                    ref={uploadInputRef}
+                    hidden
+                    type="file"
+                    onChange={(e) => {
+                      const value = e.target.files[0];
+                      setUploadedFiles([
+                        ...uploadedFiles,
+                        { type: "file", metaData: value },
+                      ]);
+                    }}
+                    // {...register("file")}
+                  />
+                  <ToolTipIconButton
+                    title="Upload Any File"
+                    icon={<UploadFile />}
+                    onClick={() => uploadInputRef.current.click()}
+                  />
+                </Stack>
+
+                <Stack>
+                  <ItemList
+                    data={uploadedFiles}
+                    onDelete={(d) => handleDeleteUploadFile(d)}
+                  />
+                </Stack>
+              </Stack>
+
+              <Stack direction="column"></Stack>
             </Stack>
           </Grid>
           <Grid item lg={3} className={classes.sideGrid}>
@@ -382,7 +391,8 @@ const AssignmentModal = () => {
                           />
                         )}
                         label="Due date and time"
-                        value={field.value}
+                        inputFormat={DATETIMEFORMAT}
+                        value={moment(field.value, DATETIMEFORMAT)}
                         onChange={(newValue) => {
                           field.onChange(newValue);
                         }}
@@ -402,7 +412,12 @@ const AssignmentModal = () => {
         </Grid>
         <Divider />
         <DialogActions>
-          <Button type="reset" variant="outlined" onClick={() => handleClose()}>
+          <Button
+            type="reset"
+            variant="contained"
+            color="secondary"
+            onClick={() => handleClose()}
+          >
             Cancel
           </Button>
           <Button type={"submit"} variant="contained">
@@ -428,36 +443,79 @@ const ToolTipIconButton = ({ icon, title, onClick, value, onDelete }) => {
         <IconButton color="secondary" onClick={onClick}>
           {icon}
         </IconButton>
-        {value && (
-          <Stack direction="row" alignItems="center">
-            <Typography variant="caption">{value}</Typography>
-
-            <IconButton size="small" onClick={onDelete}>
-              <Close />
-            </IconButton>
-          </Stack>
-        )}
       </Stack>
     </Tooltip>
   );
 };
 
+const ItemList = ({ data, onDelete }) => {
+  const classes = useStyles();
+  return (
+    <List>
+      {data.map((d, di) => {
+        const title = getTitle(d?.metaData, d.type);
+        return (
+          <ListItem className={classes.listItem} key={di}>
+            <ListItemIcon>{getIcon(d.type)}</ListItemIcon>
+            <ListItemText primary={title} />
+            <ListItemSecondaryAction>
+              <IconButton onClick={() => onDelete(d)}>
+                <Delete />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+        );
+      })}
+    </List>
+  );
+};
+
+const getIcon = (type) => {
+  switch (type) {
+    case "youtube":
+      return <YouTube />;
+      break;
+
+    default:
+      return <UploadFile />;
+      break;
+  }
+};
+
+const getTitle = (data, type) => {
+  console.log("getTitle", data);
+  switch (type) {
+    case "youtube":
+      return data.title;
+
+    case "link":
+      return data.ogTitle;
+
+    default:
+      return "none";
+  }
+};
 const useStyles = makeStyles((theme) => ({
   root: {},
   iconButtonContainer: {
-    backgroundColor: `#eee`,
-    padding: theme.spacing(0.5, 2),
+    backgroundColor: `#424242`,
+    padding: theme.spacing(0.5),
     borderRadius: 50,
   },
   sideGrid: {
-    marginLeft: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
-
-    borderLeft: `0.5px solid red`,
+    // marginLeft: theme.spacing(2),
+    // paddingLeft: theme.spacing(2),
+    // borderLeft: `0.5px solid red`,
   },
   drawerRoot: {
     zIndex: 1500,
     width: "20vw",
+  },
+  gridContainer: {
+    minHeight: "83vh",
+  },
+  listItem: {
+    border: "1px solid #f5f5f5",
   },
 }));
 

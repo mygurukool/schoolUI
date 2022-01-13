@@ -44,7 +44,7 @@ import { SCOPES } from "../../constants";
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const loginType = useSelector((state) => state.user.loginType);
   const {
     initializeWhiteBoard,
 
@@ -70,8 +70,10 @@ const Home = (props) => {
   } = useSelector((state) => state.common);
 
   React.useEffect(() => {
-    dispatch(getAllCourses());
     dispatch(getAllGroups());
+    if (loginType !== "mygurukool") {
+      dispatch(getAllCourses());
+    }
   }, []);
 
   const shouldDivideSection = whiteBoardUrl || isConfrenceOpen;
@@ -91,7 +93,10 @@ const Home = (props) => {
               <Grid item lg={12}>
                 <Grid container mb={2}>
                   <Grid item lg={3}>
-                    <PermissionsGate scopes={[SCOPES.CAN_VIEW_GROUP]}>
+                    <PermissionsGate
+                      scopes={[SCOPES.CAN_VIEW_GROUP]}
+                      exceptionLogin={"google"}
+                    >
                       <SelectGroup />
                     </PermissionsGate>
                   </Grid>
@@ -109,7 +114,10 @@ const Home = (props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <PermissionsGate scopes={[SCOPES.CAN_VIEW_COURSE]}>
+              <PermissionsGate
+                scopes={[SCOPES.CAN_VIEW_COURSE]}
+                exceptionLogin={"google"}
+              >
                 {!isSectionMaximized && (
                   <LoadingContainer isLoading={isCourseLoading}>
                     <CoursesList />
@@ -123,7 +131,10 @@ const Home = (props) => {
               container
               className={clsx(classes.container, classes.middleContainer)}
             >
-              <PermissionsGate scopes={[SCOPES.CAN_VIEW_ASSIGNMENT]}>
+              <PermissionsGate
+                scopes={[SCOPES.CAN_VIEW_ASSIGNMENT]}
+                exceptionLogin={"google"}
+              >
                 {!isSectionMaximized && (
                   <Grid item lg={shouldDivideSection ? 6 : 12}>
                     <LoadingContainer isLoading={isAssignmentLoading}>
@@ -132,7 +143,10 @@ const Home = (props) => {
                   </Grid>
                 )}
               </PermissionsGate>
-              <PermissionsGate scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}>
+              <PermissionsGate
+                scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
+                exceptionLogin={"google"}
+              >
                 {!isConfrenceOpen && whiteBoardUrl && (
                   <WhiteBoard
                     isSectionMaximized={isSectionMaximized}
@@ -143,7 +157,10 @@ const Home = (props) => {
                   />
                 )}
               </PermissionsGate>
-              <PermissionsGate scopes={[SCOPES.CAN_VIEW_CONFERENCE]}>
+              <PermissionsGate
+                scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
+                exceptionLogin={"google"}
+              >
                 {isConfrenceOpen && (
                   <Conference
                     isSectionMaximized={isSectionMaximized}
