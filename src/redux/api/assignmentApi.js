@@ -3,6 +3,8 @@ const assignmentApi = {
   EDIT_ASSIGNMENT: "/assignment/edit",
   DELETE_ASSIGNMENT: "/assignment/delete",
   GET_ASSIGNMENTS: "/assignment",
+
+  GET_SUBMISSION: "/assignment/submissions",
 };
 
 export default assignmentApi;

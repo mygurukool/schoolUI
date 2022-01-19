@@ -26,11 +26,21 @@ const initialstate = {
   currentGroup: undefined,
   currentCourse: undefined,
   invitation: undefined,
+  submission: undefined,
 };
 
 const sizeReducer = (state = initialstate, action) => {
   const getData = () => action.payload.data.data;
   switch (action.type) {
+    //submission
+
+    //courses
+    case commonTypes.GET_SUBMISSION_SUCCESS:
+      return {
+        ...state,
+        submission: getData(),
+      };
+
     //courses
     case commonTypes.GET_COURSES:
       return {

@@ -32,3 +32,21 @@ export const removeTeacher = (data, cb, errorCb) => {
     },
   };
 };
+
+export const giveMarks = (data, cb, errorCb) => {
+  return {
+    type: teacherTypes.GIVE_MARKS,
+    payload: {
+      request: {
+        url: teacherApi.GIVE_MARKS,
+        method: "post",
+        data: data,
+      },
+      successMessage: "Marks added successfully",
+      errorMessage: "Failed to add teacher",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};

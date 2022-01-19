@@ -28,7 +28,7 @@ import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
 import CourseMaterialList from "./CourseMaterialList";
-import { CalendarToday } from "@mui/icons-material";
+import { CalendarToday, Note } from "@mui/icons-material";
 import FaceIcon from "@mui/icons-material/Face";
 import { Box } from "@mui/system";
 import clsx from "clsx";
@@ -47,9 +47,11 @@ import Edit from "@mui/icons-material/Edit";
 
 import parse from "html-react-parser";
 import AudioVideoCard from "./AudioVideoCard";
+import { useHistory } from "react-router";
 const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
@@ -69,6 +71,10 @@ const AssignmentList = () => {
     dispatch(openModal("assignment", data));
   };
 
+  const onCheck = (data) => {
+    history.push(`/submission/${data.id || data._id}`);
+  };
+
   return (
     courses?.length > 0 && (
       <>
@@ -85,8 +91,6 @@ const AssignmentList = () => {
             />
             <div className={classes.root}>
               {assignments.map((a, i) => {
-                // console.log("a", a);
-
                 return (
                   <AssignmentListItem
                     key={i}
@@ -95,6 +99,7 @@ const AssignmentList = () => {
                     onSelectAssignment={() => handleExpand(i)}
                     setPlayingVideo={setPlayingVideo}
                     onEdit={() => onEdit(a)}
+                    onCheck={() => onCheck(a)}
                   />
                 );
               })}
@@ -136,6 +141,7 @@ const AssignmentListItem = ({
   setPlayingVideo,
   onOpenAddUsersToChat,
   onEdit,
+  onCheck,
   ...props
 }) => {
   const {
@@ -147,9 +153,9 @@ const AssignmentListItem = ({
     dueDate,
     dueTime,
     id,
+    _id,
   } = props;
   const [enableChat, setEnableChat] = React.useState(false);
-
   const classes = useStyles();
   // const dueDateTime = dueDate
   //   ? `${dueDate?.day}/${dueDate?.month}/${dueDate?.year} ${dueTime.hours}:${dueTime.minutes}`
@@ -220,6 +226,14 @@ const AssignmentListItem = ({
             </Grid>
           </PermissionsGate>
 
+          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
+            <Grid item lg={1}>
+              <IconButton onClick={() => onCheck()}>
+                <Note />
+              </IconButton>
+            </Grid>
+          </PermissionsGate>
+
           {!expanded && (
             <Grid item lg={12}>
               <Typography
@@ -277,11 +291,12 @@ const AssignmentListItem = ({
             <ItemSection title=" Upload Exercises">
               <Grid container>
                 {uploadExercises?.map((a, ai) => {
-                  return <FileCard key={ai} {...a} />;
+                  return <FileCard assignmentId={id || _id} key={ai} {...a} />;
                 })}
                 {hasDocuments.map((a, i) => {
                   return (
                     <FileCard
+                      assignmentId={id || _id}
                       key={i}
                       {...a.driveFile?.driveFile}
                       onClick={() => setPlayingVideo(a.youtubeVideo)}

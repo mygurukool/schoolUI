@@ -6,6 +6,7 @@ import InvitePeople from "../components/Modals/InvitePeople";
 
 import AssignmentModal from "../components/Modals/AssignmentModal";
 import VideoPlayerModal from "../components/Modals/VideoPlayerModal";
+import FileViewModal from "../components/Modals/FileViewModal";
 
 const Util = () => {
   return (
@@ -16,6 +17,7 @@ const Util = () => {
       <AssignmentModal />
       <InvitePeople />
       <VideoPlayerModal />
+      <FileViewModal />
     </div>
   );
 };

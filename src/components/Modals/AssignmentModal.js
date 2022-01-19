@@ -55,7 +55,32 @@ import StudentSelectorDrawer from "./StudentSelectorDrawer";
 import AddYoutubeLink from "./AddYoutubeLink";
 import AddUrlLink from "./AddUrlLink";
 
+import { Editor } from "react-draft-wysiwyg";
+import {
+  convertFromHTML,
+  convertFromRaw,
+  convertToRaw,
+  EditorState,
+} from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { stateFromHTML } from "draft-js-import-html";
+import draftToHtml from "draftjs-to-html";
+
+const defaultValues = {
+  assignmentTitle: undefined,
+  instructions: undefined,
+  students: undefined,
+  points: undefined,
+  dueDate: undefined,
+};
 const AssignmentModal = () => {
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createEmpty()
+  );
+  React.useEffect(() => {
+    console.log("editorState", editorState);
+  }, [editorState]);
+
   const {
     control,
     handleSubmit,
@@ -104,11 +129,12 @@ const AssignmentModal = () => {
 
   const open = modalOpen === "assignment";
   const handleClose = () => {
-    reset();
+    reset(defaultValues);
     setUploadedFiles([]);
     setExplanationFiles([]);
 
     dispatch(closeModal());
+    setEditorState(EditorState.createEmpty());
   };
 
   const handleYoutubeModal = (link) => {
@@ -134,27 +160,56 @@ const AssignmentModal = () => {
   };
 
   const onSubmit = (data) => {
-    console.log("submit data", data);
-    if (data.students.length === 0) {
-      alert("Please select students");
-      return;
+    console.log("data", data);
+    if (!data.students) {
+      data.students = students;
     }
-    dispatch(
-      createAssignmet(
-        {
-          ...data,
-          groupId: currentGroup?._id || currentGroup?.id,
-          courseId: currentCourse?._id || currentCourse?.id,
+    // if (data?.students.length === 0) {
+    //   alert("Please select students");
+    // } else {
+    //   data.students = students;
+    // }
+    const rawContentState = convertToRaw(editorState.getCurrentContent());
 
-          audioVideo: explanationFiles,
-          uploadExercises: uploadedFiles,
-        },
-        () => {
-          handleClose();
-          dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
-        }
-      )
-    );
+    const markup = draftToHtml(rawContentState);
+
+    if (mode === "add") {
+      dispatch(
+        createAssignmet(
+          {
+            ...data,
+            groupId: currentGroup?._id || currentGroup?.id,
+            courseId: currentCourse?._id || currentCourse?.id,
+
+            audioVideo: explanationFiles,
+            uploadExercises: uploadedFiles,
+            instructions: markup,
+          },
+          () => {
+            handleClose();
+            dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
+          }
+        )
+      );
+    } else {
+      dispatch(
+        editAssignmet(
+          {
+            ...data,
+            groupId: currentGroup?._id || currentGroup?.id,
+            courseId: currentCourse?._id || currentCourse?.id,
+
+            audioVideo: explanationFiles,
+            uploadExercises: uploadedFiles,
+            instructions: markup,
+          },
+          () => {
+            handleClose();
+            dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
+          }
+        )
+      );
+    }
   };
   const formRef = React.useRef();
   const uploadInputRef = React.useRef();
@@ -167,6 +222,21 @@ const AssignmentModal = () => {
       }
       if (modalData?.uploadExercises) {
         setUploadedFiles(modalData?.uploadExercises);
+      }
+      if (modalData?.dueDate) {
+        setValue(
+          "dueDate",
+          moment(modalData?.dueDate, DATETIMEFORMAT).toDate()
+        );
+      }
+      if (modalData.instructions) {
+        let contentState = stateFromHTML(modalData.instructions);
+        setEditorState(EditorState.createWithContent(contentState));
+        // const contentState = EditorState.createFromBlockArray(
+        //   contentBlocks,
+        //   entityMap
+        // );
+        // const myeditorState = EditorState.createWithContent(contentState);
       }
     }
   }, [open]);
@@ -235,13 +305,16 @@ const AssignmentModal = () => {
                 name="instructions"
                 control={control}
                 render={({ field }) => {
-                  console.log("field", field);
                   return (
                     <>
                       <InputLabel id="instruction" variant="standard">
                         Instructions
                       </InputLabel>
-                      <SunEditor
+                      <Editor
+                        editorState={editorState}
+                        onEditorStateChange={setEditorState}
+                      />
+                      {/* <SunEditor
                         width="100%"
                         height="100%"
                         placeholder="Please type instructions here..."
@@ -252,7 +325,7 @@ const AssignmentModal = () => {
                         onChange={(e) => {
                           field.onChange(e);
                         }}
-                      />
+                      /> */}
                     </>
                   );
                 }}
@@ -453,7 +526,7 @@ const ItemList = ({ data, onDelete }) => {
   return (
     <List>
       {data.map((d, di) => {
-        const title = getTitle(d?.metaData, d.type);
+        const title = getTitle(d?.metaData || d, d.type || "file");
         return (
           <ListItem className={classes.listItem} key={di}>
             <ListItemIcon>{getIcon(d.type)}</ListItemIcon>
@@ -483,16 +556,22 @@ const getIcon = (type) => {
 };
 
 const getTitle = (data, type) => {
-  console.log("getTitle", data);
+  console.log("getTitle", data, type);
   switch (type) {
     case "youtube":
       return data.title;
+
+    case "video":
+      return data.title;
+
+    case "file":
+      return data.filename || data.name;
 
     case "link":
       return data.ogTitle;
 
     default:
-      return "none";
+      return data?.title;
   }
 };
 const useStyles = makeStyles((theme) => ({

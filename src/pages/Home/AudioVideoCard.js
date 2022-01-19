@@ -36,6 +36,10 @@ const AudioVideoCard = ({ onClick, ...props }) => {
     if (props.type === "youtube") {
       dispatch(openModal("youtube", props.metaData));
     }
+
+    if (props.type === "link") {
+      window.open(props.metaData.ogUrl, "_blank");
+    }
   };
 
   return (
@@ -57,6 +61,8 @@ const getImage = (a) => {
   switch (a.type) {
     case "youtube":
       return a.metaData.thumbnail_url;
+    case "link":
+      return a.metaData.ogImage.url;
 
       break;
 
@@ -69,6 +75,9 @@ const getTitle = (a) => {
   switch (a.type) {
     case "youtube":
       return a.metaData.title;
+
+    case "link":
+      return a.metaData.ogTitle;
 
     default:
       break;

@@ -1,5 +1,5 @@
 import assignmentApi from "../api/assignmentApi";
-import { assignmentTypes } from "../types";
+import { assignmentTypes, commonTypes } from "../types";
 
 export const getAssignments = (data, cb, errorCb) => {
   return {
@@ -19,6 +19,24 @@ export const getAssignments = (data, cb, errorCb) => {
   };
 };
 
+export const getSubmission = (data, cb, errorCb) => {
+  return {
+    type: commonTypes.GET_SUBMISSION,
+    payload: {
+      request: {
+        url: assignmentApi.GET_SUBMISSION,
+        method: "get",
+        params: {
+          id: data,
+        },
+      },
+      enableMessage: false,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
 export const createAssignmet = (data, cb, errorCb) => {
   const formData = new FormData();
   Object.keys(data).forEach((key) => {
@@ -29,6 +47,8 @@ export const createAssignmet = (data, cb, errorCb) => {
       });
     } else if (key === "audioVideo") {
       formData.append("audioVideo", JSON.stringify(data.audioVideo));
+    } else if (key === "students") {
+      formData.append("students", JSON.stringify(data.students));
     } else {
       formData.append(key, data[key]);
     }
@@ -54,13 +74,31 @@ export const createAssignmet = (data, cb, errorCb) => {
 };
 
 export const editAssignmet = (data, cb, errorCb) => {
+  const formData = new FormData();
+  Object.keys(data).forEach((key) => {
+    if (key === "uploadExercises") {
+      data.uploadExercises.forEach((f) => {
+        console.log("loop", f.metaData);
+        formData.append("uploadExercises", f.metaData);
+      });
+    } else if (key === "audioVideo") {
+      formData.append("audioVideo", JSON.stringify(data.audioVideo));
+    } else if (key === "students") {
+      formData.append("students", JSON.stringify(data.students));
+    } else {
+      formData.append(key, data[key]);
+    }
+  });
   return {
     type: assignmentTypes.EDIT_ASSIGMENT,
     payload: {
       request: {
         url: assignmentApi.EDIT_ASSIGNMENT,
         method: "put",
-        data: data,
+        data: formData,
+        headers: {
+          "Content-type": "application/json",
+        },
       },
       successMessage: "Assignmet edited successfully",
       errorMessage: "Failed to edit assignment",
