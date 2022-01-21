@@ -118,9 +118,11 @@ const sizeReducer = (state = initialstate, action) => {
     //group
 
     case groupTypes.GET_GROUP_SUCCESS:
+      const firstGroup = getData()[0];
       return {
         ...state,
         groups: getData(),
+        currentGroup: firstGroup,
       };
 
     case commonTypes.SET_CURRENT_GROUP:

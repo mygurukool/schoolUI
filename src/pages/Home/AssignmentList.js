@@ -20,6 +20,7 @@ import {
   Grid,
   IconButton,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -28,7 +29,7 @@ import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
 import CourseMaterialList from "./CourseMaterialList";
-import { CalendarToday, Note } from "@mui/icons-material";
+import { CalendarToday, FactCheck } from "@mui/icons-material";
 import FaceIcon from "@mui/icons-material/Face";
 import { Box } from "@mui/system";
 import clsx from "clsx";
@@ -122,7 +123,7 @@ const ActionBar = () => {
     dispatch(openModal("assignment"));
   };
   return (
-    <Stack direction="row">
+    <Stack direction="row" mb="2">
       <div />
 
       <Button variant="contained" onClick={onAddAssignment}>
@@ -207,11 +208,11 @@ const AssignmentListItem = ({
     >
       <AccordionSummary expandIcon={<RightIcon />}>
         <Grid container>
-          <Grid item lg={dueDateTime ? 8 : 10}>
+          <Grid item lg={dueDateTime ? 6 : 10}>
             <Typography>{assignmentTitle}</Typography>
           </Grid>
           {dueDateTime && (
-            <Grid item lg={3}>
+            <Grid item lg={4}>
               <DueDateTime
                 dueDateTime={dueDateTime}
                 currentDiffrence={currentDiffrence}
@@ -220,17 +221,29 @@ const AssignmentListItem = ({
           )}
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
             <Grid item lg={1}>
-              <IconButton onClick={() => onEdit()}>
-                <Edit />
-              </IconButton>
+              <Tooltip title="Edit Assignment">
+                <IconButton
+                  size="small"
+                  color="secondary"
+                  onClick={() => onEdit()}
+                >
+                  <Edit fontSize="small" />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </PermissionsGate>
 
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
             <Grid item lg={1}>
-              <IconButton onClick={() => onCheck()}>
-                <Note />
-              </IconButton>
+              <Tooltip title="Check submissions">
+                <IconButton
+                  onClick={() => onCheck()}
+                  size="small"
+                  color="secondary"
+                >
+                  <FactCheck fontSize="small" />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </PermissionsGate>
 

@@ -10,12 +10,26 @@ import {
   Stack,
   TextField,
   Button,
+  Drawer,
+  Box,
+  Toolbar,
+  Divider,
+  ListSubheader,
+  Typography,
+  Alert,
+  Card,
+  CardContent,
+  ListItemIcon,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubmission } from "../../redux/action/assignmentActions";
 import FileCard from "../Home/FileCard";
 import { giveMarks } from "../../redux/action/teacherActions";
+import NavBar from "../../components/Navbar";
+import { ArrowBack } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,12 +44,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Submissions = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const classes = useStyles();
   const { id } = useParams();
   const [currentStudent, setCurrentStudent] = React.useState();
   const [points, setPoints] = React.useState();
 
   const submission = useSelector((state) => state.common.submission);
+  const { currentGroup, currentCourse } = useSelector((state) => state.common);
 
   const students = submission?.students;
 
@@ -67,24 +84,136 @@ const Submissions = (props) => {
     }
   }, [id]);
 
+  const breadcrumbs = [
+    <Link underline="hover" key="1" color="inherit" href="/">
+      {currentGroup?.groupName}
+    </Link>,
+    <Link underline="hover" key="2" color="inherit" href="/">
+      {currentCourse?.courseName}
+    </Link>,
+    <Typography key="3" color="text.primary">
+      {submission?.assignmentTitle}
+    </Typography>,
+  ];
+
   return (
-    <div className={classes.root}>
-      <Grid container direction="row">
-        <Grid item lg={3} className={classes.studentList}>
+    <Box sx={{ display: "flex" }} className={classes.root}>
+      <NavBar
+        showBg
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      />
+      <Drawer
+        variant="permanent"
+        sx={{
+          width: 300,
+          flexShrink: 0,
+          [`& .MuiDrawer-paper`]: { width: 300, boxSizing: "border-box" },
+        }}
+      >
+        <Toolbar />
+        <Box sx={{ overflow: "auto" }}>
           <List>
+            <ListItem button onClick={() => history.goBack()}>
+              <ListItemIcon>
+                <ArrowBack />
+              </ListItemIcon>
+              <ListItemText primary={`Back to Subjects`} />
+            </ListItem>
+          </List>
+          <Divider />
+          <List
+            subheader={
+              <ListSubheader component="div" id="nested-list-subheader">
+                Students
+              </ListSubheader>
+            }
+          >
             {students?.map((s, si) => {
+              const isFistItem = si === 0;
+              const isLastItem = students.length - 1 === si;
+
               if (s)
                 return (
-                  <ListItem>
-                    <ListItemButton onClick={() => handleStudentClick(s)}>
+                  <>
+                    {isFistItem && <Divider />}
+                    <ListItem
+                      button
+                      onClick={() => handleStudentClick(s)}
+                      key={si}
+                    >
                       <ListItemText primary={s.name} secondary={s.email} />
-                    </ListItemButton>
-                  </ListItem>
+                    </ListItem>
+                    {isLastItem && <Divider />}
+                  </>
                 );
             })}
           </List>
-        </Grid>
-        {currentStudent && (
+        </Box>
+      </Drawer>
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <Box mb={3}>
+          <Breadcrumbs separator="›" aria-label="breadcrumb">
+            {breadcrumbs}
+          </Breadcrumbs>
+        </Box>
+
+        {!currentStudent ? (
+          <Alert severity="info">Please select a student</Alert>
+        ) : (
+          <Grid container>
+            <Grid item lg={9}>
+              <Card>
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 14 }}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Files
+                  </Typography>
+                  {currentStudent?.uploadExercises?.map((a, ai) => {
+                    return <FileCard assignmentId={id} key={ai} {...a} />;
+                  })}
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item lg={5} mt={5}>
+              <Card>
+                <CardContent>
+                  <Typography
+                    sx={{ fontSize: 14 }}
+                    mb={2}
+                    color="text.secondary"
+                    gutterBottom
+                  >
+                    Marks
+                  </Typography>
+                  <Stack direction="row" spacing={2}>
+                    <TextField
+                      variant="outlined"
+                      value={points}
+                      type="number"
+                      label="Points"
+                      placeholder="Enter marks"
+                      onChange={(e) => setPoints(e.target.value)}
+                    />
+
+                    <Button
+                      variant="contained"
+                      onClick={() => onSubmit()}
+                      disabled={!points}
+                    >
+                      Save
+                    </Button>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        )}
+        {/* {currentStudent && (
           <Grid item lg={9}>
             {currentStudent?.uploadExercises?.map((a, ai) => {
               return <FileCard assignmentId={id} key={ai} {...a} />;
@@ -109,9 +238,9 @@ const Submissions = (props) => {
               </Button>
             </Stack>
           </Grid>
-        )}
-      </Grid>
-    </div>
+        )} */}
+      </Box>
+    </Box>
   );
 };
 

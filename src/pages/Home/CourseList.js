@@ -82,9 +82,13 @@ const CoursesList = () => {
 
   const groupId = currentGroup?.id || currentGroup?._id;
   const loginType = useSelector((state) => state.user.loginType);
+
   const filteredCourses = courses.filter((c) => {
     if (!currentGroup) return true;
-    else {
+
+    if (loginType === "google") {
+      return c.section === currentGroup?.groupName;
+    } else {
       return c.groupId === currentGroup?.id || c.groupId === currentGroup?._id;
     }
   });
@@ -237,6 +241,7 @@ const CoursesList = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          overflow: "auto",
         }}
       >
         <PermissionGate scopes={[SCOPES.canCreate]}>
@@ -278,6 +283,7 @@ const CoursesList = () => {
               </div>
             );
           })}
+
         {groups.length > 0 && (
           <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
             <AddNewCourse />

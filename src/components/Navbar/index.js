@@ -27,8 +27,9 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import Drawer from "../Drawer";
+import { ArrowBack, ArrowRight } from "@mui/icons-material";
 
-export default function NavBar() {
+export default function NavBar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
@@ -196,15 +197,22 @@ export default function NavBar() {
   return (
     <>
       <AppBar
-        position="static"
-        color="transparent"
+        position={position || "static"}
+        color={showBg ? "primary" : "transparent"}
         elevation="0"
         className={classes.AppBar}
+        {...props}
       >
         <Toolbar variant="dense">
           {/* <IconButton onClick={handleDrawerOpen} edge="start" size="small">
             <MenuIcon />
           </IconButton> */}
+          {showBack && (
+            <IconButton onClick={() => history.goBack()}>
+              <ArrowBack />
+            </IconButton>
+          )}
+
           <Box
             style={{
               flex: 3,

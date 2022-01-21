@@ -7,7 +7,7 @@ import youtube from "youtube-metadata-from-url";
 
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
+import getVideoId from "get-video-id";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
@@ -28,8 +28,9 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
       youtube
         .metadata(value)
         .then((json) => {
+          const { id } = getVideoId(value);
           setIsLoading(false);
-          setMetaData(json);
+          setMetaData({ ...json, videoId: id });
         })
         .catch((err) => {
           alert("No data found");

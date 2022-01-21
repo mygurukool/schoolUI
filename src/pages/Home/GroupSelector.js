@@ -45,9 +45,13 @@ const useStyles = makeStyles((theme) => ({
 const SelectGroup = () => {
   const dispatch = useDispatch();
   const { currentGroup, groups } = useSelector((state) => state.common);
+  const [selectedGroup, setSelectedGroup] = React.useState("");
+
   const loginType = useSelector((state) => state.user.loginType);
 
-  const filteredGroups = [...new Set(groups)];
+  const groupNames = groups.map((g) => g.groupName);
+
+  const filteredGroups = [...new Set(groupNames)];
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -97,6 +101,12 @@ const SelectGroup = () => {
     deleteRef.current.open(currentGroup);
     handleCloseMenu();
   };
+
+  React.useEffect(() => {
+    if (currentGroup) {
+      setSelectedGroup(currentGroup?.groupName);
+    }
+  }, [currentGroup]);
 
   const GroupMenu = () => {
     return (
@@ -168,17 +178,18 @@ const SelectGroup = () => {
             label="Group"
             placeholder="Choose Group"
             color="secondary"
-            value={currentGroup}
-            defaultValue="all"
+            value={selectedGroup}
             onChange={({ target: { value } }) => {
-              handleChange(value);
+              const foundGroup = groups.find((g) => g?.groupName === value);
+
+              handleChange(foundGroup);
             }}
           >
             {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}
 
             {/* </PermissionGate> */}
 
-            {filteredGroups.length > 0 && (
+            {filteredGroups.length === 0 && (
               <MenuItem value="" disabled selected>
                 No Groups available
               </MenuItem>
@@ -188,7 +199,7 @@ const SelectGroup = () => {
               filteredGroups.map((g, i) => {
                 return (
                   <MenuItem key={i} value={g}>
-                    {g.groupName}
+                    {g}
                   </MenuItem>
                 );
               })}
