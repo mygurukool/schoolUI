@@ -26,6 +26,7 @@ import ADDICON from "@mui/icons-material/Add";
 import ForwardMessageModal from "../Modals/ForwardMessageModal";
 const Chat = ({ assignmentId }) => {
   const classes = useStyles();
+
   const {
     open: addChatUsersPromt,
     modalData: chatUsersAddList,
@@ -42,10 +43,15 @@ const Chat = ({ assignmentId }) => {
 
   const [value, setValue] = React.useState(0);
 
-  const { id, name, isTeacher } = useSelector((state) => state.user);
+  const { id, name, isTeacher, loginType } = useSelector((state) => state.user);
   const { teachers, messages, students } = useSelector((state) => state.common);
 
-  const courseTeachers = teachers.filter((t) => t.teacherId !== id);
+  // console.log("teachers", "students", students, teachers);
+
+  const courseTeachers =
+    loginType === "google"
+      ? teachers.filter((t) => t.teacherId !== id)
+      : teachers;
   const {
     groups,
     connectionStatus,
@@ -78,7 +84,7 @@ const Chat = ({ assignmentId }) => {
           role: "Teachers",
           name: t.name,
           profileImage: undefined,
-          id: t.teacherId,
+          id: t.teacherId || t.id || t._id,
         });
       });
     }
@@ -87,7 +93,7 @@ const Chat = ({ assignmentId }) => {
         role: "Students",
         name: t.name,
         profileImage: undefined,
-        id: t.studentId,
+        id: t.studentId || t.id || t._id,
       });
     });
     openaddChatUsersPromt({
@@ -144,16 +150,17 @@ const Chat = ({ assignmentId }) => {
           allowScrollButtonsMobile
           aria-label="scrollable force tabs example"
         >
-          {groups.length === 0 && courseTeachers.length > 0 && (
-            <Card>
-              <CardContent>
-                <Button onClick={onOpenAddUsersToChat}>
-                  <ADDICON />
-                  Add users
-                </Button>
-              </CardContent>
-            </Card>
-          )}
+          {groups.length === 0 &&
+            (courseTeachers.length > 0 || students?.length > 0) && (
+              <Card>
+                <CardContent>
+                  <Button onClick={onOpenAddUsersToChat}>
+                    <ADDICON />
+                    Add users
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
 
           {groups.map((g, i) => {
             const recepiants = g.users.filter((u) => u.id !== id);

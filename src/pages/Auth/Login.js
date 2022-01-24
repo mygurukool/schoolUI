@@ -146,14 +146,14 @@ const Login = (props) => {
           </div>
 
           <Typography className={classes.subTitle}>
-            Don't have an account?{" "}
+            Or create your own{" "}
             <Link
               className={classes.link}
               onClick={handleRegister}
               onClick={() => history.push("/register")}
               color="secondary"
             >
-              Sign Up
+              School Account
             </Link>
           </Typography>
         </CardContent>

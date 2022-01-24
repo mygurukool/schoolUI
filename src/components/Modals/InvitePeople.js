@@ -7,7 +7,7 @@ import ClipBoardIcon from "@mui/icons-material/ContentPaste";
 import PersonAddAlt from "@mui/icons-material/PersonAddAlt";
 import Delete from "@mui/icons-material/Delete";
 import Close from "@mui/icons-material/Close";
-
+import PermissionGate from "../PermissionGate";
 import {
   Autocomplete,
   Divider,
@@ -165,6 +165,9 @@ const InvitePeople = () => {
             type: "teacher",
           });
         }}
+        addPermission={"CAN-CREATE-TEACHER"}
+        deletePermission={"CAN-DELETE-TEACHER"}
+        viewPermission={"CAN-VIEW-TEACHER"}
       />
       <Section
         inviteOpen={inviteOpen}
@@ -185,6 +188,9 @@ const InvitePeople = () => {
             type: "student",
           });
         }}
+        addPermission={"CAN-CREATE-STUDENT"}
+        deletePermission={"CAN-DELETE-STUDENT"}
+        viewPermission={"CAN-VIEW-STUDENT"}
       />
     </ModalContainer>
   );
@@ -206,67 +212,75 @@ const Section = ({
   onInvite,
   onDelete,
   enableAdd,
+  addPermission,
+  deletePermission,
+  viewPermission,
 }) => {
   const classes = useStyles();
   const AddAction = () => {
     return (
-      <IconButton onClick={onAdd}>
-        <PersonAddAlt />
-      </IconButton>
+      <PermissionGate scopes={[addPermission]}>
+        <IconButton onClick={onAdd}>
+          <PersonAddAlt />
+        </IconButton>
+      </PermissionGate>
     );
   };
 
   const DeleteAction = ({ data }) => {
-    console.log("DeleteAction", data);
     return (
-      <IconButton onClick={() => onDelete(data.id || data._id)}>
-        <Delete />
-      </IconButton>
+      <PermissionGate scopes={[deletePermission]}>
+        <IconButton onClick={() => onDelete(data.id || data._id)}>
+          <Delete />
+        </IconButton>
+      </PermissionGate>
     );
   };
 
   return (
-    <Card variant="outlined" className={classes.section}>
-      <CardHeader subheader={title} action={enableAdd && <AddAction />} />
-      <Divider />
-      {inviteOpen?.type === type && (
-        <>
-          <CardContent>
-            <InviteSection
-              title={`Invite ${inviteOpen?.title}`}
-              onClose={onInviteClose}
-              onInvite={(data) => onInvite(data)}
-              data={inviteOpen}
-              isLoading={isLoading}
-            />
-          </CardContent>
-        </>
-      )}
-      <CardContent>
-        <List
-          dense
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        >
-          {data.map((d, i) => {
-            return (
-              <ListItem
-                key={i}
-                secondaryAction={<DeleteAction data={d} />}
-                disablePadding
-                sx={{ width: "100%" }}
-              >
-                <ListItemButton>
-                  <ListItemAvatar>
-                    <Avatar alt={d[avatarProp]} src={d[avatarProp]} />
-                  </ListItemAvatar>
-                  <ListItemText primary={d[name]} secondary={d[email]} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      </CardContent>
-    </Card>
+    <PermissionGate scopes={[viewPermission]}>
+      <Card variant="outlined" className={classes.section}>
+        <CardHeader subheader={title} action={enableAdd && <AddAction />} />
+        <Divider />
+        {inviteOpen?.type === type && (
+          <>
+            <CardContent>
+              <InviteSection
+                title={`Invite ${inviteOpen?.title}`}
+                onClose={onInviteClose}
+                onInvite={(data) => onInvite(data)}
+                data={inviteOpen}
+                isLoading={isLoading}
+              />
+            </CardContent>
+          </>
+        )}
+        <CardContent>
+          <List
+            dense
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            {data.map((d, i) => {
+              return (
+                <ListItem
+                  key={i}
+                  secondaryAction={<DeleteAction data={d} />}
+                  disablePadding
+                  sx={{ width: "100%" }}
+                >
+                  <ListItemButton>
+                    <ListItemAvatar>
+                      <Avatar alt={d[avatarProp]} src={d[avatarProp]} />
+                    </ListItemAvatar>
+                    <ListItemText primary={d[name]} secondary={d[email]} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </CardContent>
+      </Card>
+    </PermissionGate>
   );
 };
 

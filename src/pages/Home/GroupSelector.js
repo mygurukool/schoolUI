@@ -60,11 +60,13 @@ const SelectGroup = () => {
 
   const isTeacher = useSelector((state) => state.user.isTeacher);
   const handleChange = (value) => {
-    dispatch(removeUserAsTeacher());
     dispatch(removeAssignmentData());
     dispatch(removeCurrentCourse());
-    dispatch(setCurrentGroup(value));
-    dispatch(getAllCourses(value?._id || value?.id));
+    setSelectedGroup(value?.groupName);
+    dispatch(getAllCourses({ groupId: value?._id || value?.id }));
+    if (loginType === "google") {
+      dispatch(removeUserAsTeacher());
+    }
   };
 
   const handleEdit = (data) => {
@@ -104,7 +106,7 @@ const SelectGroup = () => {
 
   React.useEffect(() => {
     if (currentGroup) {
-      setSelectedGroup(currentGroup?.groupName);
+      handleChange(currentGroup);
     }
   }, [currentGroup]);
 
@@ -181,8 +183,7 @@ const SelectGroup = () => {
             value={selectedGroup}
             onChange={({ target: { value } }) => {
               const foundGroup = groups.find((g) => g?.groupName === value);
-
-              handleChange(foundGroup);
+              dispatch(setCurrentGroup(foundGroup));
             }}
           >
             {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}

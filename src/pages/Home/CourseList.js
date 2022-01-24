@@ -94,7 +94,6 @@ const CoursesList = () => {
   });
 
   const onSelectCourse = (c) => {
-    dispatch(removeUserAsTeacher());
     dispatch(setCurrentCourse(c));
 
     dispatch(getAssignments(c._id || c.id));
@@ -110,6 +109,8 @@ const CoursesList = () => {
         })
       );
     } else {
+      dispatch(removeUserAsTeacher());
+
       dispatch(
         getAllStudents({
           courseId: c?.id || c?._id,

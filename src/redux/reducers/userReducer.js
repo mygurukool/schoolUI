@@ -66,6 +66,7 @@ const sizeReducer = (state = initialstate, action) => {
       };
 
     case authTypes.GET_USER_DETAILS_SUCCESS:
+      console.log("isTeacher", checkIfTeacher(getData().user.role));
       return {
         ...state,
         isLogged: true,
@@ -83,7 +84,7 @@ const sizeReducer = (state = initialstate, action) => {
     case userTypes.GET_USER_DETAILS_FAIL:
       return {
         ...state,
-        // isLogged: false,
+        isLogged: false,
 
         isLoading: false,
         getDetailsLoading: false,

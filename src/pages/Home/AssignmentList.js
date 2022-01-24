@@ -59,6 +59,7 @@ const AssignmentList = () => {
   const { assignments, currentCourse, courses } = useSelector(
     (state) => state.common
   );
+  const { isTeacher, loginType } = useSelector((state) => state.user);
 
   const handleExpand = (i) => {
     if (expanded === i) {
@@ -101,6 +102,8 @@ const AssignmentList = () => {
                     setPlayingVideo={setPlayingVideo}
                     onEdit={() => onEdit(a)}
                     onCheck={() => onCheck(a)}
+                    isTeacher={isTeacher}
+                    loginType={loginType}
                   />
                 );
               })}
@@ -155,6 +158,8 @@ const AssignmentListItem = ({
     dueTime,
     id,
     _id,
+    isTeacher,
+    loginType,
   } = props;
   const [enableChat, setEnableChat] = React.useState(false);
   const classes = useStyles();
@@ -171,7 +176,7 @@ const AssignmentListItem = ({
 
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
-
+  const isMyGuruKool = loginType === "mygurukool";
   const ChatBtn = () => {
     return (
       <Button
@@ -219,19 +224,28 @@ const AssignmentListItem = ({
               />
             </Grid>
           )}
-          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
+          {/* <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}> */}
+          {isTeacher && (
             <Grid item lg={1}>
-              <Tooltip title="Edit Assignment">
+              <Tooltip
+                title={
+                  isMyGuruKool
+                    ? "Edit Assignment"
+                    : "This functionality is not available Right now"
+                }
+              >
                 <IconButton
                   size="small"
                   color="secondary"
+                  disabled={!isMyGuruKool}
                   onClick={() => onEdit()}
                 >
                   <Edit fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Grid>
-          </PermissionsGate>
+          )}
+          {/* </PermissionsGate> */}
 
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
             <Grid item lg={1}>

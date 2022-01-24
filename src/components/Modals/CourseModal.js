@@ -52,16 +52,20 @@ const CreateCourse = () => {
   return (
     <ModalContainer
       open={open}
-      title="Create Course"
+      title={modalData ? "Edit Course" : "Create Course"}
       onClose={() => handleClose()}
       size="xs"
+      hideButtons
     >
       <FormCreator
-        mode={"add"}
+        mode={modalData ? "edit" : "add"}
         onSubmit={(e) => handleSubmit(e)}
         onCancel={handleClose}
-        formData={formData}
-        data={{ groupId: currentGroup?.id || currentGroup?._id, ...modalData }}
+        formData={modalData ? editformData : createformData}
+        data={{
+          groupId: [currentGroup?.id || currentGroup?._id],
+          ...modalData,
+        }}
         optionsData={{
           groupId: groups,
         }}
@@ -71,7 +75,7 @@ const CreateCourse = () => {
 };
 
 export default CreateCourse;
-const formData = [
+const createformData = [
   {
     type: "text",
     name: "courseName",
@@ -81,7 +85,7 @@ const formData = [
     size: 12,
   },
   {
-    type: "select",
+    type: "multiselect",
     name: "groupId",
     label: "Class Name",
     placeholder: "Name of the Class the Course should belong to.",
@@ -90,5 +94,16 @@ const formData = [
     hasOptions: true,
     optionLabelProp: "groupName",
     optionValueProp: "id",
+  },
+];
+
+const editformData = [
+  {
+    type: "text",
+    name: "courseName",
+    label: "Name",
+    placeholder: "eg: English, French",
+    required: true,
+    size: 12,
   },
 ];

@@ -21,6 +21,7 @@ const useWhiteBoard = () => {
     name: userName,
     loginType,
   } = useSelector((state) => state.user);
+
   const canCreateWhiteboard = usePermissions({
     scopes: [SCOPES.CAN_CREATE_WHITEBOARD],
     exceptionLogin: "google",

@@ -30,7 +30,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
       try {
         await axios({
           method: "get",
-          url: `${BASEURL}chat/usergroups`,
+          url: `${BASEURL}/chat/usergroups`,
           params: data,
         }).then((res) => {
           const resData = res.data.data;
@@ -103,6 +103,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
   };
 
   const appendGroups = useCallback(async (data) => {
+    console.log("chat data", data);
     if (data && data?.length > 0) {
       const filteredGroups = await Promise.all(
         data.filter((g) => {
