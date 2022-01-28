@@ -89,6 +89,7 @@ const FileViewModal = (props) => {
       onClose={() => dispatch(closeModal())}
       title={modalData?.filename || "Upload Excersice"}
       size="xl"
+      fullScreen
     >
       {/* {modalData && (
           <FileViewer

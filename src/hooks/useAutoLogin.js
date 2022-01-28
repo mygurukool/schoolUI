@@ -18,7 +18,7 @@ const useAutoLogin = () => {
       return;
     } else if (token) {
       // console.log("token");
-      dispatch(setLocalLogin({ loginType }));
+      // dispatch(setLocalLogin({ loginType }));
       dispatch(getUserDetails({ loginType: loginType }));
 
       setReady(true);

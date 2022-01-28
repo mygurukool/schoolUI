@@ -80,6 +80,7 @@ const useConference = () => {
   const handleLeaveConference = () => {
     setIsConferenceOpen(false);
     setConferenceData();
+    setIsConferenceMaximized(false);
   };
 
   const initializeConference = async () => {

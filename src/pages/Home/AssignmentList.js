@@ -224,8 +224,21 @@ const AssignmentListItem = ({
               />
             </Grid>
           )}
-          {/* <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}> */}
-          {isTeacher && (
+          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
+            <Grid item lg={1}>
+              <Tooltip title={"Edit Assignment"}>
+                <IconButton
+                  size="small"
+                  color="secondary"
+                  disabled={!isMyGuruKool}
+                  onClick={() => onEdit()}
+                >
+                  <Edit fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+          </PermissionsGate>
+          {isTeacher && loginType !== "mygurukool" && (
             <Grid item lg={1}>
               <Tooltip
                 title={
@@ -245,7 +258,6 @@ const AssignmentListItem = ({
               </Tooltip>
             </Grid>
           )}
-          {/* </PermissionsGate> */}
 
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
             <Grid item lg={1}>

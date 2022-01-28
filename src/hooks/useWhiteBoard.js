@@ -51,6 +51,7 @@ const useWhiteBoard = () => {
 
   const handleLeaveWhiteboard = () => {
     setWhiteBoardUrl();
+    setIsWhiteboardMaximized(false);
   };
 
   const initializeWhiteBoard = () => {

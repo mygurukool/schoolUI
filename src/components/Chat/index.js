@@ -79,23 +79,27 @@ const Chat = ({ assignmentId }) => {
   const onOpenAddUsersToChat = (id) => {
     let data = [];
     if (isTeacher) {
-      courseTeachers.forEach((t) => {
+      courseTeachers
+        .filter((t) => t.teacherId !== id || t.id !== id || t._id !== id)
+        .forEach((t) => {
+          data.push({
+            role: "Teachers",
+            name: t.name,
+            profileImage: undefined,
+            id: t.teacherId || t.id || t._id,
+          });
+        });
+    }
+    students
+      .filter((t) => t.studentId !== id || t.id !== id || t._id !== id)
+      .forEach((t) => {
         data.push({
-          role: "Teachers",
+          role: "Students",
           name: t.name,
           profileImage: undefined,
-          id: t.teacherId || t.id || t._id,
+          id: t.studentId || t.id || t._id,
         });
       });
-    }
-    students.forEach((t) => {
-      data.push({
-        role: "Students",
-        name: t.name,
-        profileImage: undefined,
-        id: t.studentId || t.id || t._id,
-      });
-    });
     openaddChatUsersPromt({
       assignmentId: id,
       options: data,
