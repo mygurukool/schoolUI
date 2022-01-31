@@ -32,8 +32,22 @@ import { getAllStudents } from "../../redux/action/studentActions";
 import { getAllTeachers } from "../../redux/action/teacherActions";
 
 const useStyles = makeStyles((theme) => ({
-  courseBtn: {
+  root: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "auto",
+  },
+  courseBtnContainer: {
     borderRadius: theme.shape.borderRadius,
+    transition: 'all 0.3s ease-in-out',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.white,
+      boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+    }
+  },
+  courseBtn: {
     margin: theme.spacing(1, 0, 0, 0),
     padding: theme.spacing(0.5, 1),
     display: "flex",
@@ -58,15 +72,20 @@ const useStyles = makeStyles((theme) => ({
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
+
   },
   activeCourse: {
-    border: `5px solid ${theme.palette.secondary.main}`,
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.white,
+    boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
   },
   addBtn: {
     width: theme.spacing(9),
     height: theme.spacing(9),
     borderRadius: theme.spacing(10),
     display: "flex",
+    margin: theme.spacing(1, 0, 0, 0),
+    padding: theme.spacing(0.5, 1),
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.palette.gray[500],
@@ -167,33 +186,55 @@ const CoursesList = () => {
 
   const AddNewCourse = ({ data }) => {
     return (
+      // <ButtonBase
+      //   className={clsx(classes.buttonBase)}
+      //   onClick={() => onOpenModal()}
+      // >
+      //   <div className={clsx(classes.courseBtn)}>
+      //     <img
+      //       src="images/add.jpg"
+      //       // className={isActive && classes.activeCourse}
+      //       style={{ marginBottom: 10 }}
+      //     />
+      //     <Typography variant="subtitle2">Add New Course</Typography>
+      //   </div>
+      //   {/* <div className={clsx(classes.addBtn)}>
+      //     <ADDICON fontSize="large" />
+      //   </div> */}
+      //   {/* <Typography variant="subtitle2">Add New Course</Typography> */}
+      // </ButtonBase>
       <ButtonBase
-        className={clsx(classes.courseBtn)}
+        className={clsx(classes.buttonBase)}
         onClick={() => onOpenModal()}
       >
-        <div className={clsx(classes.addBtn)}>
-          <ADDICON fontSize="large" />
+        <div className={clsx(classes.courseBtn)}>
+          <img
+            src="images/add.jpg"
+            // className={isActive && classes.activeCourse}
+            style={{ marginBottom: 10 }}
+          />
+          <Typography variant="subtitle2">Add New Course</Typography>
         </div>
-        <Typography variant="body2">Add New Course</Typography>
       </ButtonBase>
     );
   };
 
   const CourseBtns = ({ data }) => {
-    const isActive = data.id === currentCourse?.id;
     const imaage = "https://source.unsplash.com/random";
     return (
       <ButtonBase
-        className={clsx(classes.courseBtn)}
         onClick={() => onSelectCourse(data)}
+        className={classes.buttonBase}
       >
-        <img
-          src={imaage}
-          alt={data.courseName}
-          className={isActive && classes.activeCourse}
-          style={{ marginBottom: 10 }}
-        />
-        <Typography variant="body2">{data.courseName}</Typography>
+        <div className={clsx(classes.courseBtn)}>
+          <img
+            src={imaage}
+            alt={data.courseName}
+            // className={isActive && classes.activeCourse}
+            style={{ marginBottom: 10 }}
+          />
+          <Typography variant="subtitle2">{data.courseName}</Typography>
+        </div>
       </ButtonBase>
     );
   };
@@ -216,7 +257,6 @@ const CoursesList = () => {
       </Menu>
     );
   };
-
   return (
     <>
       <PermissionGate scopes={[SCOPES.CAN_DELETE_COURSE]}>
@@ -238,27 +278,28 @@ const CoursesList = () => {
       <Grid
         item
         lg={12}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          overflow: "auto",
-        }}
+        className={classes.root}
       >
         <PermissionGate scopes={[SCOPES.canCreate]}>
           {groups.length === 0 && (
-            <Alert severity="info">Please create a group to add courses</Alert>
+            <Alert severity="info" variant="filled" style={{ marginBottom: 20 }}>Please create a group to add courses</Alert>
           )}
         </PermissionGate>
 
         {filteredCourses &&
           filteredCourses.length > 0 &&
           filteredCourses.map((c, index) => {
+            const isActive = c.id === currentCourse?.id;
+
             return (
               <div
                 style={{
                   position: "relative",
+                  margin: '0 5px',
+                  marginBottom: 20
                 }}
+                className={clsx(classes.courseBtnContainer, isActive && classes.activeCourse)}
+              // className={classes.courseBtnContainer}
               >
                 <PermissionGate
                   scopes={[
@@ -271,7 +312,7 @@ const CoursesList = () => {
                     onClick={(e) => handleOpenMenu(e, c)}
                     style={{
                       position: "absolute",
-                      top: -10,
+                      top: 0,
                       right: 0,
                       zIndex: 10,
                     }}
@@ -287,7 +328,15 @@ const CoursesList = () => {
 
         {groups.length > 0 && (
           <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
-            <AddNewCourse />
+            <div
+              style={{
+                margin: '0 5px',
+                marginBottom: 20
+              }}
+              className={classes.courseBtnContainer}
+            >
+              <AddNewCourse />
+            </div>
           </PermissionGate>
         )}
       </Grid>
@@ -296,3 +345,4 @@ const CoursesList = () => {
 };
 
 export default CoursesList;
+

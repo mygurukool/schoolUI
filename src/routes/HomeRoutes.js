@@ -5,10 +5,10 @@ import Navbar from "../components/Navbar";
 import Submissions from "../pages/Submissions";
 const HomeRoutes = () => {
   return (
-    <div>
+    <>
       <Navbar />
       <Route exact path="/" component={Home} />
-    </div>
+    </>
   );
 };
 

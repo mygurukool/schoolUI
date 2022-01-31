@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import {
   Card,
   CardContent,
@@ -56,57 +56,55 @@ const Login = (props) => {
     signIn();
   };
 
-  const handleMicrosoftLogin = () => {};
+  const handleMicrosoftLogin = () => { };
 
-  const handleRegister = () => {};
-
+  const handleRegister = () => { };
+  const theme = useTheme()
   return (
     <div className={classes.root}>
       <Card elevation={0} className={classes.card}>
         <CardContent>
-          <Typography variant="h4" mb={2} color="primary">
+          <Typography variant="h4" mb={2} color="inherit">
             Get Started
           </Typography>
-          <Typography mb={2} color="secondary">
+          <Typography mb={2} color="inherit">
             Hi, Welcome back!
           </Typography>
           <div className={classes.loginBtns}>
             <Grid container spacing={2}>
               <Grid item lg={6}>
-                <Card
-                  elevation={0}
+
+                <ButtonBase
                   className={classes.iconBtn}
+                  style={{ border: `1px solid ${theme.palette.primary.main}` }}
                   onClick={(e) => handleMicrosoftLogin(e)}
                 >
-                  <ButtonBase>
-                    <CardContent>
-                      <img
-                        alt="microsoft"
-                        src="images/mt.svg"
-                        className={classes.icon}
-                      />
-                      <Typography variant="subtitle1">
-                        Login with Microsoft Teams
-                      </Typography>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
+                  <CardContent>
+                    <img
+                      alt="microsoft"
+                      src="images/mt.svg"
+                      className={classes.icon}
+                    />
+                    <Typography variant="subtitle1">
+                      Login to Microsoft Teams
+                    </Typography>
+                  </CardContent>
+                </ButtonBase>
               </Grid>
               <Grid item lg={6}>
-                <Card
-                  elevation={0}
+
+                <ButtonBase
                   className={classes.iconBtn}
+                  style={{ border: `1px solid ${theme.palette.primary.main}` }}
                   onClick={() => handleGoogleLogin()}
                 >
-                  <ButtonBase>
-                    <CardContent>
-                      <img src="images/gc.svg" className={classes.icon} />
-                      <Typography variant="subtitle1">
-                        Login with Google Classroom
-                      </Typography>
-                    </CardContent>
-                  </ButtonBase>
-                </Card>
+                  <CardContent>
+                    <img src="images/gc.svg" className={classes.icon} />
+                    <Typography variant="subtitle1">
+                      Login to Google Classroom
+                    </Typography>
+                  </CardContent>
+                </ButtonBase>
               </Grid>
             </Grid>
           </div>
@@ -117,6 +115,7 @@ const Login = (props) => {
             </div>
             <div className={classes.hrLine} />
           </div>
+          <Typography className={classes.subTitle} color="secondary" variant="subtitle1" sx={{ mb: 2 }}>Login to Mougli School</Typography>
           <FormCreator
             mode={"add"}
             onSubmit={(e) => handleLogin(e, "mygurukool")}
@@ -136,7 +135,7 @@ const Login = (props) => {
           >
             <Typography>
               <Link
-                color="secondary"
+                color="inherit"
                 className={classes.link}
                 onClick={() => history.push("/forgot-password")}
               >
@@ -151,7 +150,7 @@ const Login = (props) => {
               className={classes.link}
               onClick={handleRegister}
               onClick={() => history.push("/register")}
-              color="secondary"
+              color="inherit"
             >
               School Account
             </Link>
@@ -229,13 +228,12 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "40px 40px 90px rgba(0, 0, 0, 0.12)",
   },
   subTitle: {
+    textAlign: 'center',
     color: theme.palette.gray[1200],
-    letterSpacing: theme.spacing(0.1),
     fontSize: theme.palette.fontSizes.base,
     marginBottom: theme.spacing(2),
   },
   link: {
-    letterSpacing: theme.spacing(0.1),
     fontSize: theme.palette.fontSizes.base,
     margin: theme.spacing(2, 0),
     fontWeight: theme.palette.fontWeights.semiBold,
@@ -246,13 +244,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1.5, 5),
   },
   iconBtn: {
-    background: "transparent",
     width: "100%",
     height: "100%",
     color: theme.palette.primary.main,
     border: `1px solid ${theme.palette.primary.main}`,
     display: "flex",
-    borderRadius: theme.palette.radius.base,
     flexDirection: "column",
     marginBottom: theme.spacing(2),
     transition: "all 0.3s ease-in-out",
@@ -261,10 +257,11 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:hover": {
       background: theme.palette.primary.main,
+      boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+
       "& .MuiTypography-root": {
         color: theme.palette.white,
       },
-      transform: "scale(1.01)",
     },
     "&:last-child": {
       marginBottom: theme.spacing(0),
@@ -277,7 +274,6 @@ const useStyles = makeStyles((theme) => ({
   },
   btnText: {
     flex: 1,
-    fontWeight: theme.palette.fontWeights.semiBold,
   },
   textField: {
     marginBottom: theme.spacing(2),

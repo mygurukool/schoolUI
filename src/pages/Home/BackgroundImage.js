@@ -10,8 +10,6 @@ const useStyles = makeStyles((theme) => ({
     zIndex: -1,
     top: 0,
     width: "100%",
-    display: "flex",
-    flexDirection: "column",
   },
 
   bg: {
@@ -22,12 +20,19 @@ const useStyles = makeStyles((theme) => ({
     height: 180,
   },
   sectionBg: {
+    position: "absolute",
+    height: "100%",
+    left: 0,
+    zIndex: -1,
+    top: 0,
+    width: "100%",
     backgroundSize: "100% 100%",
     backgroundRepeat: "no-repeat",
-
-    flex: 3,
-
+    backgroundAttachment: 'fixed',
+    backgroundPosition: "center",
     width: "100%",
+    height: "100%",
+    minHeight: '100%'
   },
 }));
 
@@ -36,15 +41,16 @@ const BackgroundImage = (props) => {
 
   const { sectionBg } = useSelector((state) => state.user);
   return (
-    <div className={classes.bgContainer}>
-      <div className={classes.bg} />
-      <div
-        className={classes.sectionBg}
-        style={{
-          backgroundImage: `url(${sectionBg})`,
-        }}
-      />
-    </div>
+    <div
+      className={classes.sectionBg}
+      style={{
+        backgroundImage: `url(${sectionBg})`,
+      }}
+    />
+    // <div className={classes.bgContainer}>
+    //   {/* <div className={classes.bg} /> */}
+
+    // </div>
   );
 };
 

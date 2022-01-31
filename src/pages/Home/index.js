@@ -6,9 +6,11 @@ import {
   CardContent,
   CardHeader,
   Container,
+  Divider,
   Grid,
   IconButton,
   Stack,
+  Typography,
 } from "@mui/material";
 import ConferenceIcon from "@mui/icons-material/VideoCallTwoTone";
 
@@ -183,7 +185,7 @@ export default Home;
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
-    minHeight: "90vh",
+    minHeight: "100vh",
     maxHeight: "100%",
     overflow: "hidden",
   },
@@ -198,8 +200,8 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     background: "white",
     borderRadius: theme.palette.radius.base,
-    boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
-    padding: theme.spacing(2),
+    // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
+    padding: theme.spacing(3, 2.5, 0, 2.5),
   },
   subjectContainer: {
     display: "flex",
@@ -221,5 +223,6 @@ const useStyles = makeStyles((theme) => ({
   },
   middleContainer: {
     marginTop: theme.spacing(1),
+    padding: theme.spacing(3, 2.5),
   },
 }));

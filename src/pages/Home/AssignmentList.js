@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import {
   Accordion,
   AccordionDetails,
@@ -82,10 +82,12 @@ const AssignmentList = () => {
       <>
         {currentCourse ? (
           <>
-            <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
-              <ActionBar />
-            </PermissionsGate>
-
+            <div className={classes.heading}>
+              <Typography variant="h6">Assignments</Typography>
+              <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
+                <ActionBar />
+              </PermissionsGate>
+            </div>
             <VideoModal
               open={Boolean(video)}
               onClose={() => setPlayingVideo()}
@@ -110,7 +112,7 @@ const AssignmentList = () => {
             </div>
           </>
         ) : (
-          <Alert severity="info">Please Select a course</Alert>
+          <Alert severity="info" variant="filled">Please Select a course</Alert>
         )}
       </>
     )
@@ -126,12 +128,10 @@ const ActionBar = () => {
     dispatch(openModal("assignment"));
   };
   return (
-    <Stack direction="row" mb="2">
-      <div />
-
-      <Button variant="contained" onClick={onAddAssignment}>
+    <Stack direction="row" sx={{ mb: 1 }}>
+      <Button color="secondary" variant="outlined" onClick={onAddAssignment}>
         <Add />
-        Add new assignment
+        Add
       </Button>
     </Stack>
   );
@@ -173,14 +173,14 @@ const AssignmentListItem = ({
   const currentDiffrence = dueDate
     ? moment(dueDateTime, DUEDATETIMEFORMAT).diff(moment(), "days")
     : undefined;
-
+  const theme = useTheme()
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
   const isMyGuruKool = loginType === "mygurukool";
   const ChatBtn = () => {
     return (
       <Button
-        variant="text"
+        variant="outlined"
         onClick={() => setEnableChat(!enableChat)}
         color="inherit"
         startIcon={<ChatIcon />}
@@ -209,12 +209,13 @@ const AssignmentListItem = ({
       expanded={expanded}
       onChange={onSelectAssignment}
       className={classes.Accordion}
+      style={expanded ? { border: `1px solid ${theme.palette.gray[700]}`, background: theme.palette.gray[700] } : undefined}
       elevation={0}
     >
       <AccordionSummary expandIcon={<RightIcon />}>
         <Grid container>
           <Grid item lg={dueDateTime ? 6 : 10}>
-            <Typography>{assignmentTitle}</Typography>
+            <Typography variant="subtitle2" >{assignmentTitle}</Typography>
           </Grid>
           {dueDateTime && (
             <Grid item lg={4}>
@@ -225,52 +226,46 @@ const AssignmentListItem = ({
             </Grid>
           )}
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-            <Grid item lg={1}>
-              <Tooltip title={"Edit Assignment"}>
-                <IconButton
-                  size="small"
-                  color="secondary"
-                  disabled={!isMyGuruKool}
-                  onClick={() => onEdit()}
-                >
-                  <Edit fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            <Tooltip title={"Edit Assignment"}>
+              <IconButton
+                size="small"
+                color="secondary"
+                disabled={!isMyGuruKool}
+                onClick={() => onEdit()}
+              >
+                <Edit fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </PermissionsGate>
           {isTeacher && loginType !== "mygurukool" && (
-            <Grid item lg={1}>
-              <Tooltip
-                title={
-                  isMyGuruKool
-                    ? "Edit Assignment"
-                    : "This functionality is not available Right now"
-                }
+            <Tooltip
+              title={
+                isMyGuruKool
+                  ? "Edit Assignment"
+                  : "This functionality is not available Right now"
+              }
+            >
+              <IconButton
+                size="small"
+                color="secondary"
+                disabled={!isMyGuruKool}
+                onClick={() => onEdit()}
               >
-                <IconButton
-                  size="small"
-                  color="secondary"
-                  disabled={!isMyGuruKool}
-                  onClick={() => onEdit()}
-                >
-                  <Edit fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+                <Edit fontSize="small" />
+              </IconButton>
+            </Tooltip>
           )}
 
           <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-            <Grid item lg={1}>
-              <Tooltip title="Check submissions">
-                <IconButton
-                  onClick={() => onCheck()}
-                  size="small"
-                  color="secondary"
-                >
-                  <FactCheck fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Grid>
+            <Tooltip title="Check submissions">
+              <IconButton
+                onClick={() => onCheck()}
+                size="small"
+                color="secondary"
+              >
+                <FactCheck fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </PermissionsGate>
 
           {!expanded && (
@@ -285,7 +280,7 @@ const AssignmentListItem = ({
             </Grid>
           )}
         </Grid>
-      </AccordionSummary>
+      </AccordionSummary >
       <AccordionDetails className={classes.AccordionDetails}>
         <Stack
           spacing={1}
@@ -303,19 +298,22 @@ const AssignmentListItem = ({
               endAction={ChatBtn}
             >
               <Grid container>
-                <Grid item container lg={6} md={6} sm={12} xs={12}>
-                  {audioVideo?.map((a, ai) => {
-                    return <AudioVideoCard key={ai} {...a} />;
-                  })}
-                  {hasAudioVideo.map((a, i) => {
-                    return (
-                      <Videocard
-                        key={i}
-                        {...a.youtubeVideo}
-                        onClick={() => setPlayingVideo(a.youtubeVideo)}
-                      />
-                    );
-                  })}
+                <Grid item lg={enableChat ? 6 : 12} md={enableChat ? 6 : 12}>
+                  <Grid container >
+                    {audioVideo?.map((a, ai) => {
+                      return <AudioVideoCard size={enableChat ? 12 : 6} key={ai} {...a} />;
+                    })}
+                    {hasAudioVideo.map((a, i) => {
+                      return (
+                        <Videocard
+                          key={i}
+                          size={enableChat ? 12 : 6}
+                          {...a.youtubeVideo}
+                          onClick={() => setPlayingVideo(a.youtubeVideo)}
+                        />
+                      );
+                    })}
+                  </Grid>
                 </Grid>
                 {enableChat && (
                   <Grid item lg={6}>
@@ -347,7 +345,7 @@ const AssignmentListItem = ({
           )}
         </Stack>
       </AccordionDetails>
-    </Accordion>
+    </Accordion >
   );
 };
 
@@ -357,11 +355,11 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
     <>
       <Stack spacing={1} direction="column" pb={2} pt={2}>
         <Stack direction="row" justifyContent="space-between">
-          <Typography className={classes.title}>{title}</Typography>
+          <Typography variant="subtitle1" className={classes.title}>{title}</Typography>
           {EndAction && <EndAction />}
         </Stack>
 
-        <div> {children}</div>
+        {children}
       </Stack>
     </>
   );
@@ -378,23 +376,34 @@ const useStyles = makeStyles((theme) => ({
 
   Accordion: {
     border: `1px solid ${theme.palette.divider}`,
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
+    // "&:not(:last-child)": {
+    //   borderBottom: 0,
+    // },
     "&:before": {
       display: "none",
     },
+    transition: 'all 0.3s ease 0s',
     marginBottom: 0,
+    '&:hover': {
+      border: `1px solid ${theme.palette.gray[700]}`,
+      background: theme.palette.gray[700]
+    }
   },
 
   AccordionDetails: {
     padding: theme.spacing(2),
-    borderTop: "1px solid rgba(0, 0, 0, .125)",
-    borderBottom: "1px solid rgba(0, 0, 0, .125)",
-    backgroundColor: theme.palette.gray[400],
+    // borderTop: "1px solid rgba(0, 0, 0, .125)",
+    // borderBottom: "1px solid rgba(0, 0, 0, .125)",
+    backgroundColor: theme.palette.gray[100],
   },
   title: {
     fontWeight: theme.palette.fontWeights.bold,
+  },
+  heading: {
+    display: "flex",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    marginBottom: theme.spacing(1)
   },
 }));
 // const AssignmentListItem = ({

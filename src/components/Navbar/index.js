@@ -11,6 +11,7 @@ import {
   Typography,
   Divider,
   Button,
+  Link,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
 // import NotificationsIcon from '@mui/icons-material/NotificationsTwoTone'
@@ -243,37 +244,27 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                     </IconButton> */}
           <ul className={classes.navList}>
             <li>
-              <Button size="large">
-                <Typography className={classes.navLink}>
-                  {lang("home")}
-                </Typography>
-              </Button>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("home")}
+              </Typography>
             </li>
             <li>
-              <Button size="large">
-                <Typography className={classes.navLink}>
-                  {lang("about")}
-                </Typography>
-              </Button>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("about")}
+              </Typography>
             </li>
             <li>
-              <Button size="large">
-                <Typography className={classes.navLink}>
-                  {lang("contact")}
-                </Typography>
-              </Button>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("contact")}
+              </Typography>
             </li>
-            <li>
-              <Button
-                size="large"
-                variant="contained"
-                color="secondary"
-                onClick={handleLanguageClick}
-              >
-                <Typography className={classes.navLink}>
-                  {lang("language")}
-                </Typography>
-              </Button>
+            <li><Button
+              variant="contained"
+              color="neutral"
+              onClick={handleLanguageClick}
+            >
+              {lang("language")}
+            </Button>
             </li>
             <li>
               {user?.isLogged && (
@@ -398,15 +389,15 @@ const useStyles = makeStyles((theme) => ({
     flex: 1.5,
     "& li": {
       padding: theme.spacing(0.5),
-      "& .MuiButton-root": {
-        color: theme.palette.text.primary,
-      },
     },
   },
   navLink: {
     textTransform: "capitalize",
-    fontSize: theme.palette.fontSizes.base,
-    fontWeight: theme.palette.fontWeights.medium,
+    cursor: 'pointer',
+    transition: 'all 0.3s ease 0s',
+    '&:hover': {
+      transform: 'translateY(-3px)'
+    }
   },
   avatar: {
     background: theme.palette.secondary.main,

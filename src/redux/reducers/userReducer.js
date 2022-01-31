@@ -12,7 +12,7 @@ const initialstate = {
   closeModal: false,
   loginType: undefined,
   // sectionBg: "/images/bg.jpg",
-  sectionBg: "/background/bg3.jpeg",
+  sectionBg: "/background/home.jpg",
   isTeacher: false,
   organization: undefined,
 };

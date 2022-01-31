@@ -35,7 +35,7 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
         exceptionLogin={"google"}
       >
         <Button
-          color="primary"
+          color="neutral"
           variant="contained"
           startIcon={<ConferenceIcon />}
           onClick={() => initializeConference()}

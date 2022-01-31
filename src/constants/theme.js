@@ -38,17 +38,26 @@ let theme = createTheme({
     // primary: {
     //   main: "#1f5f61",
     // },
+    // primary: {
+    //   main: "#51C3FE",
+    //   light: "#e8e6f2",
+    //   contrastText: "#fff",
+
+    // },
     primary: {
-      main: "#a2d2ff",
+      main: "#EBA049",
       light: "#e8e6f2",
+      contrastText: "#fff",
     },
     secondary: {
-      main: "#FF865E",
+      main: "#D2565B",
       light: "#fdeaeb",
+      contrastText: "#fff",
     },
     neutral: {
-      main: "#FEE440",
-      contrastText: "#000",
+      main: "#D2565B",
+      light: "#fce9b3",
+      contrastText: "#fff",
     },
     success: {
       main: "#09910d",
@@ -89,7 +98,7 @@ let theme = createTheme({
     },
     radius: {
       base: "8px",
-      small: "3px",
+      small: "5px",
       medium: "12px",
       big: "20px",
       bigger: "50px",
@@ -119,6 +128,12 @@ let theme = createTheme({
   },
   typography: {
     fontFamily: ["Poppins"].join(","),
+    subtitle1: {
+      fontWeight: 500,
+    },
+    subtitle2: {
+      fontWeight: 500,
+    },
     h1: {
       fontWeight: 700,
     },
@@ -135,7 +150,7 @@ let theme = createTheme({
       fontWeight: 700,
     },
     h6: {
-      fontWeight: 700,
+      fontWeight: 600,
     },
   },
 
@@ -179,7 +194,11 @@ theme = createTheme(theme, {
         root: {
           fontWeight: theme.palette.fontWeights.medium,
           textTransform: "capitalize",
-          borderRadius: theme.palette.radius.base,
+          transition: 'all 0.3s ease 0s',
+          '&:hover': {
+            boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+            transform: 'translateY(-3px)'
+          },
         },
       },
     },
@@ -187,7 +206,7 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           padding: theme.spacing(0.5),
-          borderRadius: theme.palette.radius.base,
+          borderRadius: theme.palette.radius.small,
         },
       },
     },
@@ -195,7 +214,7 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           "& .MuiDialog-paper": {
-            borderRadius: theme.palette.radius.medium,
+            borderRadius: theme.palette.radius.base,
           },
         },
       },
@@ -206,9 +225,9 @@ theme = createTheme(theme, {
       },
       styleOverrides: {
         root: {
-          borderRadius: theme.palette.radius.base,
-          borderTopLeftRadius: theme.palette.radius.base,
-          borderTopRightRadius: theme.palette.radius.base,
+          borderRadius: theme.palette.radius.small,
+          borderTopLeftRadius: theme.palette.radius.small,
+          borderTopRightRadius: theme.palette.radius.small,
           // "&.Mui-focused": {
           //     backgroundColor: theme.palette.textField.main,
           // },

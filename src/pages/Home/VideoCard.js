@@ -28,7 +28,7 @@ const Videocard = ({ onClick, title, ...props }) => {
   const classes = useStyles();
   console.log("card props", props);
   return (
-    <Grid item lg={6}>
+    <Grid item lg={props.size}>
       <ButtonBase onClick={onClick}>
         <Card className={classes.root} elevation={0}>
           <CardMedia
