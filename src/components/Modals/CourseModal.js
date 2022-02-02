@@ -61,7 +61,7 @@ const CreateCourse = () => {
         mode={modalData ? "edit" : "add"}
         onSubmit={(e) => handleSubmit(e)}
         onCancel={handleClose}
-        formData={modalData ? editformData : createformData}
+        formData={createformData}
         data={{
           groupId: [currentGroup?.id || currentGroup?._id],
           ...modalData,

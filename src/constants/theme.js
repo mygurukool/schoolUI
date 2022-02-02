@@ -200,6 +200,12 @@ theme = createTheme(theme, {
             transform: 'translateY(-3px)'
           },
         },
+        text: {
+          '&:hover': {
+            boxShadow: 'none',
+            transform: 'translateY(-3px)'
+          },
+        },
       },
     },
     MuiButtonBase: {

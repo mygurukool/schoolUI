@@ -23,7 +23,7 @@ const Conference = ({
   const classes = useStyles();
   return (
     <Grid item lg={isSectionMaximized ? 12 : 6}>
-      <Card>
+      <Card elevation={0}>
         <CardHeader
           title="Conference"
           action={

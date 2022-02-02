@@ -74,7 +74,7 @@ const AssignmentList = () => {
   };
 
   const onCheck = (data) => {
-    history.push(`/submission/${data.id || data._id}`);
+    dispatch(openModal("submission", data));
   };
 
   return (
@@ -209,77 +209,82 @@ const AssignmentListItem = ({
       expanded={expanded}
       onChange={onSelectAssignment}
       className={classes.Accordion}
-      style={expanded ? { border: `1px solid ${theme.palette.gray[700]}`, background: theme.palette.gray[700] } : undefined}
+      style={expanded ? {
+        border: `1px solid ${theme.palette.gray[500]}`,
+        background: theme.palette.gray[500], boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
+      } : undefined}
       elevation={0}
     >
       <AccordionSummary expandIcon={<RightIcon />}>
-        <Grid container>
-          <Grid item lg={dueDateTime ? 6 : 10}>
-            <Typography variant="subtitle2" >{assignmentTitle}</Typography>
-          </Grid>
-          {dueDateTime && (
-            <Grid item lg={4}>
-              <DueDateTime
-                dueDateTime={dueDateTime}
-                currentDiffrence={currentDiffrence}
-              />
-            </Grid>
-          )}
-          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-            <Tooltip title={"Edit Assignment"}>
-              <IconButton
-                size="small"
-                color="secondary"
-                disabled={!isMyGuruKool}
-                onClick={() => onEdit()}
-              >
-                <Edit fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </PermissionsGate>
-          {isTeacher && loginType !== "mygurukool" && (
-            <Tooltip
-              title={
-                isMyGuruKool
-                  ? "Edit Assignment"
-                  : "This functionality is not available Right now"
-              }
-            >
-              <IconButton
-                size="small"
-                color="secondary"
-                disabled={!isMyGuruKool}
-                onClick={() => onEdit()}
-              >
-                <Edit fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-
-          <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-            <Tooltip title="Check submissions">
-              <IconButton
-                onClick={() => onCheck()}
-                size="small"
-                color="secondary"
-              >
-                <FactCheck fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </PermissionsGate>
-
-          {!expanded && (
-            <Grid item lg={12}>
+        {dueDateTime && (
+          <DueDateTime
+            expanded={expanded}
+            dueDateTime={dueDateTime}
+            currentDiffrence={currentDiffrence}
+          />
+        )}
+        <Stack sx={{ width: '100%' }} flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Stack>
+            <Typography variant="subtitle1" >{assignmentTitle}</Typography>
+            {!expanded && (
               <Typography
                 color="textSecondary"
                 className={clsx(classes.description, classes.ellipses)}
                 variant="body2"
+                style={{ width: '100%' }}
               >
                 {parse(`<div> ${instructions}</div>`)}
               </Typography>
-            </Grid>
-          )}
-        </Grid>
+            )}
+          </Stack>
+          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+            <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
+              <Tooltip title={"Edit Assignment"}>
+                <IconButton
+                  color="secondary"
+                  // disabled={!isMyGuruKool}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onEdit()
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            </PermissionsGate>
+            {isTeacher && loginType !== "mygurukool" && (
+              <Tooltip
+                title={
+                  isMyGuruKool
+                    ? "Edit Assignment"
+                    : "This functionality is not available Right now"
+                }
+              >
+                <IconButton
+                  color="secondary"
+                  disabled={!isMyGuruKool}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    onEdit()
+                  }}
+                >
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
+              <Tooltip title="Check submissions">
+                <IconButton
+                  onClick={() => onCheck()}
+                  color="secondary"
+                >
+                  <FactCheck />
+                </IconButton>
+              </Tooltip>
+            </PermissionsGate>
+          </Stack>
+        </Stack>
       </AccordionSummary >
       <AccordionDetails className={classes.AccordionDetails}>
         <Stack
@@ -289,7 +294,11 @@ const AssignmentListItem = ({
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
-            {parse(`<div> ${instructions}</div>`)}
+            <Typography
+              variant="body2"
+            >
+              {parse(`<div> ${instructions}</div>`)}
+            </Typography>
           </ItemSection>
 
           {hasAudioVideo && (
@@ -299,7 +308,7 @@ const AssignmentListItem = ({
             >
               <Grid container>
                 <Grid item lg={enableChat ? 6 : 12} md={enableChat ? 6 : 12}>
-                  <Grid container >
+                  <Grid container>
                     {audioVideo?.map((a, ai) => {
                       return <AudioVideoCard size={enableChat ? 12 : 6} key={ai} {...a} />;
                     })}
@@ -324,7 +333,7 @@ const AssignmentListItem = ({
             </ItemSection>
           )}
 
-          {hasDocuments && (
+          {uploadExercises && uploadExercises.length > 0 && (
             <ItemSection title=" Upload Exercises">
               <Grid container>
                 {uploadExercises?.map((a, ai) => {
@@ -367,6 +376,7 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
 
 const useStyles = makeStyles((theme) => ({
   ellipses: {
+    width: '100%',
     display: "-webkit-box",
     WebkitBoxOrient: "vertical",
     WebkitLineClamp: 1,
@@ -385,8 +395,8 @@ const useStyles = makeStyles((theme) => ({
     transition: 'all 0.3s ease 0s',
     marginBottom: 0,
     '&:hover': {
-      border: `1px solid ${theme.palette.gray[700]}`,
-      background: theme.palette.gray[700]
+      border: `1px solid ${theme.palette.gray[500]}`,
+      background: theme.palette.gray[500]
     }
   },
 
@@ -394,7 +404,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     // borderTop: "1px solid rgba(0, 0, 0, .125)",
     // borderBottom: "1px solid rgba(0, 0, 0, .125)",
-    backgroundColor: theme.palette.gray[100],
+    backgroundColor: theme.palette.white,
   },
   title: {
     fontWeight: theme.palette.fontWeights.bold,

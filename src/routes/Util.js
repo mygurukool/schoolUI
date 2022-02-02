@@ -7,6 +7,7 @@ import InvitePeople from "../components/Modals/InvitePeople";
 import AssignmentModal from "../components/Modals/AssignmentModal";
 import VideoPlayerModal from "../components/Modals/VideoPlayerModal";
 import FileViewModal from "../components/Modals/FileViewModal";
+import Submission from "../components/Modals/Submissions";
 
 const Util = () => {
   return (
@@ -18,6 +19,7 @@ const Util = () => {
       <InvitePeople />
       <VideoPlayerModal />
       <FileViewModal />
+      <Submission />
     </div>
   );
 };

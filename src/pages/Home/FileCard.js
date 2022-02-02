@@ -80,7 +80,7 @@ const Uploadexercise = ({ ...props }) => {
 
   return (
     <>
-      <Accordion className={classes.root} elevation={0}>
+      <Accordion className={classes.root} elevation={0} variant="outlined">
         <AccordionSummary
           className={classes.AccordionSummary}
           expandIcon={<ExpandMoreIcon />}
@@ -104,7 +104,7 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-              // {...register("file")}
+            // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>

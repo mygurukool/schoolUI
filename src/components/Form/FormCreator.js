@@ -22,8 +22,8 @@ const FormCreator = ({
   size,
   optionsData,
   watchFields = [],
-  onWatchChange = () => {},
-  onWatchArray = () => {},
+  onWatchChange = () => { },
+  onWatchArray = () => { },
 }) => {
   const methods = useForm({
     defaultValues: { ...data },
@@ -150,7 +150,7 @@ const FormCreator = ({
             <Button
               type="submit"
               variant="contained"
-              color="primary"
+              color="success"
               disabled={isLoading}
               sx={{ mr: 1 }}
             >

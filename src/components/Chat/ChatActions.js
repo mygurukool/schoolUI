@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     borderTopLeftRadius: theme.palette.radius.base,
     borderTopRightRadius: theme.palette.radius.base,
     padding: theme.spacing(1),
+    marginTop: theme.spacing(1)
   },
   replyMessageContainer: {
     width: "100%",
@@ -86,14 +87,12 @@ const TextInput = ({
     <div className={classes.wrapForm}>
       {reply && <ReplyTextField />}
       <TextField
-        size="small"
         ref={textInputRef}
         value={value}
         onKeyDown={keyPress}
         onChange={({ target: { value } }) => {
           setValue(value);
         }}
-        disableUnderline={false}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -101,6 +100,7 @@ const TextInput = ({
                 aria-label="toggle password visibility"
                 edge="end"
                 color="secondary"
+                sx={{ mr: 0.1 }}
               >
                 <DocumentIcon />
               </IconButton>
@@ -125,6 +125,7 @@ const TextInput = ({
                 edge="end"
                 color="secondary"
                 disabled={value === ""}
+                sx={{ mr: 0.1 }}
                 onClick={() => {
                   handleSend();
                 }}
@@ -133,13 +134,14 @@ const TextInput = ({
               </IconButton>
             </InputAdornment>
           ),
-          classes: {
-            notchedOutline: classes.textField,
+          style: {
+            padding: 5
           },
+          disableUnderline: true,
         }}
         fullWidth
         placeholder="Type a message"
-        variant="outlined"
+        variant="standard"
       />
     </div>
   );

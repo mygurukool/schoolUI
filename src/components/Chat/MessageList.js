@@ -16,7 +16,6 @@ import { DATETIMEFORMAT } from "../../constants";
 
 import ReplyIcon from "@mui/icons-material/Reply";
 import ForwardIcon from "@mui/icons-material/Forward";
-import { useScroll } from "react-use";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +83,7 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
               <Typography variant="caption">{reply.message.text}</Typography>
             </div>
           )}
-          <Typography variant="body2">{message.text}</Typography>
+          <Typography variant="body2" color="white">{message.text}</Typography>
         </div>
       </div>
     </div>
@@ -150,7 +149,7 @@ const MessageList = ({
           </MenuItem>
         </Menu>
         <Stack direction="row" justifyContent="center">
-          <Button onClick={() => incrementPage()}>View Older Messages</Button>
+          <Button color="inherit" size="small" variant="outlined" sx={{ mt: 1.5, mb: 1.5 }} onClick={() => incrementPage()}>View Older Messages</Button>
         </Stack>
         {messages.map((m, i) => {
           const isSentByMe = m.message.senderId === userId;

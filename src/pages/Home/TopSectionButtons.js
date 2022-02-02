@@ -5,6 +5,8 @@ import lang from "../../hooks/useLanguage";
 import ConferenceIcon from "@mui/icons-material/VideoCallTwoTone";
 import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
+import Whiteboard from "../../assets/icons/Whiteboard";
+import Conference from "../../assets/icons/Conference";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -21,7 +23,8 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
         <Button
           color="primary"
           variant="contained"
-          startIcon={<ConferenceIcon />}
+          // startIcon={<ConferenceIcon />}
+          startIcon={<Whiteboard color="white" />}
           onClick={() => {
             initializeWhiteBoard();
           }}
@@ -37,7 +40,8 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
         <Button
           color="neutral"
           variant="contained"
-          startIcon={<ConferenceIcon />}
+          startIcon={<Conference color="white" />}
+          // startIcon={<ConferenceIcon />}
           onClick={() => initializeConference()}
         >
           {lang("conference")}

@@ -55,6 +55,7 @@ const GroupModal = () => {
   return (
     <ModalContainer
       open={open}
+      hideButtons
       title={modalData ? "Edit Group" : "Create Group"}
       onClose={() => handleClose()}
       size="xs"

@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   CardContent,
+  Divider,
   MenuItem,
   Select,
 } from "@mui/material";
@@ -150,7 +151,7 @@ const Chat = ({ assignmentId }) => {
           value={value}
           onChange={handleChange}
           variant="scrollable"
-          scrollButtons
+          scrollButtons="auto"
           allowScrollButtonsMobile
           aria-label="scrollable force tabs example"
         >
@@ -186,6 +187,8 @@ const Chat = ({ assignmentId }) => {
             );
           })}
         </Tabs>
+        <Divider />
+
         {/* {courseTeachers.length === 1 && groups.length === 0 && (
           <Button
             onClick={() => {
@@ -232,7 +235,8 @@ function TabPanel(props) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && children}
+      <Divider />
     </div>
   );
 }

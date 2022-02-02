@@ -13,17 +13,15 @@ import { useDispatch } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-  },
-  img: {
-    height: 100,
-    width: 150,
-    objectFit: "contain",
-  },
+  title: {
+    width: '100%',
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 2,
+    textAlign: 'left',
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }
 }));
 
 const AudioVideoCard = ({ onClick, ...props }) => {
@@ -45,12 +43,23 @@ const AudioVideoCard = ({ onClick, ...props }) => {
   return (
     <Grid item lg={props.size} onClick={handleClick}>
       <ButtonBase onClick={onClick}>
-        <Card className={classes.root} elevation={0}>
-          <CardMedia className={classes.img} image={image} title={title} />
-          <CardContent className={classes.content}>
-            <Typography variant="subtitle2">{title}</Typography>
+        <Card sx={{ display: 'flex', }} elevation={0} variant="outlined">
+          <CardMedia
+            component="img"
+            sx={{ width: 100 }}
+            image={image}
+            alt={title}
+          />
+          <CardContent>
+            <Typography variant="body2" className={classes.title}>{title}</Typography>
           </CardContent>
         </Card>
+        {/* <Card className={classes.root} elevation={0}>
+          <CardMedia className={classes.img} image={image} title={title} />
+          <CardContent className={classes.content}>
+            <Typography variant="subtitle2" style={{ textAlign: "left" }}>{title}</Typography>
+          </CardContent>
+        </Card> */}
       </ButtonBase>
     </Grid>
   );
