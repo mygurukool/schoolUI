@@ -260,7 +260,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
             </li>
             <li><Button
               variant="contained"
-              color="neutral"
+              color="secondary"
               onClick={handleLanguageClick}
             >
               {lang("language")}

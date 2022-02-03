@@ -112,7 +112,7 @@ const AssignmentList = () => {
             </div>
           </>
         ) : (
-          <Alert severity="info" variant="filled">Please Select a course</Alert>
+          <Alert severity="warning" variant="filled">Please Select a course</Alert>
         )}
       </>
     )
@@ -180,9 +180,9 @@ const AssignmentListItem = ({
   const ChatBtn = () => {
     return (
       <Button
-        variant="outlined"
+        variant="contained"
         onClick={() => setEnableChat(!enableChat)}
-        color="inherit"
+        color="warning"
         startIcon={<ChatIcon />}
         size="small"
       >
@@ -195,9 +195,9 @@ const AssignmentListItem = ({
     return (
       <Button
         variant="contained"
-        color="primary"
+        color="success"
         startIcon={<CheckIcon />}
-        size="small"
+        size="medium"
       >
         Turn in
       </Button>
@@ -210,8 +210,8 @@ const AssignmentListItem = ({
       onChange={onSelectAssignment}
       className={classes.Accordion}
       style={expanded ? {
-        border: `1px solid ${theme.palette.gray[500]}`,
-        background: theme.palette.gray[500], boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
+        border: `1px solid ${theme.palette.secondary.light}`,
+        background: theme.palette.secondary.light, boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
       } : undefined}
       elevation={0}
     >
@@ -339,6 +339,13 @@ const AssignmentListItem = ({
                 {uploadExercises?.map((a, ai) => {
                   return <FileCard assignmentId={id || _id} key={ai} {...a} />;
                 })}
+              </Grid>
+            </ItemSection>
+          )}
+          {hasDocuments && hasDocuments.length > 0 && (
+            <ItemSection title=" Upload Exercises">
+              <Grid container>
+
                 {hasDocuments.map((a, i) => {
                   return (
                     <FileCard
@@ -395,8 +402,8 @@ const useStyles = makeStyles((theme) => ({
     transition: 'all 0.3s ease 0s',
     marginBottom: 0,
     '&:hover': {
-      border: `1px solid ${theme.palette.gray[500]}`,
-      background: theme.palette.gray[500]
+      border: `1px solid ${theme.palette.secondary.light}`,
+      background: theme.palette.secondary.light
     }
   },
 

@@ -109,20 +109,20 @@ const Uploadexercise = ({ ...props }) => {
             <Typography variant="subtitle2">{title}</Typography>
             <div>
               <IconButton
-                color="secondary"
+                color="neutral"
                 onClick={(event) => onViewFile(event, props)}
               >
                 <ViewIcon fontSize="small" />
               </IconButton>
               <IconButton
-                color="secondary"
+                color="neutral"
                 onClick={(event) => onDownloadFile(event, props)}
               >
                 <DownloadIcon fontSize="small" />
               </IconButton>
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT_WORK]}>
                 <IconButton
-                  color="secondary"
+                  color="green"
                   onClick={(event) => onUploadFile(event)}
                 >
                   <UploadIcon fontSize="small" />
@@ -176,7 +176,7 @@ const Uploadexercise = ({ ...props }) => {
 export default Uploadexercise;
 
 const getTitle = (a) => {
-  return a.filename;
+  return a.filename || a.title;
   // switch (a.type) {
   //   case :
 

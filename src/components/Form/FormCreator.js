@@ -160,7 +160,7 @@ const FormCreator = ({
             {onCancel && (
               <Button
                 variant="text"
-                color="secondary"
+                color="error"
                 disabled={isLoading}
                 onClick={() => handleClose()}
               >

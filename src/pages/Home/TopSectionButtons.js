@@ -38,10 +38,10 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
         exceptionLogin={"google"}
       >
         <Button
-          color="neutral"
+          color="secondary"
           variant="contained"
-          startIcon={<Conference color="white" />}
-          // startIcon={<ConferenceIcon />}
+          // startIcon={<Conference color="white" />}
+          startIcon={<ConferenceIcon />}
           onClick={() => initializeConference()}
         >
           {lang("conference")}

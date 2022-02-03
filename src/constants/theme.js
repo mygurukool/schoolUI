@@ -51,25 +51,37 @@ let theme = createTheme({
     },
     secondary: {
       main: "#D2565B",
-      light: "#fdeaeb",
+      light: "#FDF5F3",
       contrastText: "#fff",
     },
     neutral: {
-      main: "#D2565B",
+      main: "#d6a936",
       light: "#fce9b3",
       contrastText: "#fff",
     },
+    blue: {
+      main: '#2c8bc7'
+    },
+    green: {
+      main: '#00A257',
+    },
     success: {
-      main: "#09910d",
-      light: "#09910d",
+      main: "#57e6a4",
+      contrastText: "#212121",
     },
     error: {
-      main: "#b72136",
-      light: "#ff484230",
+      main: "#fa7d88",
+      light: "#fa7d88",
     },
     warning: {
-      main: "#b78103",
-      light: "#fff7cd",
+      main: "#FECA68",
+      light: "#FECA68",
+      contrastText: "#212121",
+    },
+    info: {
+      main: "#61daf2",
+      light: "#61daf2",
+      contrastText: "#212121",
     },
     fontSizes: {
       xs: 11,
@@ -212,7 +224,14 @@ theme = createTheme(theme, {
       styleOverrides: {
         root: {
           padding: theme.spacing(0.5),
-          borderRadius: theme.palette.radius.small,
+          borderRadius: theme.palette.radius.base,
+        },
+      },
+    },
+    MuiAlert: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.black
         },
       },
     },

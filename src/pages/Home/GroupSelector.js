@@ -180,7 +180,6 @@ const SelectGroup = () => {
             size="small"
             label="Group"
             placeholder="Choose Group"
-            color="secondary"
             value={selectedGroup}
             onChange={({ target: { value } }) => {
               const foundGroup = groups.find((g) => g?.groupName === value);

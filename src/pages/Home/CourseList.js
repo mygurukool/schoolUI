@@ -40,11 +40,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   courseBtnContainer: {
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: theme.palette.radius.base,
     transition: 'all 0.3s ease-in-out',
     '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.white,
+      backgroundColor: theme.palette.secondary.light,
+      color: theme.palette.black,
       boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
     }
   },
