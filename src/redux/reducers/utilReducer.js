@@ -4,6 +4,7 @@ const initialstate = {
   language: "gu",
   modalOpen: undefined,
   modalData: undefined,
+  toggleButton: false,
 };
 
 const utilReducer = (state = initialstate, action) => {
@@ -18,6 +19,12 @@ const utilReducer = (state = initialstate, action) => {
       return {
         ...state,
         drawerOpen: !state.drawerOpen,
+      };
+
+    case 'TOGGLE_BUTTON':
+      return {
+        ...state,
+        toggleButton: !state.toggleButton,
       };
 
     case utilTypes.TOGGLE_DRAWER:

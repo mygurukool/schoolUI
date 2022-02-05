@@ -216,9 +216,9 @@ const SelectGroup = () => {
             SCOPES.CAN_INVITE_TEACHER,
           ]}
         >
-          <IconButton onClick={handleOpenMenu}>
+          {/* <IconButton onClick={handleOpenMenu}>
             <MENUICON />
-          </IconButton>
+          </IconButton> */}
           <GroupMenu />
         </PermissionsGate>
       </Stack>

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,
       color: theme.palette.black,
-      boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+      boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
     }
   },
   courseBtn: {
@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   activeCourse: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.white,
-    boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+    boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
   },
   addBtn: {
     width: theme.spacing(9),

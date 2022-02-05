@@ -1,4 +1,4 @@
-import { MenuItem, Select, Box, Chip, FormControl, InputLabel } from "@mui/material";
+import { MenuItem, Select, Box, Chip, FormControl, InputLabel, Checkbox, ListItemText } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller } from "react-hook-form";
@@ -87,12 +87,16 @@ const MultiSelect = React.forwardRef((props) => {
                 {defaultOption && defaultOption()}
                 {options.length > 0 ? (
                   options?.map((opt, index) => {
+                    const check = opt[optionValueProp] === (Array.isArray(field.value) ? field.value?.find(o => o === opt[optionValueProp]) : field.value)
+
                     return (
                       <MenuItem
                         value={optionValueProp ? opt[optionValueProp] : opt}
                         key={index}
                       >
-                        {opt[optionLabelProp]}
+                        <Checkbox checked={check} />
+                        <ListItemText primary={opt[optionLabelProp]} />
+                        {/* {opt[optionLabelProp]} */}
                       </MenuItem>
                     );
                   })

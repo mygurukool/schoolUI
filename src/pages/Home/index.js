@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, styled } from "@mui/styles";
 import {
   Button,
   Card,
@@ -9,6 +9,10 @@ import {
   Divider,
   Grid,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
@@ -35,18 +39,26 @@ import useConference from "../../hooks/useConference";
 
 import { getAllCourses } from "../../redux/action/coursesActions";
 
-import { getAllGroups } from "../../redux/action/groupActions";
+import { deleteGroup, getAllGroups } from "../../redux/action/groupActions";
 import BackgroundImage from "./BackgroundImage";
 import TopSectionButtons from "./TopSectionButtons";
 import WhiteBoard from "./WhiteBoard";
 import Conference from "./Conference";
 import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
+import MENUICON from "@mui/icons-material/MoreVert";
+import { openModal } from "../../redux/action/utilActions";
+import ADDICON from "@mui/icons-material/AddTwoTone";
+import EDITICON from "@mui/icons-material/EditTwoTone";
+import DELETEICON from "@mui/icons-material/DeleteTwoTone";
+import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
+import DeleteModal from "../../components/Modals/DeleteModal";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const loginType = useSelector((state) => state.user.loginType);
+  const { toggleButton } = useSelector(state => state.util)
   const {
     initializeWhiteBoard,
 
@@ -81,11 +93,101 @@ const Home = (props) => {
   const shouldDivideSection = whiteBoardUrl || isConfrenceOpen;
 
   const isSectionMaximized = isWhiteboardMaximized || isConferenceMaximized;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { currentGroup, groups } = useSelector((state) => state.common);
+  const open = Boolean(anchorEl);
+  const deleteRef = React.useRef();
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = (event) => {
+    setAnchorEl(null);
+  };
+
+  const onDelete = () => {
+    if (currentGroup === "all") {
+      alert("Please Select a group");
+      return;
+    }
+    deleteRef.current.open(currentGroup);
+    handleCloseMenu();
+  };
+  const handleDelete = (data) => {
+    // dispatch(openModal("group", data));
+    dispatch(
+      deleteGroup(data, () => {
+        dispatch(getAllGroups());
+      })
+    );
+  };
+
+  const handleEdit = (data) => {
+    dispatch(openModal("group", data));
+    handleCloseMenu();
+  };
+  const handleInvite = (data) => {
+    handleCloseMenu();
+    dispatch(openModal("invitepeople"));
+  };
+
+  const GroupMenu = () => {
+    return (
+      <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu} >
+        <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
+          <MenuItem onClick={() => handleEdit()}>
+            <ListItemIcon>
+              <ADDICON fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Add group</ListItemText>
+          </MenuItem>
+        </PermissionsGate>
+
+        {currentGroup && (
+          <>
+            <PermissionsGate scopes={[SCOPES.CAN_EDIT_GROUP]}>
+              <MenuItem onClick={() => handleEdit(currentGroup)}>
+                <ListItemIcon>
+                  <EDITICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
+            <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
+              <MenuItem onClick={() => onDelete()}>
+                <ListItemIcon>
+                  <DELETEICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
+            <Divider />
+            <PermissionsGate
+              scopes={[SCOPES.CAN_INVITE_TEACHER, SCOPES.CAN_INVITE_STUDENT]}
+            >
+              <MenuItem onClick={() => handleInvite()}>
+                <ListItemIcon>
+                  <INVITEICON fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Invite People</ListItemText>
+              </MenuItem>
+            </PermissionsGate>
+          </>
+        )}
+      </StyledMenu>
+    );
+  };
 
   return (
     <>
       <TeacherAcceptModal />
-
+      <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
+        <DeleteModal
+          ref={deleteRef}
+          getTitle={(g) => g?.groupName}
+          onSubmit={(data) => handleDelete(data)}
+        />
+      </PermissionsGate>
       <div className={classes.root}>
         <BackgroundImage />
         <div className={classes.innerContainet}>
@@ -109,10 +211,25 @@ const Home = (props) => {
                     alignItems="center"
                     lg={9}
                   >
-                    <TopSectionButtons
+
+                    {toggleButton && <TopSectionButtons
                       initializeWhiteBoard={initializeWhiteBoard}
                       initializeConference={initializeConference}
-                    />
+                    />}
+                    <PermissionsGate
+                      scopes={[
+                        SCOPES.CAN_CREATE_GROUP,
+                        SCOPES.CAN_EDIT_GROUP,
+                        SCOPES.CAN_DELETE_GROUP,
+                        SCOPES.CAN_INVITE_STUDENT,
+                        SCOPES.CAN_INVITE_TEACHER,
+                      ]}
+                    >
+                      <IconButton onClick={handleOpenMenu}>
+                        <MENUICON />
+                      </IconButton>
+                      <GroupMenu />
+                    </PermissionsGate>
                   </Grid>
                 </Grid>
               </Grid>
@@ -180,6 +297,35 @@ const Home = (props) => {
   );
 };
 
+const StyledMenu = styled((props) => (
+  <Menu
+    elevation={0}
+    {...props}
+  />
+))(({ theme }) => ({
+  "& .MuiPaper-root": {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color:
+      theme.palette.mode === "light"
+        ? "rgb(55, 65, 81)"
+        : theme.palette.grey[300],
+    boxShadow:
+      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+    "& .MuiMenu-list": {
+      padding: "4px 0",
+    },
+    "& .MuiMenuItem-root": {
+      "& .MuiSvgIcon-root": {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+    },
+  },
+}));
+
 export default Home;
 
 const useStyles = makeStyles((theme) => ({
@@ -200,6 +346,7 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     background: "white",
     borderRadius: theme.palette.radius.base,
+    boxShadow: '0px 0px 15px -10px rgba(0, 0, 0, 0.2)',
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
     padding: theme.spacing(3, 2.5, 0, 2.5),
   },

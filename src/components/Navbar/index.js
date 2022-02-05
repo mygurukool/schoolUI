@@ -224,7 +224,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
           >
             {/* <img src="images/mygurukool.svg" style={{ width: 40, height: 40, marginRight: 10 }} /> */}
             <Typography variant="h6" className={classes.appName}>
-              My Gurukool (BETA)
+              {user?.organization?.organizationName || 'My Gurukool (BETA)'}
             </Typography>
           </Box>
           {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
