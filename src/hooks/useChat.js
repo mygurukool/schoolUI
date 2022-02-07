@@ -103,7 +103,6 @@ const useChat = ({ assignmentId, userId, userName }) => {
   };
 
   const appendGroups = useCallback(async (data) => {
-    console.log("chat data", data);
     if (data && data?.length > 0) {
       const filteredGroups = await Promise.all(
         data.filter((g) => {
@@ -296,7 +295,6 @@ const useChat = ({ assignmentId, userId, userName }) => {
       socket.emit("SEND_MESSAGES", { ...currentGroup, page });
     }
   }, [page]);
-  // console.log("current", currentGroup);
 
   return {
     groups,

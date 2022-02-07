@@ -9,6 +9,7 @@ import VideoPlayerModal from "../components/Modals/VideoPlayerModal";
 import FileViewModal from "../components/Modals/FileViewModal";
 import Submission from "../components/Modals/Submissions";
 import CalendarModal from "../components/Modals/CalendarModal";
+import { NotificationHandler } from "../components/Notification";
 
 const Util = () => {
   return (

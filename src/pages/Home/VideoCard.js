@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 
 const Videocard = ({ onClick, title, ...props }) => {
   const classes = useStyles();
-  console.log("card props", props);
   return (
     <Grid item lg={props.size}>
       <ButtonBase onClick={onClick}>

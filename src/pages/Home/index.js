@@ -53,12 +53,13 @@ import EDITICON from "@mui/icons-material/EditTwoTone";
 import DELETEICON from "@mui/icons-material/DeleteTwoTone";
 import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
 import DeleteModal from "../../components/Modals/DeleteModal";
+import Notification from "../../components/Notification";
 
 const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const loginType = useSelector((state) => state.user.loginType);
-  const { toggleButton } = useSelector(state => state.util)
+  const { toggleButton } = useSelector((state) => state.util);
   const {
     initializeWhiteBoard,
 
@@ -133,7 +134,7 @@ const Home = (props) => {
 
   const GroupMenu = () => {
     return (
-      <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu} >
+      <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
           <MenuItem onClick={() => handleEdit()}>
             <ListItemIcon>
@@ -211,25 +212,35 @@ const Home = (props) => {
                     alignItems="center"
                     lg={9}
                   >
-
-                    {toggleButton && <TopSectionButtons
-                      initializeWhiteBoard={initializeWhiteBoard}
-                      initializeConference={initializeConference}
-                    />}
-                    <PermissionsGate
-                      scopes={[
-                        SCOPES.CAN_CREATE_GROUP,
-                        SCOPES.CAN_EDIT_GROUP,
-                        SCOPES.CAN_DELETE_GROUP,
-                        SCOPES.CAN_INVITE_STUDENT,
-                        SCOPES.CAN_INVITE_TEACHER,
-                      ]}
+                    {toggleButton && (
+                      <TopSectionButtons
+                        initializeWhiteBoard={initializeWhiteBoard}
+                        initializeConference={initializeConference}
+                      />
+                    )}
+                    <Stack
+                      direaction="row"
+                      spacing={"1"}
+                      justifyContent="flex-end"
+                      alignItems="center"
                     >
-                      <IconButton onClick={handleOpenMenu}>
-                        <MENUICON />
-                      </IconButton>
-                      <GroupMenu />
-                    </PermissionsGate>
+                      <Notification />
+                      <PermissionsGate
+                        scopes={[
+                          SCOPES.CAN_CREATE_GROUP,
+                          SCOPES.CAN_EDIT_GROUP,
+                          SCOPES.CAN_DELETE_GROUP,
+                          SCOPES.CAN_INVITE_STUDENT,
+                          SCOPES.CAN_INVITE_TEACHER,
+                        ]}
+                      >
+                        <IconButton onClick={handleOpenMenu}>
+                          <MENUICON />
+                        </IconButton>
+
+                        <GroupMenu />
+                      </PermissionsGate>
+                    </Stack>
                   </Grid>
                 </Grid>
               </Grid>
@@ -297,34 +308,31 @@ const Home = (props) => {
   );
 };
 
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    minWidth: 180,
-    color:
-      theme.palette.mode === "light"
-        ? "rgb(55, 65, 81)"
-        : theme.palette.grey[300],
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-    "& .MuiMenu-list": {
-      padding: "4px 0",
-    },
-    "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
+const StyledMenu = styled((props) => <Menu elevation={0} {...props} />)(
+  ({ theme }) => ({
+    "& .MuiPaper-root": {
+      borderRadius: 6,
+      marginTop: theme.spacing(1),
+      minWidth: 180,
+      color:
+        theme.palette.mode === "light"
+          ? "rgb(55, 65, 81)"
+          : theme.palette.grey[300],
+      boxShadow:
+        "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+      "& .MuiMenu-list": {
+        padding: "4px 0",
+      },
+      "& .MuiMenuItem-root": {
+        "& .MuiSvgIcon-root": {
+          fontSize: 18,
+          color: theme.palette.text.secondary,
+          marginRight: theme.spacing(1.5),
+        },
       },
     },
-  },
-}));
+  })
+);
 
 export default Home;
 
@@ -346,7 +354,7 @@ const useStyles = makeStyles((theme) => ({
     height: "auto",
     background: "white",
     borderRadius: theme.palette.radius.base,
-    boxShadow: '0px 0px 15px -10px rgba(0, 0, 0, 0.2)',
+    boxShadow: "0px 0px 15px -10px rgba(0, 0, 0, 0.2)",
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
     padding: theme.spacing(3, 2.5, 0, 2.5),
   },

@@ -76,8 +76,6 @@ const useWhiteBoard = () => {
     }
   }, [courseId]);
 
-  // console.log("current", currentGroup);
-
   return {
     initializeWhiteBoard,
     whiteBoardUrl,

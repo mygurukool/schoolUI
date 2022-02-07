@@ -5,10 +5,22 @@ const initialstate = {
   modalOpen: undefined,
   modalData: undefined,
   toggleButton: false,
+  notifications: [],
 };
 
 const utilReducer = (state = initialstate, action) => {
   switch (action.type) {
+    case utilTypes.REMOVE_NOTIFICATION_MESSAGE:
+      return {
+        ...state,
+        notifications: state.notifications.filter((f) => f),
+      };
+
+    case utilTypes.SET_NOTIFICATION_MESSAGE:
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload],
+      };
     case utilTypes.TOGGLE_FULL_SCREEN:
       return {
         ...state,
@@ -21,7 +33,7 @@ const utilReducer = (state = initialstate, action) => {
         drawerOpen: !state.drawerOpen,
       };
 
-    case 'TOGGLE_BUTTON':
+    case "TOGGLE_BUTTON":
       return {
         ...state,
         toggleButton: !state.toggleButton,

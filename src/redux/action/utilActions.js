@@ -1,3 +1,4 @@
+import utilApi from "../api/utilApi";
 import { utilTypes } from "../types";
 
 export const setLoginType = (data) => {
@@ -22,5 +23,26 @@ export const openModal = (value, data) => {
 export const closeModal = () => {
   return {
     type: utilTypes.CLOSE_MODAL,
+  };
+};
+
+export const setNotificationMessage = (data) => {
+  return {
+    type: utilTypes.SET_NOTIFICATION_MESSAGE,
+    payload: data,
+  };
+};
+export const registerNotificationToken = (data) => {
+  return {
+    type: utilTypes.REGISTER_NOTIFICATION_TOKEN,
+    payload: {
+      request: {
+        url: utilApi.REGISTER_TOKEN,
+        method: "POST",
+        data: {
+          token: data,
+        },
+      },
+    },
   };
 };
