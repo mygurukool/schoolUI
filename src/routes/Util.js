@@ -8,6 +8,7 @@ import AssignmentModal from "../components/Modals/AssignmentModal";
 import VideoPlayerModal from "../components/Modals/VideoPlayerModal";
 import FileViewModal from "../components/Modals/FileViewModal";
 import Submission from "../components/Modals/Submissions";
+import CalendarModal from "../components/Modals/CalendarModal";
 
 const Util = () => {
   return (
@@ -20,6 +21,7 @@ const Util = () => {
       <VideoPlayerModal />
       <FileViewModal />
       <Submission />
+      <CalendarModal />
     </div>
   );
 };

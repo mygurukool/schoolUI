@@ -5,8 +5,18 @@ import InputContainer from "./InputContainer";
 import { Controller } from "react-hook-form";
 
 const TextBox = React.forwardRef((props, ref) => {
-  const { label, name, control, placeholder, size, error, rules, required } =
-    props;
+  const {
+    label,
+    name,
+    control,
+    placeholder,
+    size,
+    error,
+    rules,
+    required,
+    readOnly,
+    disabled,
+  } = props;
   return (
     <InputContainer size={size}>
       <Controller
@@ -23,6 +33,10 @@ const TextBox = React.forwardRef((props, ref) => {
               label={`${label} ${required ? "*" : ""}`}
               placeholder={placeholder}
               helperText={error}
+              InputProps={{
+                readOnly: readOnly,
+                disabled: disabled,
+              }}
             />
           );
         }} // props contain

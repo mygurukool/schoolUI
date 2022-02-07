@@ -29,6 +29,7 @@
     "mime-types": "^2.1.34",
     "moment": "^2.29.1",
     "react": "^17.0.2",
+    "react-big-calendar": "^0.38.7",
     "react-chat-elements": "^10.16.0",
     "react-dom": "^17.0.2",
     "react-draft-wysiwyg": "^1.14.7",

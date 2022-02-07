@@ -7,6 +7,7 @@ import {
   assignmentTypes,
   teacherTypes,
   studentTypes,
+  eventTypes,
 } from "../types";
 
 const initialstate = {
@@ -17,6 +18,8 @@ const initialstate = {
   students: [],
 
   messages: [],
+
+  events: [],
 
   isCourseLoading: false,
 
@@ -32,6 +35,12 @@ const initialstate = {
 const sizeReducer = (state = initialstate, action) => {
   const getData = () => action.payload.data.data;
   switch (action.type) {
+    case eventTypes.GET_EVENTS_SUCCESS:
+      return {
+        ...state,
+        events: getData(),
+      };
+
     //submission
 
     //courses

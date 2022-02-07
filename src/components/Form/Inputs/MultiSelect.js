@@ -1,4 +1,13 @@
-import { MenuItem, Select, Box, Chip, FormControl, InputLabel, Checkbox, ListItemText } from "@mui/material";
+import {
+  MenuItem,
+  Select,
+  Box,
+  Chip,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  ListItemText,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller } from "react-hook-form";
@@ -25,6 +34,7 @@ const MultiSelect = React.forwardRef((props) => {
     rules,
     hasDefaultOption = false,
     onSelect,
+    allowSelectAll,
   } = props;
   return (
     <InputContainer size={size}>
@@ -35,6 +45,15 @@ const MultiSelect = React.forwardRef((props) => {
           name={name}
           {...props}
           render={({ field }) => {
+            const selectAll = () => {
+              if (field?.value?.length === options?.length) {
+                field.onChange([]);
+                return;
+              }
+              field.onChange(options.map((opt) => opt[optionValueProp]));
+              onSelect && onSelect(options.map((opt) => opt[optionValueProp]));
+            };
+
             return (
               <Select
                 // {...field}
@@ -42,8 +61,8 @@ const MultiSelect = React.forwardRef((props) => {
                   Array.isArray(field.value)
                     ? field.value
                     : field.value === "" || typeof field.value === "string"
-                      ? [field.value]
-                      : []
+                    ? [field.value]
+                    : []
                 }
                 multiple
                 fullWidth
@@ -54,6 +73,10 @@ const MultiSelect = React.forwardRef((props) => {
                 placeholder={placeholder}
                 className={classes.textField}
                 onChange={(e) => {
+                  if (e.target.value.includes("all")) {
+                    selectAll();
+                    return;
+                  }
                   field.onChange(e.target.value);
                   onSelect && onSelect(e.target.value);
                 }}
@@ -79,6 +102,14 @@ const MultiSelect = React.forwardRef((props) => {
                   </Box>
                 )}
               >
+                {allowSelectAll && (
+                  <MenuItem value="all">
+                    <Checkbox
+                      checked={field?.value?.length === options?.length}
+                    />{" "}
+                    All {label}
+                  </MenuItem>
+                )}
                 {hasDefaultOption && (
                   <MenuItem selected disabled>
                     Choose {label}
@@ -87,7 +118,11 @@ const MultiSelect = React.forwardRef((props) => {
                 {defaultOption && defaultOption()}
                 {options.length > 0 ? (
                   options?.map((opt, index) => {
-                    const check = opt[optionValueProp] === (Array.isArray(field.value) ? field.value?.find(o => o === opt[optionValueProp]) : field.value)
+                    const check =
+                      opt[optionValueProp] ===
+                      (Array.isArray(field.value)
+                        ? field.value?.find((o) => o === opt[optionValueProp])
+                        : field.value);
 
                     return (
                       <MenuItem

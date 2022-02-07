@@ -1,4 +1,4 @@
-import { Button, CircularProgress, Grid } from "@mui/material";
+import { Button, CircularProgress, Grid, Stack } from "@mui/material";
 import React from "react";
 import {
   useForm,
@@ -22,8 +22,9 @@ const FormCreator = ({
   size,
   optionsData,
   watchFields = [],
-  onWatchChange = () => { },
-  onWatchArray = () => { },
+  onWatchChange = () => {},
+  onWatchArray = () => {},
+  onDelete,
 }) => {
   const methods = useForm({
     defaultValues: { ...data },
@@ -147,26 +148,44 @@ const FormCreator = ({
             })}
 
           <Grid item lg={12} md={12} sm={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              disabled={isLoading}
-              sx={{ mr: 1 }}
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
             >
-              {isLoading && <CircularProgress color="secondary" />}
-              Submit
-            </Button>
-            {onCancel && (
-              <Button
-                variant="text"
-                color="error"
-                disabled={isLoading}
-                onClick={() => handleClose()}
-              >
-                Cancel
-              </Button>
-            )}
+              <div>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="success"
+                  disabled={isLoading}
+                  sx={{ mr: 1 }}
+                >
+                  {isLoading && <CircularProgress color="secondary" />}
+                  Submit
+                </Button>
+                {onCancel && (
+                  <Button
+                    variant="text"
+                    color="error"
+                    disabled={isLoading}
+                    onClick={() => handleClose()}
+                  >
+                    Cancel
+                  </Button>
+                )}
+              </div>
+              {onDelete && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  disabled={isLoading}
+                  onClick={() => onDelete()}
+                >
+                  Delete
+                </Button>
+              )}
+            </Stack>
           </Grid>
         </Grid>
       </form>
