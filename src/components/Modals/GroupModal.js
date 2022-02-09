@@ -51,7 +51,6 @@ const GroupModal = () => {
       );
     }
   };
-  console.log("modalData", modalData);
   return (
     <ModalContainer
       open={open}

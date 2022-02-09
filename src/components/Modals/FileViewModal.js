@@ -26,7 +26,6 @@ const FileViewModal = (props) => {
 
   const open = modalOpen === "fileview";
 
-  console.log("modalData", modalData);
   const fileType = mime.extension(modalData?.mimetype);
   const url = "http://www.africau.edu/images/default/sample.pdf";
   const renderFile = (data) => {

@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { BASEURL, SCOPES, SOCKETURL } from "../constants";
+import { BASEURL, DATEFORMAT, SCOPES, SOCKETURL } from "../constants";
 import socketIOClient from "socket.io-client";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
@@ -11,15 +11,18 @@ import {
   setOlderMessages,
 } from "../redux/action/messageAction";
 import { usePermissions } from "../components/PermissionGate";
+import moment from "moment";
 let socket;
 
 const useWhiteBoard = () => {
-  const currentCourse = useSelector((state) => state.common.currentCourse);
+  const { currentCourse, currentGroup } = useSelector((state) => state.common);
+
   const {
     id: userId,
     isTeacher,
     name: userName,
     loginType,
+    organization,
   } = useSelector((state) => state.user);
 
   const canCreateWhiteboard = usePermissions({
@@ -59,11 +62,15 @@ const useWhiteBoard = () => {
       if (isTeacher) {
         socket.emit("CREATE_WHITEBOARD", {
           courseId,
-          whiteBoardUrl: `https://wbo.ophir.dev/boards/VidyamandirClass8A#28112021`,
+          whiteBoardUrl: `https://wbo.ophir.dev/boards/${
+            organization?.organizationName
+          }${currentGroup?.groupName}#${moment().format(DATEFORMAT)}`,
         });
       } else {
         setWhiteBoardUrl(
-          `https://wbo.ophir.dev/boards/VidyamandirClass8A${userName}#28112021`
+          `https://wbo.ophir.dev/boards/${organization?.organizationName}${
+            currentGroup?.groupName
+          }${userName}#${moment().format(DATEFORMAT)}`
         );
       }
     }

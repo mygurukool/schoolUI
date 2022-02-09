@@ -109,9 +109,14 @@ const formData = [
   {
     type: "password",
     name: "repassword",
-    label: "Renter Password",
+    label: "Re-enter Password",
     placeholder: "Renter New  Password",
     required: true,
     size: 12,
   },
 ];
+
+
+
+https://wbo.ophir.dev/boards/${schoolName}${userName}#{date_timestamp}
+

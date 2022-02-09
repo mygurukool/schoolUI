@@ -35,7 +35,7 @@ export const createEvent = (data, cb, errorCb) => {
   };
 };
 
-export const editAssignmet = (data, cb, errorCb) => {
+export const editEvent = (data, cb, errorCb) => {
   return {
     type: eventTypes.EDIT_EVENT,
     payload: {
@@ -64,6 +64,24 @@ export const deleteEvent = (id, cb, errorCb) => {
       },
       successMessage: "Event deleted successfully",
       errorMessage: "Failed to delete Event",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
+export const changeEventJoiningStatus = (data, cb, errorCb) => {
+  return {
+    type: eventTypes.CHANGE_EVENT_JOINING_STATUS,
+    payload: {
+      request: {
+        url: eventApi.CHANGE_EVENT_JOINING_STATUS,
+        method: "post",
+        data: data,
+      },
+      successMessage: "Event status changed successfully",
+      errorMessage: "Failed to change Event status",
       enableMessage: true,
       cb: cb,
       errorCb: errorCb,

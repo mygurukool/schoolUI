@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../redux/action/utilActions";
+import { closeModal, openModal } from "../../redux/action/utilActions";
 
 import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -11,10 +11,26 @@ import FormCreator from "../Form/FormCreator";
 import { getAllStudents } from "../../redux/action/studentActions";
 import { getAllTeachers } from "../../redux/action/teacherActions";
 import {
+  changeEventJoiningStatus,
   createEvent,
   deleteEvent,
+  editEvent,
   getEvents,
 } from "../../redux/action/eventActions";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Chip,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Stack,
+} from "@mui/material";
 
 const localizer = momentLocalizer(moment);
 
@@ -43,6 +59,12 @@ const CalendarModal = () => {
     open: false,
     data: undefined,
   });
+
+  const [acceptState, setAcceptState] = React.useState({
+    open: false,
+    data: undefined,
+  });
+
   const [calendarState, setCalendarState] = React.useState({
     start: moment().startOf("day").toDate(),
     end: moment().endOf("day").add(1, "minute").toDate(),
@@ -56,6 +78,10 @@ const CalendarModal = () => {
 
   const onClickEvent = (data) => {
     if (data.title && data.createdBy !== id) {
+      setAcceptState({
+        open: true,
+        data: data,
+      });
       return;
     }
     setEventState({
@@ -71,6 +97,13 @@ const CalendarModal = () => {
     });
   };
 
+  const onCloseAccept = (data) => {
+    setAcceptState({
+      open: false,
+      data: undefined,
+    });
+  };
+
   const submitEvent = (data) => {
     const returnData = {
       ...data,
@@ -78,12 +111,36 @@ const CalendarModal = () => {
       start: moment.isMoment(data.start) ? data.start.toDate() : data.start,
       status: isTeacher ? "active" : "pending",
     };
+    if (!data.id || !data._id) {
+      dispatch(
+        createEvent(returnData, () => {
+          dispatch(getEvents(calendarState));
+          onCloseEvent();
+        })
+      );
+    } else {
+      dispatch(
+        editEvent(returnData, () => {
+          dispatch(getEvents(calendarState));
+          onCloseEvent();
+        })
+      );
+    }
+  };
 
+  const submitAccept = (data) => {
     dispatch(
-      createEvent(returnData, () => {
-        dispatch(getEvents(calendarState));
-        onCloseEvent();
-      })
+      changeEventJoiningStatus(
+        {
+          userId: id,
+          eventId: acceptState?.data?.id || acceptState?.data._id,
+          status: data,
+        },
+        () => {
+          onCloseAccept();
+          dispatch(getEvents(calendarState));
+        }
+      )
     );
   };
 
@@ -147,6 +204,27 @@ const CalendarModal = () => {
   //       dispatch(getEvents(calendarState));
   //     }
   //   }, [open, calendarState]);
+
+  const eventPropGetter = (event, start, end, isSelected) => {
+    let foundUser = {};
+
+    // let newStyle = {
+    //   backgroundColor: "lightgrey",
+    //   color: "black",
+    //   borderRadius: "0px",
+    //   border: "none",
+    // };
+
+    // if (event.isMine) {
+    //   newStyle.backgroundColor = "lightgreen";
+    // }
+
+    // return {
+    //   className: "",
+    //   style: newStyle,
+    // };
+  };
+
   return (
     <ModalContainer
       open={open}
@@ -164,6 +242,12 @@ const CalendarModal = () => {
         teachers={teachers}
         userId={id}
         onDelete={handleDeleteEvent}
+      />
+      <AcceptEvent
+        {...acceptState}
+        onClose={onCloseAccept}
+        onSubmit={submitAccept}
+        userId={id}
       />
       {isLoading ? (
         "loading"
@@ -186,6 +270,7 @@ const CalendarModal = () => {
             onRangeChange(d);
           }}
           selectable
+          eventPropGetter={eventPropGetter}
           formats={{
             agendaHeaderFormat: ({ start, end }) => {
               return (
@@ -214,35 +299,81 @@ const EventModal = ({
   userId,
   onDelete,
 }) => {
+  const isEditMode = Boolean(data?.users);
+
+  const users = [
+    {
+      type: "label",
+      text: "Teachers",
+    },
+    ...teachers,
+    {
+      type: "label",
+      text: "Students",
+    },
+    ...students,
+  ];
+
   return (
     <ModalContainer
       open={open}
       title={data?.title ? "Edit Event" : "New Event"}
       onClose={() => onClose()}
-      size="xs"
+      size={isEditMode ? "lg" : "xs"}
       hideButtons
     >
-      <FormCreator
-        mode={data ? "edit" : "add"}
-        onSubmit={(e) => onSubmit(e)}
-        onCancel={onClose}
-        formData={generateForm({
-          isTeacher,
-          isOwner: !data?.title
-            ? data?.createdBy !== userId
-              ? false
-              : true
-            : true,
-        })}
-        data={{
-          ...data,
-        }}
-        optionsData={{
-          students: students,
-          teachers: teachers,
-        }}
-        onDelete={() => onDelete(data?.id || data?._id)}
-      />
+      <Grid container spacing={2}>
+        <Grid item lg={isEditMode ? 6 : 12}>
+          <FormCreator
+            mode={data ? "edit" : "add"}
+            onSubmit={(e) => onSubmit(e)}
+            onCancel={onClose}
+            formData={generateForm({
+              isTeacher,
+              isOwner: !data?.title
+                ? data?.createdBy !== userId
+                  ? false
+                  : true
+                : true,
+            })}
+            data={{
+              ...data,
+              users: data?.users?.map((u) => u.id),
+            }}
+            optionsData={{
+              users: users,
+            }}
+            onDelete={() => onDelete(data?.id || data?._id)}
+          />
+        </Grid>
+        {isEditMode && (
+          <Grid item lg={6}>
+            <List
+              sx={{
+                overflow: "auto",
+                maxHeight: 300,
+              }}
+            >
+              {data.users.map((u, ui) => {
+                return (
+                  <ListItem
+                    key={ui}
+                    secondaryAction={
+                      <Chip label={u.status} variant="outlined" />
+                    }
+                    disablePadding
+                  >
+                    <ListItemAvatar>
+                      <Avatar alt={`${u.name}`} src={`${u.profileUrl}`} />
+                    </ListItemAvatar>
+                    <ListItemText primary={`${u.name}`} secondary={u.email} />
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Grid>
+        )}
+      </Grid>
     </ModalContainer>
   );
 };
@@ -257,36 +388,49 @@ const generateForm = ({ isOwner, isTeacher }) => {
       required: true,
       size: 12,
     },
-    ...(isTeacher
-      ? [
-          {
-            type: "multiselect",
-            name: "students",
-            multiple: true,
-            label: "Students",
-            placeholder: "Select Students",
-            required: false,
-            size: 12,
-            hasOptions: true,
-            optionLabelProp: "name",
-            optionValueProp: "_id",
-            allowSelectAll: true,
-          },
-        ]
-      : [
-          {
-            type: "select",
-            name: "teachers",
-            multiple: true,
-            label: "Teacher",
-            placeholder: "Select Teacher",
-            required: false,
-            size: 12,
-            hasOptions: true,
-            optionLabelProp: "name",
-            optionValueProp: "_id",
-          },
-        ]),
+    {
+      type: "multiselect",
+      name: "users",
+      multiple: true,
+      label: "Users",
+      placeholder: "Select Users",
+      required: false,
+      size: 12,
+      hasOptions: true,
+      optionLabelProp: "name",
+      optionValueProp: "_id",
+      allowSelectAll: true,
+    },
+    // ...(isTeacher
+    //   ? [
+    // {
+    //   type: "multiselect",
+    //   name: "students",
+    //   multiple: true,
+    //   label: "Students",
+    //   placeholder: "Select Students",
+    //   required: false,
+    //   size: 12,
+    //   hasOptions: true,
+    //   optionLabelProp: "name",
+    //   optionValueProp: "_id",
+    //   allowSelectAll: true,
+    // },
+    //     ]
+    //   : [
+    //       {
+    //         type: "select",
+    //         name: "teachers",
+    //         multiple: true,
+    //         label: "Teacher",
+    //         placeholder: "Select Teacher",
+    //         required: false,
+    //         size: 12,
+    //         hasOptions: true,
+    //         optionLabelProp: "name",
+    //         optionValueProp: "_id",
+    //       },
+    //     ]),
     {
       type: "dateTime",
       name: "start",
@@ -305,41 +449,95 @@ const generateForm = ({ isOwner, isTeacher }) => {
     },
   ];
 };
-const eventForm = [
-  {
-    type: "text",
-    name: "eventName",
-    label: "Event Name",
-    placeholder: "eg: English, French",
-    required: true,
-    size: 12,
-  },
-  //   {
-  //     type: "multiselect",
-  //     name: "groupId",
-  //     label: "Class Name",
-  //     placeholder: "Name of the Class the Course should belong to.",
-  //     required: false,
-  //     size: 12,
-  //     hasOptions: false,
-  //     optionLabelProp: "groupName",
-  //     optionValueProp: "id",
-  //   },
 
-  {
-    type: "dateTime",
-    name: "start",
-    label: "Start Date & Time",
-    placeholder: "Start Date & Time",
-    required: true,
-    size: 6,
-  },
-  {
-    type: "dateTime",
-    name: "end",
-    label: "End Date & Time",
-    placeholder: "end Date & Time",
-    required: true,
-    size: 6,
-  },
-];
+const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
+  const classes = useStyles();
+
+  const handleSubmit = (data) => {};
+
+  return (
+    <ModalContainer
+      open={open}
+      title={`You have a invitation for ${data?.title}`}
+      onClose={onClose}
+      size="xs"
+      hideButtons
+    >
+      <List title="Invited People">
+        {data?.users.map((u, ui) => {
+          return (
+            <ListItem
+              key={ui}
+              secondaryAction={<Chip label={u.status} variant="outlined" />}
+              disablePadding
+            >
+              <ListItemAvatar>
+                <Avatar alt={`${u.name}`} src={`${u.profileUrl}`} />
+              </ListItemAvatar>
+              <ListItemText primary={`${u.name}`} secondary={u.email} />
+            </ListItem>
+          );
+        })}
+
+        {/* {data?.users
+          ?.filter((u) => u.id !== userId)
+          .map((u, ui) => {
+            return (
+              <ListItem
+                key={ui}
+                secondaryAction={<Chip label={u.status} variant="outlined" />}
+                disablePadding
+              >
+                <ListItemAvatar>
+                  <Avatar alt={`${u.name}`} src={`${u.profileUrl}`} />
+                </ListItemAvatar>
+                <ListItemText primary={`${u.name}`} secondary={u.email} />
+              </ListItem>
+            );
+          })} */}
+      </List>
+
+      <Stack direction="column" spacing={2}>
+        <h3>Are You Joining ?</h3>
+
+        <Stack direction="row" justifyContent="space-between">
+          <div>
+            <Button
+              variant="contained"
+              color="success"
+              size="sm"
+              onClick={() => {
+                onSubmit("Joining");
+              }}
+            >
+              Yes
+            </Button>
+          </div>
+
+          <Stack direction="row" spacing={2} justifyContent="flex-end">
+            <Button
+              variant="contained"
+              color="error"
+              size="sm"
+              onClick={() => {
+                onSubmit("Not Joining");
+              }}
+            >
+              No
+            </Button>
+            <Button
+              variant="contained"
+              color="warning"
+              size="sm"
+              onClick={() => {
+                onSubmit("May Be Joining");
+              }}
+            >
+              May Be
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
+    </ModalContainer>
+  );
+};

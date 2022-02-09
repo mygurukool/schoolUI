@@ -1,4 +1,4 @@
-import { MenuItem, TextField } from "@mui/material";
+import { ListSubheader, MenuItem, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import { Controller } from "react-hook-form";
@@ -63,6 +63,10 @@ const MyTextField = React.forwardRef((props) => {
               {defaultOption && defaultOption()}
               {options.length > 0 ? (
                 options?.map((opt, index) => {
+                  if (opt.type === "label") {
+                    return <ListSubheader>{opt.text}</ListSubheader>;
+                  }
+
                   return (
                     <MenuItem
                       value={optionValueProp ? opt[optionValueProp] : opt}

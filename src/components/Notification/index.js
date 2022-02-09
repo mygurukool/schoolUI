@@ -29,10 +29,8 @@ export const NotificationHandler = () => {
   const dispatch = useDispatch();
   const { notifications } = useSelector((state) => state.util);
   const [notificationToken, setNotificationToken] = React.useState();
-  console.log("notificationToken", notificationToken);
   React.useEffect(() => {
     getFirebaseToken((token) => {
-      console.log("current token", token);
       setNotificationMessage(token);
       dispatch(registerNotificationToken(token));
     });

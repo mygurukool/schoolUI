@@ -7,6 +7,7 @@ import {
   InputLabel,
   Checkbox,
   ListItemText,
+  ListSubheader,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
@@ -50,8 +51,18 @@ const MultiSelect = React.forwardRef((props) => {
                 field.onChange([]);
                 return;
               }
-              field.onChange(options.map((opt) => opt[optionValueProp]));
-              onSelect && onSelect(options.map((opt) => opt[optionValueProp]));
+              field.onChange(
+                options
+                  .map((opt) => opt[optionValueProp])
+                  .filter((i) => Boolean(i))
+              );
+              onSelect &&
+                onSelect(
+                  options
+
+                    .map((opt) => opt[optionValueProp])
+                    .filter((i) => Boolean(i))
+                );
             };
 
             return (
@@ -77,6 +88,7 @@ const MultiSelect = React.forwardRef((props) => {
                     selectAll();
                     return;
                   }
+
                   field.onChange(e.target.value);
                   onSelect && onSelect(e.target.value);
                 }}
@@ -105,7 +117,10 @@ const MultiSelect = React.forwardRef((props) => {
                 {allowSelectAll && (
                   <MenuItem value="all">
                     <Checkbox
-                      checked={field?.value?.length === options?.length}
+                      checked={
+                        field?.value?.length ===
+                        options.filter((i) => i.type !== "label")?.length
+                      }
                     />{" "}
                     All {label}
                   </MenuItem>
@@ -118,6 +133,11 @@ const MultiSelect = React.forwardRef((props) => {
                 {defaultOption && defaultOption()}
                 {options.length > 0 ? (
                   options?.map((opt, index) => {
+                    console.log("opt", opt);
+                    if (opt.type === "label") {
+                      return <ListSubheader>{opt.text}</ListSubheader>;
+                    }
+
                     const check =
                       opt[optionValueProp] ===
                       (Array.isArray(field.value)

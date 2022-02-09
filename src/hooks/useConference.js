@@ -138,8 +138,6 @@ const useConference = () => {
     }
   }, [courseId]);
 
-  console.log("current", conferenceData);
-
   return {
     initializeConference,
     conferenceData,
