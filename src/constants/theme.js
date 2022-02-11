@@ -60,10 +60,10 @@ let theme = createTheme({
       contrastText: "#fff",
     },
     blue: {
-      main: '#2c8bc7'
+      main: "#2c8bc7",
     },
     green: {
-      main: '#00A257',
+      main: "#00A257",
     },
     success: {
       main: "#2ac77e",
@@ -211,16 +211,16 @@ theme = createTheme(theme, {
         root: {
           fontWeight: theme.palette.fontWeights.medium,
           textTransform: "capitalize",
-          transition: 'all 0.3s ease 0s',
-          '&:hover': {
-            boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
-            transform: 'translateY(-3px)'
+          transition: "all 0.3s ease 0s",
+          "&:hover": {
+            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
+            transform: "translateY(-3px)",
           },
         },
         text: {
-          '&:hover': {
-            boxShadow: 'none',
-            transform: 'translateY(-3px)'
+          "&:hover": {
+            boxShadow: "none",
+            transform: "translateY(-3px)",
           },
         },
       },
@@ -236,7 +236,7 @@ theme = createTheme(theme, {
     MuiAlert: {
       styleOverrides: {
         root: {
-          color: theme.palette.black
+          color: theme.palette.black,
         },
       },
     },
@@ -249,24 +249,24 @@ theme = createTheme(theme, {
         },
       },
     },
-    MuiOutlinedInput: {
-      defaultProps: {
-        color: "black",
-      },
-      styleOverrides: {
-        root: {
-          borderRadius: theme.palette.radius.small,
-          borderTopLeftRadius: theme.palette.radius.small,
-          borderTopRightRadius: theme.palette.radius.small,
-          // "&.Mui-focused": {
-          //     backgroundColor: theme.palette.textField.main,
-          // },
-          // '&:hover': {
-          //     backgroundColor: theme.palette.textField.main,
-          // },
-        },
-      },
-    },
+    // MuiOutlinedInput: {
+    //   defaultProps: {
+    //     color: "black",
+    //   },
+    //   styleOverrides: {
+    //     root: {
+    //       borderRadius: theme.palette.radius.small,
+    //       borderTopLeftRadius: theme.palette.radius.small,
+    //       borderTopRightRadius: theme.palette.radius.small,
+    //       // "&.Mui-focused": {
+    //       //     backgroundColor: theme.palette.textField.main,
+    //       // },
+    //       // '&:hover': {
+    //       //     backgroundColor: theme.palette.textField.main,
+    //       // },
+    //     },
+    //   },
+    // },
     MuiFormLabel: {
       defaultProps: {
         color: "black",
