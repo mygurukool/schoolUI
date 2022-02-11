@@ -23,7 +23,21 @@ const useWhiteBoard = () => {
     name: userName,
     loginType,
     organization,
+    isGoogleLogin,
+    isMicrosoftLogin,
   } = useSelector((state) => state.user);
+
+  const generateOrgName = () => {
+    if (isGoogleLogin) {
+      return "googleclassroom";
+    } else if (isMicrosoftLogin) {
+      return "msteams";
+    } else if (organization) {
+      return organization?.organizationName.replace(/[^a-zA-Z ]/g, "");
+    } else {
+      return "mygurukool";
+    }
+  };
 
   const canCreateWhiteboard = usePermissions({
     scopes: [SCOPES.CAN_CREATE_WHITEBOARD],
@@ -59,10 +73,10 @@ const useWhiteBoard = () => {
 
   const initializeWhiteBoard = () => {
     if (canCreateWhiteboard) {
-      const url = `https://wbo.ophir.dev/boards/${organization?.organizationName.replace(
-        /[^a-zA-Z ]/g,
-        ""
-      )}${currentGroup?.groupName}${moment().format(`DDMMYYYY`)}`;
+      const orgName = generateOrgName();
+      const url = `https://wbo.ophir.dev/boards/${orgName}${
+        currentGroup?.groupName
+      }${moment().format(`DDMMYYYY`)}`;
       if (isTeacher) {
         socket.emit("CREATE_WHITEBOARD", {
           courseId,
