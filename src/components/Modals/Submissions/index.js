@@ -47,18 +47,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Submissions = (props) => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const classes = useStyles();
   const [currentStudent, setCurrentStudent] = React.useState();
   const [points, setPoints] = React.useState();
 
-  const submission = useSelector((state) => state.common.submission);
   const { currentGroup, currentCourse } = useSelector((state) => state.common);
-  const { modalOpen, modalData } = useSelector((state) => state.util);
+  const { modalOpen, modalData: submission } = useSelector(
+    (state) => state.util
+  );
   const open = modalOpen === "submission";
 
-  const id = modalData?.id;
+  const id = submission?.id;
   const students = submission?.students;
 
   const handleStudentClick = (s) => {
@@ -93,10 +93,20 @@ const Submissions = (props) => {
   }, [id, open]);
 
   const breadcrumbs = [
-    <Link underline="hover" key="1" color="inherit" onClick={() => history}>
+    <Link
+      underline="hover"
+      key="1"
+      color="inherit"
+      onClick={() => handleClose()}
+    >
       {currentGroup?.groupName}
     </Link>,
-    <Link underline="hover" key="2" color="inherit" onClick={() => history}>
+    <Link
+      underline="hover"
+      key="2"
+      color="inherit"
+      onClick={() => handleClose()}
+    >
       {currentCourse?.courseName}
     </Link>,
     <Typography key="3" color="text.primary">
@@ -104,6 +114,7 @@ const Submissions = (props) => {
     </Typography>,
   ];
 
+  console.log("submission", submission);
   return (
     <ModalContainer
       open={open}

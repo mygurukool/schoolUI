@@ -33,12 +33,18 @@ import { ArrowBack, ArrowRight } from "@mui/icons-material";
 export default function NavBar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const { isGoogleLogin, isMircrosoftLogin } = useSelector(
+    (state) => state.user
+  );
+
   const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   const [notiOpen, setNotiOpen] = React.useState(false);
   const { i18n } = useTranslation();
   const history = useHistory();
   const [openDrawer, setOpenDrawer] = React.useState(false);
+
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
   };
@@ -222,10 +228,26 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               alignItems: "center",
             }}
           >
+            {isGoogleLogin && (
+              <>
+                <img
+                  src="images/gc.svg"
+                  style={{ width: 40, height: 40, marginRight: 10 }}
+                />
+                <Typography variant="h6" className={classes.appName}>
+                  Google Classroom
+                </Typography>
+              </>
+            )}
             {/* <img src="images/mygurukool.svg" style={{ width: 40, height: 40, marginRight: 10 }} /> */}
-            <Typography variant="h6" className={classes.appName}>
-              {user?.organization?.organizationName || 'My Gurukool (BETA)'}
-            </Typography>
+
+            {/* microsoft login not implented  */}
+
+            {!(isGoogleLogin || isMircrosoftLogin) && (
+              <Typography variant="h6" className={classes.appName}>
+                {user?.organization?.organizationName || "My Gurukool (BETA)"}
+              </Typography>
+            )}
           </Box>
           {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                         <Badge badgeContent={4} color="error">
@@ -258,13 +280,14 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 {lang("CONTACT")}
               </Typography>
             </li>
-            <li><Button
-              variant="contained"
-              color="secondary"
-              onClick={handleLanguageClick}
-            >
-              {lang("LANGUAGE")}
-            </Button>
+            <li>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleLanguageClick}
+              >
+                {lang("LANGUAGE")}
+              </Button>
             </li>
             <li>
               {user?.isLogged && (
@@ -393,11 +416,11 @@ const useStyles = makeStyles((theme) => ({
   },
   navLink: {
     textTransform: "capitalize",
-    cursor: 'pointer',
-    transition: 'all 0.3s ease 0s',
-    '&:hover': {
-      transform: 'translateY(-3px)'
-    }
+    cursor: "pointer",
+    transition: "all 0.3s ease 0s",
+    "&:hover": {
+      transform: "translateY(-3px)",
+    },
   },
   avatar: {
     background: theme.palette.secondary.main,

@@ -59,19 +59,17 @@ const useWhiteBoard = () => {
 
   const initializeWhiteBoard = () => {
     if (canCreateWhiteboard) {
+      const url = `https://wbo.ophir.dev/boards/${organization?.organizationName.replace(
+        /[^a-zA-Z ]/g,
+        ""
+      )}${currentGroup?.groupName}${moment().format(`DDMMYYYY`)}`;
       if (isTeacher) {
         socket.emit("CREATE_WHITEBOARD", {
           courseId,
-          whiteBoardUrl: `https://wbo.ophir.dev/boards/${
-            organization?.organizationName
-          }${currentGroup?.groupName}#${moment().format(DATEFORMAT)}`,
+          whiteBoardUrl: url,
         });
       } else {
-        setWhiteBoardUrl(
-          `https://wbo.ophir.dev/boards/${organization?.organizationName}${
-            currentGroup?.groupName
-          }${userName}#${moment().format(DATEFORMAT)}`
-        );
+        setWhiteBoardUrl(url);
       }
     }
   };

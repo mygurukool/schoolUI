@@ -2,7 +2,6 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Navbar from "../components/Navbar";
-import Submissions from "../pages/Submissions";
 import Sidebar from "../components/Sidebar";
 import { NotificationHandler } from "../components/Notification";
 import BackgroundImage from "../pages/Home/BackgroundImage";

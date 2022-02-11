@@ -14,7 +14,6 @@ import Spinner from "../components/Spinner";
 import AnimatedSwitch from "./AnimatedSwitch";
 
 import Util from "./Util";
-import Submissions from "../pages/Submissions";
 
 const RouteData = () => {
   const { ready } = useAutoLogin();
@@ -22,15 +21,17 @@ const RouteData = () => {
   return ready ? (
     <BrowserRouter>
       <Util />
-      <AnimatedSwitch>
+      {/* <AnimatedSwitch> */}
+      <Switch>
         <ProtectedRoute exact path="/" component={HomeRoutes} />
-        <Route exact path="/submission/:id" component={Submissions} />
 
         <Route exact path="/login" component={Login} />
         <Route exact path="/forgot-password" component={Forgot} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/invitation/:type/:id" component={Invitation} />
-      </AnimatedSwitch>
+      </Switch>
+
+      {/* </AnimatedSwitch> */}
     </BrowserRouter>
   ) : (
     <Spinner />

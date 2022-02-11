@@ -112,7 +112,9 @@ const AssignmentList = () => {
             </div>
           </>
         ) : (
-          <Alert severity="warning" variant="filled">Please Select a course</Alert>
+          <Alert severity="warning" variant="filled">
+            Please Select a course
+          </Alert>
         )}
       </>
     )
@@ -129,7 +131,12 @@ const ActionBar = () => {
   };
   return (
     <Stack direction="row" sx={{ mb: 1 }}>
-      <Button startIcon={<Add />} color="primary" variant="contained" onClick={onAddAssignment}>
+      <Button
+        startIcon={<Add />}
+        color="primary"
+        variant="contained"
+        onClick={onAddAssignment}
+      >
         Add
       </Button>
     </Stack>
@@ -172,7 +179,7 @@ const AssignmentListItem = ({
   const currentDiffrence = dueDate
     ? moment(dueDateTime, DUEDATETIMEFORMAT).diff(moment(), "days")
     : undefined;
-  const theme = useTheme()
+  const theme = useTheme();
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
   const isMyGuruKool = loginType === "mygurukool";
@@ -208,10 +215,15 @@ const AssignmentListItem = ({
       expanded={expanded}
       onChange={onSelectAssignment}
       className={classes.Accordion}
-      style={expanded ? {
-        border: `1px solid ${theme.palette.secondary.light}`,
-        background: theme.palette.secondary.light, boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
-      } : undefined}
+      style={
+        expanded
+          ? {
+              border: `1px solid ${theme.palette.secondary.light}`,
+              background: theme.palette.secondary.light,
+              boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            }
+          : undefined
+      }
       elevation={0}
     >
       <AccordionSummary expandIcon={<RightIcon />}>
@@ -222,29 +234,38 @@ const AssignmentListItem = ({
             currentDiffrence={currentDiffrence}
           />
         )}
-        <Stack sx={{ width: '100%' }} flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          sx={{ width: "100%" }}
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Stack>
-            <Typography variant="subtitle1" >{assignmentTitle}</Typography>
+            <Typography variant="subtitle1">{assignmentTitle}</Typography>
             {!expanded && (
               <Typography
                 color="textSecondary"
                 className={clsx(classes.description, classes.ellipses)}
                 variant="body2"
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               >
                 {parse(`<div> ${instructions}</div>`)}
               </Typography>
             )}
           </Stack>
-          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+          <Stack
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title={"Edit Assignment"}>
                 <IconButton
                   color="primary"
                   // disabled={!isMyGuruKool}
                   onClick={(e) => {
-                    e.preventDefault()
-                    onEdit()
+                    e.preventDefault();
+                    onEdit();
                   }}
                 >
                   <Edit />
@@ -263,8 +284,8 @@ const AssignmentListItem = ({
                   color="secondary"
                   disabled={!isMyGuruKool}
                   onClick={(e) => {
-                    e.preventDefault()
-                    onEdit()
+                    e.preventDefault();
+                    onEdit();
                   }}
                 >
                   <Edit />
@@ -274,17 +295,14 @@ const AssignmentListItem = ({
 
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title="Check submissions">
-                <IconButton
-                  onClick={() => onCheck()}
-                  color="secondary"
-                >
+                <IconButton onClick={() => onCheck()} color="secondary">
                   <FactCheck />
                 </IconButton>
               </Tooltip>
             </PermissionsGate>
           </Stack>
         </Stack>
-      </AccordionSummary >
+      </AccordionSummary>
       <AccordionDetails className={classes.AccordionDetails}>
         <Stack
           spacing={1}
@@ -293,9 +311,7 @@ const AssignmentListItem = ({
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
-            <Typography
-              variant="body2"
-            >
+            <Typography variant="body2">
               {parse(`<div> ${instructions}</div>`)}
             </Typography>
           </ItemSection>
@@ -309,7 +325,13 @@ const AssignmentListItem = ({
                 <Grid item lg={enableChat ? 6 : 12} md={enableChat ? 6 : 12}>
                   <Grid container>
                     {audioVideo?.map((a, ai) => {
-                      return <AudioVideoCard size={enableChat ? 12 : 6} key={ai} {...a} />;
+                      return (
+                        <AudioVideoCard
+                          size={enableChat ? 12 : 6}
+                          key={ai}
+                          {...a}
+                        />
+                      );
                     })}
                     {hasAudioVideo.map((a, i) => {
                       return (
@@ -344,7 +366,6 @@ const AssignmentListItem = ({
           {hasDocuments && hasDocuments.length > 0 && (
             <ItemSection title=" Upload Exercises">
               <Grid container>
-
                 {hasDocuments.map((a, i) => {
                   return (
                     <FileCard
@@ -360,7 +381,7 @@ const AssignmentListItem = ({
           )}
         </Stack>
       </AccordionDetails>
-    </Accordion >
+    </Accordion>
   );
 };
 
@@ -370,7 +391,9 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
     <>
       <Stack spacing={1} direction="column" pb={2} pt={2}>
         <Stack direction="row" justifyContent="space-between">
-          <Typography variant="subtitle1" className={classes.title}>{title}</Typography>
+          <Typography variant="subtitle1" className={classes.title}>
+            {title}
+          </Typography>
           {EndAction && <EndAction />}
         </Stack>
 
@@ -382,7 +405,7 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
 
 const useStyles = makeStyles((theme) => ({
   ellipses: {
-    width: '100%',
+    width: "100%",
     display: "-webkit-box",
     WebkitBoxOrient: "vertical",
     WebkitLineClamp: 1,
@@ -398,13 +421,13 @@ const useStyles = makeStyles((theme) => ({
     "&:before": {
       display: "none",
     },
-    transition: 'all 0.3s ease 0s',
+    transition: "all 0.3s ease 0s",
     marginBottom: 0,
-    '&:hover': {
+    "&:hover": {
       border: `1px solid ${theme.palette.secondary.light}`,
-      boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
-      background: theme.palette.secondary.light
-    }
+      boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+      background: theme.palette.secondary.light,
+    },
   },
 
   AccordionDetails: {
@@ -418,9 +441,9 @@ const useStyles = makeStyles((theme) => ({
   },
   heading: {
     display: "flex",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
 }));
 // const AssignmentListItem = ({

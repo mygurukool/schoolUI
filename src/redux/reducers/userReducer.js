@@ -15,6 +15,8 @@ const initialstate = {
   sectionBg: "/background/home.jpg",
   isTeacher: false,
   organization: undefined,
+  isGoogleLogin: false,
+  isMicrosoftLogin: false,
 };
 
 const checkIfTeacher = (role) => {
@@ -45,6 +47,8 @@ const sizeReducer = (state = initialstate, action) => {
 
         ...getData().user,
         organization: getData().organization,
+        isGoogleLogin: getData().loginType === "google",
+        isMicroSoftLogin: getData().loginType === "microsoft",
       };
 
     case authTypes.LOGIN_USER_FAIL:
@@ -79,6 +83,8 @@ const sizeReducer = (state = initialstate, action) => {
         error: undefined,
         ...getData()?.user,
         organization: getData().organization,
+        isGoogleLogin: getData().loginType === "google",
+        isMicroSoftLogin: getData().loginType === "microsoft",
       };
 
     case userTypes.GET_USER_DETAILS_FAIL:
