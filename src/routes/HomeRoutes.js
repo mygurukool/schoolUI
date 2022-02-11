@@ -5,13 +5,15 @@ import Navbar from "../components/Navbar";
 import Submissions from "../pages/Submissions";
 import Sidebar from "../components/Sidebar";
 import { NotificationHandler } from "../components/Notification";
+import BackgroundImage from "../pages/Home/BackgroundImage";
 
 const HomeRoutes = () => {
   return (
     <>
-      <Navbar />
+      <Navbar position="fixed" />
       <Sidebar />
       <NotificationHandler />
+      <BackgroundImage />
 
       <Route exact path="/" component={Home} />
     </>

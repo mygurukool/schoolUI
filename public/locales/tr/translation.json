@@ -1,9 +1,14 @@
 {
-  "language": "turkish",
-  "home": "ev",
-  "about": "hakkında",
-  "contact": "Temas",
-  "assignment": "Atamalar",
-  "conference": "konferans",
-  "white board": "beyaz tahta"
+  "LANGUAGE": "turkish",
+  "HOME": "ev",
+  "ABOUT": "hakkında",
+  "CONTACT": "Temas",
+  "ASSIGNMENT": "Atamalar",
+  "CONFERENCE": "konferans",
+  "WHITE_BOARD": "beyaz tahta",
+  "GET_STARTED": "Get Started",
+  "WELCOME": "Hi, Welcome back!",
+  "LOGIN_TO_MT": "Login to Microsoft Teams",
+  "LOGIN_TO_GC": "Login to Google Classroom",
+  "LOGIN_TO_MS": "LOGIN TO MOUGLI SCHOOL"
 }

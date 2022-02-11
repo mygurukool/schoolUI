@@ -3,3 +3,77 @@
   margin: 0;
   padding: 0;
 }
+
+@keyframes cloud1 {
+  0% {
+    left: -200px;
+  }
+
+  100% {
+    left: 1800px;
+  }
+}
+
+.cloud1 {
+  position: absolute;
+  opacity: 0.8;
+  top: 20px;
+  left: -500px;
+  animation: cloud1 50s linear infinite;
+}
+
+.cloud2 {
+  position: absolute;
+  opacity: 0.8;
+  left: -500px;
+  top: 30px;
+  animation: cloud1 50s linear infinite;
+  animation-delay: 5s;
+}
+
+.cloud3 {
+  position: absolute;
+  opacity: 0.8;
+  left: -500px;
+  top: 60px;
+  animation: cloud1 50s linear infinite;
+  animation-delay: 15s;
+}
+
+.cloud4 {
+  position: absolute;
+  opacity: 0.8;
+  left: -500px;
+  top: 10px;
+  animation: cloud1 50s linear infinite;
+  animation-delay: 35s;
+}
+
+.cloud5 {
+  position: absolute;
+  opacity: 0.8;
+  left: -500px;
+  top: 40px;
+  animation: cloud1 50s linear infinite;
+  animation-delay: 46s;
+}
+
+.cloud6 {
+  position: absolute;
+  opacity: 0.8;
+  left: -500px;
+  top: 100px;
+  animation: cloud1 50s linear infinite;
+  animation-delay: 55s;
+}
+.rdw-editor-main,
+.rdw-editor-toolbar {
+  border: 1px solid rgba(0, 0, 0, 0.23) !important;
+  border-radius: 4px !important;
+  min-height: 100px;
+}
+
+.rdw-editor-main:active {
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 4px;
+}

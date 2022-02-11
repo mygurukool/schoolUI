@@ -245,17 +245,17 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
           <ul className={classes.navList}>
             <li>
               <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("home")}
+                {lang("HOME")}
               </Typography>
             </li>
             <li>
               <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("about")}
+                {lang("ABOUT")}
               </Typography>
             </li>
             <li>
               <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("contact")}
+                {lang("CONTACT")}
               </Typography>
             </li>
             <li><Button
@@ -263,7 +263,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               color="secondary"
               onClick={handleLanguageClick}
             >
-              {lang("language")}
+              {lang("LANGUAGE")}
             </Button>
             </li>
             <li>

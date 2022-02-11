@@ -190,7 +190,6 @@ const Home = (props) => {
         />
       </PermissionsGate>
       <div className={classes.root}>
-        <BackgroundImage />
         <div className={classes.innerContainet}>
           <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
@@ -224,7 +223,7 @@ const Home = (props) => {
                       justifyContent="flex-end"
                       alignItems="center"
                     >
-                      <Notification />
+                      {/* <Notification /> */}
                       <PermissionsGate
                         scopes={[
                           SCOPES.CAN_CREATE_GROUP,
@@ -234,7 +233,7 @@ const Home = (props) => {
                           SCOPES.CAN_INVITE_TEACHER,
                         ]}
                       >
-                        <IconButton onClick={handleOpenMenu}>
+                        <IconButton onClick={handleOpenMenu} variant="inherit">
                           <MENUICON />
                         </IconButton>
 
@@ -342,6 +341,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     maxHeight: "100%",
     overflow: "hidden",
+    padding: theme.spacing(7)
   },
   innerContainet: {
     height: "100%",

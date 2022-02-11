@@ -283,7 +283,7 @@ const CoursesList = () => {
       >
         <PermissionGate scopes={[SCOPES.canCreate]}>
           {groups.length === 0 && (
-            <Alert severity="info" variant="filled" style={{ marginBottom: 20 }}>Please create a group to add courses</Alert>
+            <Alert severity="warning" variant="filled" style={{ marginBottom: 20 }}>Please create a group to add courses</Alert>
           )}
         </PermissionGate>
 
@@ -310,6 +310,7 @@ const CoursesList = () => {
                   ]}
                 >
                   <IconButton
+                    color='inherit'
                     onClick={(e) => handleOpenMenu(e, c)}
                     style={{
                       position: "absolute",

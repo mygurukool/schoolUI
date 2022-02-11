@@ -66,12 +66,17 @@ let theme = createTheme({
       main: '#00A257',
     },
     success: {
-      main: "#57e6a4",
-      contrastText: "#212121",
+      main: "#2ac77e",
+      contrastText: "#ffffff",
+    },
+    orange: {
+      main: "#fc9f42",
+      contrastText: "#ffffff",
     },
     error: {
-      main: "#fa7d88",
-      light: "#fa7d88",
+      main: "#f55361",
+      light: "#f55361",
+      contrastText: "#ffffff",
     },
     warning: {
       main: "#FECA68",
@@ -79,8 +84,8 @@ let theme = createTheme({
       contrastText: "#212121",
     },
     info: {
-      main: "#61daf2",
-      light: "#61daf2",
+      main: "#308bbf",
+      light: "#308bbf",
       contrastText: "#212121",
     },
     fontSizes: {
@@ -246,7 +251,7 @@ theme = createTheme(theme, {
     },
     MuiOutlinedInput: {
       defaultProps: {
-        color: "secondary",
+        color: "black",
       },
       styleOverrides: {
         root: {
@@ -264,7 +269,7 @@ theme = createTheme(theme, {
     },
     MuiFormLabel: {
       defaultProps: {
-        color: "secondary",
+        color: "black",
       },
     },
   },

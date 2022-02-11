@@ -30,6 +30,7 @@ export const AnimatedSwitch = (props) => {
             opacity: opacity,
             transform: transform,
             position: position,
+            overflowX: "hidden"
           }}
         >
           <Switch location={item.item}>{props.children}</Switch>

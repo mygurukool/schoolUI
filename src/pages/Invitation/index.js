@@ -117,6 +117,3 @@ const formData = [
 ];
 
 
-
-https://wbo.ophir.dev/boards/${schoolName}${userName}#{date_timestamp}
-

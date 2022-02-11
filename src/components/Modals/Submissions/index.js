@@ -169,7 +169,7 @@ const Submissions = (props) => {
           </Box>
 
           {!currentStudent ? (
-            <Alert severity="info">Please select a student</Alert>
+            <Alert severity="warning">Please select a student</Alert>
           ) : (
             <Grid container>
               <Grid item lg={9}>

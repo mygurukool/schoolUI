@@ -1,9 +1,16 @@
 {
-  "language": "english",
-  "home": "Home",
-  "about": "About",
-  "contact": "Contact",
-  "assignment": "Assignments",
-  "conference": "Conference",
-  "white board": "White board"
+  "LANGUAGE": "english",
+  "HOME": "Home",
+  "ABOUT": "About",
+  "CONTACT": "Contact",
+  "ASSIGNMENT": "Assignments",
+  "CONFERENCE": "Conference",
+  "WHITE_BOARD": "White board",
+  "GET_STARTED": "Get Started",
+  "WELCOME": "Hi, Welcome back!",
+  "LOGIN_TO_MT": "Login to Microsoft Teams",
+  "LOGIN_TO_GC": "Login to Google Classroom",
+  "LOGIN_TO_MS": "LOGIN TO MOUGLI SCHOOL",
+  "GROUP": "Group",
+  "NO_GROUP_AVAILABLE": "No Groups available"
 }

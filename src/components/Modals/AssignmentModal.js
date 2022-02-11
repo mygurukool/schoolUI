@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/action/utilActions";
+import CloseIcon from "@mui/icons-material/CloseOutlined";
 
 import {
   createAssignmet,
@@ -13,9 +14,13 @@ import FormCreator from "../Form/FormCreator";
 import moment from "moment";
 import { DATETIMEFORMAT } from "../../constants";
 import {
+  Box,
   Button,
   Checkbox,
+  Dialog,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   Divider,
   Drawer,
   FormControl,
@@ -240,81 +245,96 @@ const AssignmentModal = () => {
       }
     }
   }, [open]);
+  const btnRef = React.useRef()
 
   return (
-    <ModalContainer
+    <Dialog
       open={open}
       title={modalData ? "Edit Assginment" : "Create Assignment"}
       size="lg"
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-      // onSubmit={(e) => {
-      //   alert("hehe");
-      //   e.preventDefault();
-      //   formRef.current.submit();
-      // }}
+    // onSubmit={(e) => {
+    //   alert("hehe");
+    //   e.preventDefault();
+    //   formRef.current.submit();
+    // }}
     >
-      <AddYoutubeLink
-        open={youtubeOpen}
-        onClose={handleCloseYoutubeModal}
-        onSubmit={handleSubmitExplanationModal}
-        data={youtubeModalData}
-      />
-      <AddUrlLink
-        open={linkOpen}
-        onClose={handleCloseLinkModal}
-        onSubmit={handleSubmitExplanationModal}
-        data={linkModalData}
-      />
+      <DialogTitle>
+        <Box style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+        }}>
+          <Typography variant="subtitle1">{modalData ? "Edit Assginment" : "Create Assignment"}</Typography>
+          <IconButton
+            aria-label="close"
+            onClick={handleClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+      <DialogContent dividers>
+        <AddYoutubeLink
+          open={youtubeOpen}
+          onClose={handleCloseYoutubeModal}
+          onSubmit={handleSubmitExplanationModal}
+          data={youtubeModalData}
+        />
+        <AddUrlLink
+          open={linkOpen}
+          onClose={handleCloseLinkModal}
+          onSubmit={handleSubmitExplanationModal}
+          data={linkModalData}
+        />
 
-      <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
-        <Grid
-          container
-          direction="row"
-          spacing={2}
-          className={classes.gridContainer}
-        >
-          <Grid item lg={9}>
-            <Stack direction="column" spacing={2}>
-              <Controller
-                name="assignmentTitle"
-                control={control}
-                render={({ field }) => (
-                  <TextField
-                    fullWidth
-                    label="Title"
-                    variant="outlined"
-                    {...field}
-                    error={errors["assignmentTitle"]}
-                    helperText={
-                      errors["assignmentTitle"] &&
-                      errors["assignmentTitle"]?.message
-                    }
-                  />
-                )}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Title is required",
-                  },
-                }}
-              />
+        <form onSubmit={handleSubmit(onSubmit)} ref={formRef}>
+          <Grid
+            container
+            direction="row"
+            spacing={2}
+            className={classes.gridContainer}
+          >
+            <Grid item lg={9}>
+              <Stack direction="column" spacing={2}>
+                <Controller
+                  name="assignmentTitle"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      fullWidth
+                      label="Title"
+                      variant="outlined"
+                      {...field}
+                      error={errors["assignmentTitle"]}
+                      helperText={
+                        errors["assignmentTitle"] &&
+                        errors["assignmentTitle"]?.message
+                      }
+                    />
+                  )}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Title is required",
+                    },
+                  }}
+                />
 
-              <Controller
-                name="instructions"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <>
-                      <InputLabel id="instruction" variant="standard">
-                        Instructions
-                      </InputLabel>
-                      <Editor
-                        editorState={editorState}
-                        onEditorStateChange={setEditorState}
-                      />
-                      {/* <SunEditor
+                <Controller
+                  name="instructions"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <>
+                        <InputLabel id="instruction" variant="standard">
+                          Instructions
+                        </InputLabel>
+                        <Editor
+                          editorState={editorState}
+                          onEditorStateChange={setEditorState}
+                        />
+                        {/* <SunEditor
                         width="100%"
                         height="100%"
                         placeholder="Please type instructions here..."
@@ -326,179 +346,180 @@ const AssignmentModal = () => {
                           field.onChange(e);
                         }}
                       /> */}
-                    </>
-                  );
-                }}
-              />
-
-              <Stack>
-                <InputLabel>Audio/Video Explanation</InputLabel>
-
-                <Stack direction="row" spacing={2} mt={2}>
-                  <ToolTipIconButton
-                    title="Add  Youtube Link"
-                    icon={<YouTube />}
-                    onClick={() => openYoutubeModal()}
-                  />
-
-                  <ToolTipIconButton
-                    title="Add Any Website Link"
-                    icon={<AddLink />}
-                    onClick={() => openLinkModal()}
-                  />
-                </Stack>
+                      </>
+                    );
+                  }}
+                />
 
                 <Stack>
-                  <ItemList
-                    data={explanationFiles}
-                    onDelete={(d) => handleDeleteExplanationFile(d)}
-                  />
-                </Stack>
-              </Stack>
-              <Stack>
-                <InputLabel>Upload Excersice</InputLabel>
+                  <InputLabel>Audio/Video Explanation</InputLabel>
 
-                <Stack direction="row" spacing={2} mt={2}>
-                  <input
-                    ref={uploadInputRef}
-                    hidden
-                    type="file"
-                    onChange={(e) => {
-                      const value = e.target.files[0];
-                      setUploadedFiles([
-                        ...uploadedFiles,
-                        { type: "file", metaData: value },
-                      ]);
-                    }}
-                    // {...register("file")}
-                  />
-                  <ToolTipIconButton
-                    title="Upload Any File"
-                    icon={<UploadFile />}
-                    onClick={() => uploadInputRef.current.click()}
-                  />
-                </Stack>
+                  <Stack direction="row" spacing={2} mt={2}>
+                    <ToolTipIconButton
+                      title="Add  Youtube Link"
+                      icon={<YouTube />}
+                      onClick={() => openYoutubeModal()}
+                    />
 
+                    <ToolTipIconButton
+                      title="Add Any Website Link"
+                      icon={<AddLink />}
+                      onClick={() => openLinkModal()}
+                    />
+                  </Stack>
+
+                  <Stack>
+                    <ItemList
+                      data={explanationFiles}
+                      onDelete={(d) => handleDeleteExplanationFile(d)}
+                    />
+                  </Stack>
+                </Stack>
                 <Stack>
-                  <ItemList
-                    data={uploadedFiles}
-                    onDelete={(d) => handleDeleteUploadFile(d)}
-                  />
-                </Stack>
-              </Stack>
+                  <InputLabel>Upload Excersice</InputLabel>
 
-              <Stack direction="column"></Stack>
-            </Stack>
-          </Grid>
-          <Grid item lg={3} className={classes.sideGrid}>
-            <Stack direction="column" spacing={3}>
-              <TextField
-                variant="outlined"
-                label="For"
-                value={currentCourse?.courseName}
-                disabled
-              />
-              <Controller
-                name="students"
-                control={control}
-                render={({ field }) => (
-                  <>
-                    <InputLabel>Students</InputLabel>
-                    <TextField
-                      readOnly
-                      onClick={() => openStudentSidebar()}
-                      value={
-                        field.value
-                          ? `${field.value?.length} student`
-                          : `${students.length} student`
-                      }
-                    />
-                    <StudentSelectorDrawer
-                      open={studentSidebarOpen}
-                      onClose={closeStudentSidebar}
-                      defaultSelected={field.value}
-                      students={students}
-                      setStudents={(val) => field.onChange(val)}
-                    />
-                  </>
-                )}
-              />
-
-              <Controller
-                name="points"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      label="Points"
-                      type="number"
-                      min={-1}
-                      max={100}
-                      value={field.value}
+                  <Stack direction="row" mt={2}>
+                    <input
+                      ref={uploadInputRef}
+                      hidden
+                      type="file"
                       onChange={(e) => {
-                        field.onChange(e);
+                        const value = e.target.files[0];
+                        setUploadedFiles([
+                          ...uploadedFiles,
+                          { type: "file", metaData: value },
+                        ]);
                       }}
+                    // {...register("file")}
                     />
-                  );
-                }}
-                defaultValue={100}
-              />
+                    <ToolTipIconButton
+                      title="Upload Any File"
+                      icon={<UploadFile />}
+                      onClick={() => uploadInputRef.current.click()}
+                    />
+                  </Stack>
 
-              <Controller
-                name="dueDate"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DateTimePicker
-                        renderInput={(props) => (
-                          <TextField
-                            {...props}
-                            variant="outlined"
-                            error={errors["dueDate"]}
-                            helperText={
-                              errors["dueDate"] && errors["dueDate"]?.message
-                            }
-                          />
-                        )}
-                        label="Due date and time"
-                        inputFormat={DATETIMEFORMAT}
-                        value={moment(field.value, DATETIMEFORMAT)}
-                        onChange={(newValue) => {
-                          field.onChange(newValue);
+                  <Stack>
+                    <ItemList
+                      data={uploadedFiles}
+                      onDelete={(d) => handleDeleteUploadFile(d)}
+                    />
+                  </Stack>
+                </Stack>
+
+                <Stack direction="column"></Stack>
+              </Stack>
+            </Grid>
+            <Grid item lg={3} className={classes.sideGrid}>
+              <Stack direction="column" spacing={3}>
+                <TextField
+                  variant="outlined"
+                  label="For"
+                  value={currentCourse?.courseName}
+                  disabled
+                />
+                <Controller
+                  name="students"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <InputLabel>Students</InputLabel>
+                      <TextField
+                        readOnly
+                        onClick={() => openStudentSidebar()}
+                        value={
+                          field.value
+                            ? `${field.value?.length} student`
+                            : `${students.length} student`
+                        }
+                      />
+                      <StudentSelectorDrawer
+                        open={studentSidebarOpen}
+                        onClose={closeStudentSidebar}
+                        defaultSelected={field.value}
+                        students={students}
+                        setStudents={(val) => field.onChange(val)}
+                      />
+                    </>
+                  )}
+                />
+
+                <Controller
+                  name="points"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <TextField
+                        fullWidth
+                        variant="outlined"
+                        label="Points"
+                        type="number"
+                        min={-1}
+                        max={100}
+                        value={field.value}
+                        onChange={(e) => {
+                          field.onChange(e);
                         }}
                       />
-                    </LocalizationProvider>
-                  );
-                }}
-                rules={{
-                  required: {
-                    value: true,
-                    message: "Due Date is required",
-                  },
-                }}
-              />
-            </Stack>
+                    );
+                  }}
+                  defaultValue={100}
+                />
+
+                <Controller
+                  name="dueDate"
+                  control={control}
+                  render={({ field }) => {
+                    return (
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DateTimePicker
+                          renderInput={(props) => (
+                            <TextField
+                              {...props}
+                              variant="outlined"
+                              error={errors["dueDate"]}
+                              helperText={
+                                errors["dueDate"] && errors["dueDate"]?.message
+                              }
+                            />
+                          )}
+                          label="Due date and time"
+                          inputFormat={DATETIMEFORMAT}
+                          value={moment(field.value, DATETIMEFORMAT)}
+                          onChange={(newValue) => {
+                            field.onChange(newValue);
+                          }}
+                        />
+                      </LocalizationProvider>
+                    );
+                  }}
+                  rules={{
+                    required: {
+                      value: true,
+                      message: "Due Date is required",
+                    },
+                  }}
+                />
+              </Stack>
+            </Grid>
           </Grid>
-        </Grid>
-        <Divider />
-        <DialogActions>
-          <Button
-            type="reset"
-            variant="contained"
-            color="secondary"
-            onClick={() => handleClose()}
-          >
-            Cancel
-          </Button>
-          <Button type={"submit"} variant="contained">
-            Submit
-          </Button>
-        </DialogActions>
-      </form>
-    </ModalContainer>
+          <input type="submit" style={{ display: 'none' }} ref={btnRef} />
+        </form>
+      </DialogContent>
+
+      <DialogActions>
+        <Button
+          type="reset"
+          color="secondary"
+          onClick={() => handleClose()}
+        >
+          Cancel
+        </Button>
+        <Button type={"submit"} variant="contained" color="success" onClick={(e) => { e.preventDefault(); btnRef.current.click() }}>
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog >
   );
 };
 
@@ -510,10 +531,11 @@ const ToolTipIconButton = ({ icon, title, onClick, value, onDelete }) => {
     <Tooltip title={title}>
       <Stack
         direction="row"
+        justifyContent="flex-start"
         alignItems="center"
         className={classes.iconButtonContainer}
       >
-        <IconButton color="secondary" onClick={onClick}>
+        <IconButton color="primary" onClick={onClick}>
           {icon}
         </IconButton>
       </Stack>
@@ -577,8 +599,8 @@ const getTitle = (data, type) => {
 const useStyles = makeStyles((theme) => ({
   root: {},
   iconButtonContainer: {
-    backgroundColor: `#424242`,
-    padding: theme.spacing(0.5),
+    border: `1px solid ${theme.palette.primary.main}`,
+    // padding: theme.spacing(0.5),
     borderRadius: 50,
   },
   sideGrid: {

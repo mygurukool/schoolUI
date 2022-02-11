@@ -1,28 +1,27 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
 import {
-  Divider,
+  // Divider,
   FormControl,
-  FormControlLabel,
-  IconButton,
+  // FormControlLabel,
+  // IconButton,
   InputLabel,
-  ListItemIcon,
-  ListItemText,
+  // ListItemIcon,
+  // ListItemText,
   Menu,
   MenuItem,
   Select,
   Stack,
-  TextField,
+  // TextField,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { openModal } from "../../redux/action/utilActions";
+// import { openModal } from "../../redux/action/utilActions";
 
-import ADDICON from "@mui/icons-material/AddTwoTone";
-import EDITICON from "@mui/icons-material/EditTwoTone";
-import DELETEICON from "@mui/icons-material/DeleteTwoTone";
-import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
+// import ADDICON from "@mui/icons-material/AddTwoTone";
+// import EDITICON from "@mui/icons-material/EditTwoTone";
+// import DELETEICON from "@mui/icons-material/DeleteTwoTone";
+// import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
 
-import MENUICON from "@mui/icons-material/MoreVert";
+// import MENUICON from "@mui/icons-material/MoreVert";
 
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { deleteGroup, getAllGroups } from "../../redux/action/groupActions";
@@ -34,14 +33,12 @@ import {
 } from "../../redux/action/commonActions";
 import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
-import { getAllStudents } from "../../redux/action/studentActions";
-import { getAllTeachers } from "../../redux/action/teacherActions";
+// import { getAllStudents } from "../../redux/action/studentActions";
+// import { getAllTeachers } from "../../redux/action/teacherActions";
 import { getAllCourses } from "../../redux/action/coursesActions";
 import { styled } from "@mui/system";
+import { showSnackBar } from "../../redux/action/snackActions";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
 
 const SelectGroup = () => {
   const dispatch = useDispatch();
@@ -54,12 +51,12 @@ const SelectGroup = () => {
 
   const filteredGroups = [...new Set(groupNames)];
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  // const open = Boolean(anchorEl);
   const fieldRef = React.useRef();
   const deleteRef = React.useRef();
 
-  const isTeacher = useSelector((state) => state.user.isTeacher);
+  // const isTeacher = useSelector((state) => state.user.isTeacher);
   const handleChange = (value) => {
     dispatch(removeAssignmentData());
     dispatch(removeCurrentCourse());
@@ -70,14 +67,14 @@ const SelectGroup = () => {
     }
   };
 
-  const handleEdit = (data) => {
-    dispatch(openModal("group", data));
-    handleCloseMenu();
-  };
-  const handleInvite = (data) => {
-    handleCloseMenu();
-    dispatch(openModal("invitepeople"));
-  };
+  // const handleEdit = (data) => {
+  //   dispatch(openModal("group", data));
+  //   handleCloseMenu();
+  // };
+  // const handleInvite = (data) => {
+  //   handleCloseMenu();
+  //   dispatch(openModal("invitepeople"));
+  // };
 
   const handleDelete = (data) => {
     // dispatch(openModal("group", data));
@@ -88,22 +85,22 @@ const SelectGroup = () => {
     );
   };
 
-  const handleOpenMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleOpenMenu = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
 
-  const handleCloseMenu = (event) => {
-    setAnchorEl(null);
-  };
+  // const handleCloseMenu = (event) => {
+  //   setAnchorEl(null);
+  // };
 
-  const onDelete = () => {
-    if (currentGroup === "all") {
-      alert("Please Select a group");
-      return;
-    }
-    deleteRef.current.open(currentGroup);
-    handleCloseMenu();
-  };
+  // const onDelete = () => {
+  //   if (currentGroup === "all") {
+  //     alert("Please Select a group");
+  //     return;
+  //   }
+  //   deleteRef.current.open(currentGroup);
+  //   handleCloseMenu();
+  // };
 
   React.useEffect(() => {
     if (currentGroup) {
@@ -111,52 +108,52 @@ const SelectGroup = () => {
     }
   }, [currentGroup]);
 
-  const GroupMenu = () => {
-    return (
-      <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu} >
-        <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
-          <MenuItem onClick={() => handleEdit()}>
-            <ListItemIcon>
-              <ADDICON fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Add group</ListItemText>
-          </MenuItem>
-        </PermissionsGate>
+  // const GroupMenu = () => {
+  //   return (
+  //     <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu} >
+  //       <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
+  //         <MenuItem onClick={() => handleEdit()}>
+  //           <ListItemIcon>
+  //             <ADDICON fontSize="small" />
+  //           </ListItemIcon>
+  //           <ListItemText>Add group</ListItemText>
+  //         </MenuItem>
+  //       </PermissionsGate>
 
-        {currentGroup && (
-          <>
-            <PermissionsGate scopes={[SCOPES.CAN_EDIT_GROUP]}>
-              <MenuItem onClick={() => handleEdit(currentGroup)}>
-                <ListItemIcon>
-                  <EDITICON fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
-              </MenuItem>
-            </PermissionsGate>
-            <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
-              <MenuItem onClick={() => onDelete()}>
-                <ListItemIcon>
-                  <DELETEICON fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
-              </MenuItem>
-            </PermissionsGate>
-            <Divider />
-            <PermissionsGate
-              scopes={[SCOPES.CAN_INVITE_TEACHER, SCOPES.CAN_INVITE_STUDENT]}
-            >
-              <MenuItem onClick={() => handleInvite()}>
-                <ListItemIcon>
-                  <INVITEICON fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Invite People</ListItemText>
-              </MenuItem>
-            </PermissionsGate>
-          </>
-        )}
-      </StyledMenu>
-    );
-  };
+  //       {currentGroup && (
+  //         <>
+  //           <PermissionsGate scopes={[SCOPES.CAN_EDIT_GROUP]}>
+  //             <MenuItem onClick={() => handleEdit(currentGroup)}>
+  //               <ListItemIcon>
+  //                 <EDITICON fontSize="small" />
+  //               </ListItemIcon>
+  //               <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
+  //             </MenuItem>
+  //           </PermissionsGate>
+  //           <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
+  //             <MenuItem onClick={() => onDelete()}>
+  //               <ListItemIcon>
+  //                 <DELETEICON fontSize="small" />
+  //               </ListItemIcon>
+  //               <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
+  //             </MenuItem>
+  //           </PermissionsGate>
+  //           <Divider />
+  //           <PermissionsGate
+  //             scopes={[SCOPES.CAN_INVITE_TEACHER, SCOPES.CAN_INVITE_STUDENT]}
+  //           >
+  //             <MenuItem onClick={() => handleInvite()}>
+  //               <ListItemIcon>
+  //                 <INVITEICON fontSize="small" />
+  //               </ListItemIcon>
+  //               <ListItemText>Invite People</ListItemText>
+  //             </MenuItem>
+  //           </PermissionsGate>
+  //         </>
+  //       )}
+  //     </StyledMenu>
+  //   );
+  // };
 
   return (
     <>
@@ -184,6 +181,7 @@ const SelectGroup = () => {
             onChange={({ target: { value } }) => {
               const foundGroup = groups.find((g) => g?.groupName === value);
               dispatch(setCurrentGroup(foundGroup));
+              dispatch(showSnackBar(`Group changed to ${foundGroup.groupName}`))
             }}
           >
             {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}
@@ -219,7 +217,7 @@ const SelectGroup = () => {
           {/* <IconButton onClick={handleOpenMenu}>
             <MENUICON />
           </IconButton> */}
-          <GroupMenu />
+          {/* <GroupMenu /> */}
         </PermissionsGate>
       </Stack>
     </>

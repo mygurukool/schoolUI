@@ -1,8 +1,9 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import { Box, Tooltip, Typography } from "@mui/material";
 import moment from "moment";
 import { DUEDATETIMEFORMAT, DUEDATECOLORS, DATETIMEFORMAT } from "../../constants";
+import { Info } from "@mui/icons-material";
 
 const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
   const isExpired =
@@ -10,22 +11,39 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
       ? `${currentDiffrence} Days Remaining`
       : `This assignment is expired`;
 
-  const chipColor = () => {
-    const found = DUEDATECOLORS.find((d) => currentDiffrence <= d.days);
+  const theme = useTheme()
 
-    if (found) {
-      return found.color;
+  const bgColor = () => {
+    console.log('currentDiffrence', currentDiffrence);
+
+    if (currentDiffrence >= process.env.REACT_APP_DUE_DATE_BY_GREEN) {
+      return theme.palette.success.main
     }
-  };
+
+    else if (currentDiffrence >= process.env.REACT_APP_DUE_DATE_BY_ORANGE_BETWEEN_FIRST && currentDiffrence <= process.env.REACT_APP_DUE_DATE_BY_ORANGE_BETWEEN_SECOND) {
+      return theme.palette.orange.main
+    }
+
+    else if (currentDiffrence <= process.env.REACT_APP_DUE_DATE_BY_RED) {
+      return theme.palette.error.main
+    }
+
+    else {
+      return theme.palette.error.main
+    }
+
+  }
 
   const useStyles = makeStyles((theme) => ({
     root: {
-      boxShadow: '0px 6px 10px rgba(0, 0, 0, 0.2)',
+      // boxShadow: '0px 3px 10px rgba(0, 0, 0, 0.15)',
       marginRight: theme.spacing(1),
       borderRadius: theme.palette.radius.base,
       // padding: theme.spacing(0.5, 1),
     },
     innerBox: {
+      position: 'relative',
+      width: 65,
       flexDirection: 'column',
       display: 'flex',
       justifyContent: 'space-between',
@@ -34,7 +52,7 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
     dateBox: {
       padding: theme.spacing(0, 0.5),
       textAlign: 'center',
-      background: theme.palette.secondary.main,
+      background: bgColor(),
       borderTopLeftRadius: theme.palette.radius.small,
       borderTopRightRadius: theme.palette.radius.small,
       width: "100%",
@@ -43,9 +61,19 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
       width: "100%",
       padding: theme.spacing(0, 0.5),
       textAlign: 'center',
-      border: `1px solid ${theme.palette.secondary.main}`,
+      border: `1px solid ${bgColor()}`,
       borderBottomLeftRadius: theme.palette.radius.small,
       borderBottomRightRadius: theme.palette.radius.small,
+    },
+    infoIcon: {
+      background: bgColor(),
+      borderRadius: 30,
+      padding: 0,
+      margin: 0,
+      position: 'absolute',
+      right: -5,
+      top: -5,
+      color: theme.palette.white,
     }
   }));
 
@@ -54,11 +82,12 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
     <Tooltip title={isExpired} arrow>
       <Box className={classes.root}>
         <Box className={classes.innerBox}>
+          <Info sx={{ fontSize: 'inherit' }} className={classes.infoIcon} />
           <Box className={classes.dateBox}>
-            <Typography variant="caption" style={{ fontWeight: 600 }} color="white"> {moment(dueDateTime, DATETIMEFORMAT).format('DD, MMM')}</Typography>
+            <Typography variant="caption" style={{ fontWeight: 600 }} color="white">{moment(dueDateTime, DATETIMEFORMAT).format('DD, MMM')}</Typography>
           </Box>
           <Box className={classes.timeBox}>
-            <Typography variant="caption" style={{ fontWeight: 600 }} color="secondary">{currentDiffrence}&nbsp;days</Typography>
+            <Typography variant="caption" style={{ fontWeight: 600 }} color={bgColor()}>{currentDiffrence}&nbsp;days</Typography>
           </Box>
         </Box>
       </Box >

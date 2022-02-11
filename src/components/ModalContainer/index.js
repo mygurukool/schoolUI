@@ -64,7 +64,7 @@ const ModalContainer = ({
             alignItems: "center",
           }}
         >
-          <Typography className={classes.modalTitle}>{title}</Typography>
+          <Typography className={classes.modalTitle} variant="subtitle1">{title}</Typography>
           <IconButton aria-label="close" onClick={onClose}>
             <CloseIcon />
           </IconButton>

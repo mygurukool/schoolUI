@@ -129,8 +129,7 @@ const ActionBar = () => {
   };
   return (
     <Stack direction="row" sx={{ mb: 1 }}>
-      <Button color="secondary" variant="outlined" onClick={onAddAssignment}>
-        <Add />
+      <Button startIcon={<Add />} color="primary" variant="contained" onClick={onAddAssignment}>
         Add
       </Button>
     </Stack>
@@ -241,7 +240,7 @@ const AssignmentListItem = ({
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title={"Edit Assignment"}>
                 <IconButton
-                  color="secondary"
+                  color="primary"
                   // disabled={!isMyGuruKool}
                   onClick={(e) => {
                     e.preventDefault()
@@ -403,6 +402,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 0,
     '&:hover': {
       border: `1px solid ${theme.palette.secondary.light}`,
+      boxShadow: '0px 10px 10px -5px rgba(0, 0, 0, 0.15)',
       background: theme.palette.secondary.light
     }
   },
