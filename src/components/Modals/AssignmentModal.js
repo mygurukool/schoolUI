@@ -17,6 +17,7 @@ import {
   Box,
   Button,
   Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -129,6 +130,7 @@ const AssignmentModal = () => {
 
   const courseId = currentCourse?.id || currentCourse?._id;
   const groupId = currentGroup?.id || currentGroup?._id;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const mode = modalData ? "edit" : "add";
 
@@ -140,6 +142,7 @@ const AssignmentModal = () => {
 
     dispatch(closeModal());
     setEditorState(EditorState.createEmpty());
+    setIsLoading(false);
   };
 
   const handleYoutubeModal = (link) => {
@@ -178,6 +181,7 @@ const AssignmentModal = () => {
 
     const markup = draftToHtml(rawContentState);
 
+    setIsLoading(true);
     if (mode === "add") {
       dispatch(
         createAssignmet(
@@ -245,7 +249,7 @@ const AssignmentModal = () => {
       }
     }
   }, [open]);
-  const btnRef = React.useRef()
+  const btnRef = React.useRef();
 
   return (
     <Dialog
@@ -255,21 +259,24 @@ const AssignmentModal = () => {
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-    // onSubmit={(e) => {
-    //   alert("hehe");
-    //   e.preventDefault();
-    //   formRef.current.submit();
-    // }}
+      // onSubmit={(e) => {
+      //   alert("hehe");
+      //   e.preventDefault();
+      //   formRef.current.submit();
+      // }}
     >
       <DialogTitle>
-        <Box style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-        }}>
-          <Typography variant="subtitle1">{modalData ? "Edit Assginment" : "Create Assignment"}</Typography>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-          >
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="subtitle1">
+            {modalData ? "Edit Assginment" : "Create Assignment"}
+          </Typography>
+          <IconButton aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -390,7 +397,7 @@ const AssignmentModal = () => {
                           { type: "file", metaData: value },
                         ]);
                       }}
-                    // {...register("file")}
+                      // {...register("file")}
                     />
                     <ToolTipIconButton
                       title="Upload Any File"
@@ -503,23 +510,30 @@ const AssignmentModal = () => {
               </Stack>
             </Grid>
           </Grid>
-          <input type="submit" style={{ display: 'none' }} ref={btnRef} />
+          <input type="submit" style={{ display: "none" }} ref={btnRef} />
         </form>
       </DialogContent>
 
       <DialogActions>
-        <Button
-          type="reset"
-          color="secondary"
-          onClick={() => handleClose()}
-        >
+        <Button type="reset" color="secondary" onClick={() => handleClose()}>
           Cancel
         </Button>
-        <Button type={"submit"} variant="contained" color="success" onClick={(e) => { e.preventDefault(); btnRef.current.click() }}>
+        <Button
+          type={"submit"}
+          variant="contained"
+          color="success"
+          onClick={(e) => {
+            e.preventDefault();
+            btnRef.current.click();
+          }}
+          disabled={isLoading}
+          sx={{ mr: 1 }}
+        >
+          {isLoading && <CircularProgress size={20} color="secondary" />}
           Submit
         </Button>
       </DialogActions>
-    </Dialog >
+    </Dialog>
   );
 };
 
