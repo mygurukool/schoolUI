@@ -10,6 +10,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Stack,
 } from "@mui/material";
 import clsx from "clsx";
 import PermissionGate from "../../components/PermissionGate";
@@ -45,16 +46,28 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: theme.palette.secondary.light,
       color: theme.palette.black,
-      boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
+      // boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
     }
   },
   courseBtn: {
     margin: theme.spacing(1, 0, 0, 0),
-    padding: theme.spacing(0.5, 1),
+    padding: theme.spacing(0.5, 0.5),
     display: "flex",
     justifyContent: "center",
     flexDirection: "column",
     width: theme.spacing(15),
+    [theme.breakpoints.up('xs')]: {
+      width: theme.spacing(13),
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(15),
+    },
+    [theme.breakpoints.up('md')]: {
+      width: theme.spacing(15),
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: theme.spacing(15),
+    },
     alignItems: "center",
     "&:first-child": {
       marginLeft: theme.spacing(0),
@@ -65,6 +78,22 @@ const useStyles = makeStyles((theme) => ({
     "& img": {
       width: theme.spacing(9),
       height: theme.spacing(9),
+      [theme.breakpoints.up('xs')]: {
+        width: theme.spacing(7),
+        height: theme.spacing(7),
+      },
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9),
+        height: theme.spacing(9),
+      },
+      [theme.breakpoints.up('md')]: {
+        width: theme.spacing(9),
+        height: theme.spacing(9),
+      },
+      [theme.breakpoints.up('lg')]: {
+        width: theme.spacing(9),
+        height: theme.spacing(9),
+      },
       borderRadius: theme.spacing(10),
     },
     "& .MuiTypography-root": {
@@ -78,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
   activeCourse: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.white,
-    boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
+    // boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
   },
   addBtn: {
     width: theme.spacing(9),
@@ -86,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(10),
     display: "flex",
     margin: theme.spacing(1, 0, 0, 0),
-    padding: theme.spacing(0.5, 1),
+    padding: theme.spacing(0.5, 0.5),
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: theme.palette.gray[500],
@@ -276,9 +305,9 @@ const CoursesList = () => {
       >
         <CourseMenu />
       </PermissionGate>
-      <Grid
-        item
-        lg={12}
+      <Stack
+        direction="row"
+        justifyContent="flex-start"
         className={classes.root}
       >
         <PermissionGate scopes={[SCOPES.canCreate]}>
@@ -296,8 +325,8 @@ const CoursesList = () => {
               <div
                 style={{
                   position: "relative",
-                  margin: '0 5px',
-                  marginBottom: 20
+                  margin: '0 5px 10px 5px',
+                  // marginBottom: 20
                 }}
                 className={clsx(classes.courseBtnContainer, isActive && classes.activeCourse)}
               // className={classes.courseBtnContainer}
@@ -332,8 +361,8 @@ const CoursesList = () => {
           <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
             <div
               style={{
-                margin: '0 5px',
-                marginBottom: 20
+                margin: '0 5px 10px 5px',
+                // marginBottom: 10
               }}
               className={classes.courseBtnContainer}
             >
@@ -341,7 +370,7 @@ const CoursesList = () => {
             </div>
           </PermissionGate>
         )}
-      </Grid>
+      </Stack>
     </>
   );
 };

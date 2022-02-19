@@ -12,6 +12,9 @@ import {
   Divider,
   Button,
   Link,
+  List,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
 // import NotificationsIcon from '@mui/icons-material/NotificationsTwoTone'
@@ -28,7 +31,7 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import Drawer from "../Drawer";
-import { ArrowBack, ArrowRight } from "@mui/icons-material";
+import { ArrowBack, ArrowRight, ContactSupportTwoTone, Home, HomeTwoTone, Info, InfoTwoTone } from "@mui/icons-material";
 
 export default function NavBar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
@@ -45,12 +48,8 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   const history = useHistory();
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpenDrawer(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpenDrawer(false);
+  const handleDrawerToggle = () => {
+    setOpenDrawer(!openDrawer);
   };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -200,7 +199,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   //         </Box>
   //     </Menu>
   // );
-
+  const container = window !== undefined ? () => window().document.body : undefined;
   return (
     <>
       <AppBar
@@ -219,6 +218,16 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               <ArrowBack />
             </IconButton>
           )}
+
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
 
           <Box
             style={{
@@ -264,54 +273,94 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                         <NotificationsIcon fontSize="inherit" />
                         </Badge>
                     </IconButton> */}
-          <ul className={classes.navList}>
-            <li>
-              <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("HOME")}
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("ABOUT")}
-              </Typography>
-            </li>
-            <li>
-              <Typography variant="subtitle1" className={classes.navLink}>
-                {lang("CONTACT")}
-              </Typography>
-            </li>
-            <li>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleLanguageClick}
-              >
-                {lang("LANGUAGE")}
-              </Button>
-            </li>
-            <li>
-              {user?.isLogged && (
-                <IconButton onClick={handleClick} size="small">
-                  <Avatar
-                    src={user?.imageUrl && user?.imageUrl}
-                    className={classes.avatar}
-                  >
-                    {user?.name ? (
-                      <img src={user?.imageUrl} />
-                    ) : (
-                      user?.name?.charAt(0)
-                    )}
-                  </Avatar>
-                </IconButton>
-              )}
-              {accountMenu}
-              {languageMenu}
-              {/* {notificationMenu} */}
-            </li>
-          </ul>
+          <Box
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+            }}
+          >
+
+            <Drawer
+              container={container}
+              variant="temporary"
+              open={openDrawer}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                keepMounted: true, // Better open performance on mobile.
+              }}
+              sx={{
+                display: { xs: 'block', sm: 'none' },
+              }}
+            >
+              <List>
+                <Divider />
+                <ListItem button className={classes.listItem}>
+                  <ListItemIcon><HomeTwoTone /></ListItemIcon>
+                  <ListItemText primary={lang("HOME")} />
+                </ListItem>
+                <Divider />
+                <ListItem button className={classes.listItem}>
+                  <ListItemIcon><InfoTwoTone /></ListItemIcon>
+
+                  <ListItemText primary={lang("ABOUT")} />
+                </ListItem>
+                <Divider />
+                <ListItem button className={classes.listItem}>
+                  <ListItemIcon><ContactSupportTwoTone /></ListItemIcon>
+
+                  <ListItemText primary={lang("CONTACT")} />
+                </ListItem>
+                <Divider />
+              </List>
+            </Drawer>
+
+            <ul className={classes.navList}>
+              <li>
+                <Typography variant="subtitle1" className={classes.navLink}>
+                  {lang("HOME")}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="subtitle1" className={classes.navLink}>
+                  {lang("ABOUT")}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="subtitle1" className={classes.navLink}>
+                  {lang("CONTACT")}
+                </Typography>
+              </li>
+              <li>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={handleLanguageClick}
+                >
+                  {lang("LANGUAGE")}
+                </Button>
+              </li>
+              <li>
+                {user?.isLogged && (
+                  <IconButton onClick={handleClick} size="small">
+                    <Avatar
+                      src={user?.imageUrl && user?.imageUrl}
+                      className={classes.avatar}
+                    >
+                      {user?.name ? (
+                        <img src={user?.imageUrl} />
+                      ) : (
+                        user?.name?.charAt(0)
+                      )}
+                    </Avatar>
+                  </IconButton>
+                )}
+                {accountMenu}
+                {languageMenu}
+                {/* {notificationMenu} */}
+              </li>
+            </ul>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Drawer open={openDrawer} onClose={handleDrawerClose} />
     </>
   );
 }
@@ -357,6 +406,12 @@ const useStyles = makeStyles((theme) => ({
   AppBar: {
     width: "100%",
     background: "transparent",
+  },
+  listItem: {
+    // padding: theme.spacing(1.5, 2.5, 1.5, 5),
+    "& .MuiListItemIcon-root": {
+      color: theme.palette.primary.main,
+    },
   },
   // toolBar: {
   //   display: 'flex',
@@ -409,9 +464,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     listStyleType: "none",
     alignItems: "center",
-    flex: 1.5,
     "& li": {
       padding: theme.spacing(0.5),
+      marginLeft: theme.spacing(2),
     },
   },
   navLink: {

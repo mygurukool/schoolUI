@@ -194,6 +194,83 @@ let theme = createTheme({
 
 theme = createTheme(theme, {
   components: {
+
+    // MuiTypography: {
+    //   styleOverrides: {
+    //     h5: {
+    //       [theme.breakpoints.up('xs')]: {
+    //         fontSize: theme.palette.fontSizes.sm
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         fontSize: theme.palette.fontSizes.base
+    //       },
+    //       [theme.breakpoints.up('md')]: {
+    //         fontSize: theme.palette.fontSizes.semibase
+    //       },
+    //       [theme.breakpoints.up('lg')]: {
+    //         fontSize: theme.palette.fontSizes.md
+    //       },
+    //     },
+    //     h4: {
+    //       [theme.breakpoints.up('xs')]: {
+    //         fontSize: theme.palette.fontSizes.base
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         fontSize: theme.palette.fontSizes.semibase
+    //       },
+    //       [theme.breakpoints.up('md')]: {
+    //         fontSize: theme.palette.fontSizes.md
+    //       },
+    //       [theme.breakpoints.up('lg')]: {
+    //         fontSize: theme.palette.fontSizes.lg
+    //       },
+    //     },
+    //     h3: {
+    //       [theme.breakpoints.up('xs')]: {
+    //         fontSize: theme.palette.fontSizes.md
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         fontSize: theme.palette.fontSizes.lg
+    //       },
+    //       [theme.breakpoints.up('md')]: {
+    //         fontSize: theme.palette.fontSizes.xl
+    //       },
+    //       [theme.breakpoints.up('lg')]: {
+    //         fontSize: theme.palette.fontSizes["2xl"]
+    //       },
+    //     },
+    //     h2: {
+    //       [theme.breakpoints.up('xs')]: {
+    //         fontSize: theme.palette.fontSizes.md
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         fontSize: theme.palette.fontSizes.lg
+    //       },
+    //       [theme.breakpoints.up('md')]: {
+    //         fontSize: theme.palette.fontSizes.xl
+    //       },
+    //       [theme.breakpoints.up('lg')]: {
+    //         fontSize: theme.palette.fontSizes["2xl"]
+    //       },
+    //     },
+    //     h1: {
+    //       [theme.breakpoints.up('xs')]: {
+    //         fontSize: theme.palette.fontSizes['2xl']
+    //       },
+    //       [theme.breakpoints.up('sm')]: {
+    //         fontSize: theme.palette.fontSizes['3xl']
+    //       },
+    //       [theme.breakpoints.up('md')]: {
+    //         fontSize: theme.palette.fontSizes["4xl"]
+    //       },
+    //       [theme.breakpoints.up('lg')]: {
+    //         fontSize: theme.palette.fontSizes["5xl"]
+    //       },
+    //     }
+    //   },
+    // },
+
+
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -236,6 +313,7 @@ theme = createTheme(theme, {
     MuiAlert: {
       styleOverrides: {
         root: {
+          width: '100%',
           color: theme.palette.black,
         },
       },
@@ -249,24 +327,24 @@ theme = createTheme(theme, {
         },
       },
     },
-    // MuiOutlinedInput: {
-    //   defaultProps: {
-    //     color: "black",
-    //   },
-    //   styleOverrides: {
-    //     root: {
-    //       borderRadius: theme.palette.radius.small,
-    //       borderTopLeftRadius: theme.palette.radius.small,
-    //       borderTopRightRadius: theme.palette.radius.small,
-    //       // "&.Mui-focused": {
-    //       //     backgroundColor: theme.palette.textField.main,
-    //       // },
-    //       // '&:hover': {
-    //       //     backgroundColor: theme.palette.textField.main,
-    //       // },
-    //     },
-    //   },
-    // },
+    MuiOutlinedInput: {
+      defaultProps: {
+        color: "black",
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: theme.palette.radius.small,
+          borderTopLeftRadius: theme.palette.radius.small,
+          borderTopRightRadius: theme.palette.radius.small,
+          // "&.Mui-focused": {
+          //   borderColor: theme.palette.success.main,
+          // },
+          // '&:hover': {
+          //   backgroundColor: theme.palette.textField.main,
+          // },
+        },
+      },
+    },
     MuiFormLabel: {
       defaultProps: {
         color: "black",

@@ -8,6 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { BASEURL } from "../../constants";
+import { useDispatch } from "react-redux";
+import { showSnackBar } from "../../redux/action/snackActions";
+import { urlRegex } from "../../helpers/regex";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
@@ -18,7 +21,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [metaData, setMetaData] = React.useState();
   const [error, setError] = React.useState();
-
+  const dispatch = useDispatch()
   const handleChange = (e) => {
     setError();
     const value = e.target.value;
@@ -35,7 +38,12 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
     })
       .then((res) => {
         if (res.data.error) {
-          alert("An Error Occcured");
+          dispatch(showSnackBar("An Error Occcured", "error"));
+          // setMetaData({
+          //   ogUrl: value,
+          //   ogTitle: value,
+          // })
+          setMetaData();
         } else {
           setMetaData(res.data);
         }
@@ -53,8 +61,13 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   };
   const handleSubmit = () => {
     if (!metaData) {
-      alert("Please Enter a link");
+      dispatch(showSnackBar("Please Enter a link", "error"));
+      return
     }
+    // if (!urlRegex.test(metaData)) {
+    //   dispatch(showSnackBar("Please Enter a valid link", "error"));
+    //   return
+    // }
     onSubmit({
       type: "link",
       metaData: metaData,
@@ -90,7 +103,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
               component="img"
               sx={{ width: 151 }}
               image={
-                metaData?.ogImage?.url || "https://via.placeholder.com/140x100"
+                metaData?.ogImage?.url || "images/link.png"
               }
               alt={metaData?.ogTitle}
             />

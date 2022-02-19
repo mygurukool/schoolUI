@@ -29,7 +29,7 @@ import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
 import CourseMaterialList from "./CourseMaterialList";
-import { CalendarToday, FactCheck } from "@mui/icons-material";
+import { CalendarToday, FactCheckTwoTone as FactCheck } from "@mui/icons-material";
 import FaceIcon from "@mui/icons-material/Face";
 import { Box } from "@mui/system";
 import clsx from "clsx";
@@ -44,15 +44,19 @@ import { useSelector, useDispatch } from "react-redux";
 import PermissionsGate from "../../components/PermissionGate";
 import Add from "@mui/icons-material/Add";
 import { openModal } from "../../redux/action/utilActions";
-import Edit from "@mui/icons-material/Edit";
+import Edit from "@mui/icons-material/EditTwoTone";
+import Delete from "@mui/icons-material/DeleteTwoTone"
 
 import parse from "html-react-parser";
 import AudioVideoCard from "./AudioVideoCard";
 import { useHistory } from "react-router";
+import DeleteModal from "../../components/Modals/DeleteModal";
+import { deleteAssignmet, getAssignments } from "../../redux/action/assignmentActions";
 const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
+  const deleteRef = React.useRef();
 
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
@@ -73,6 +77,18 @@ const AssignmentList = () => {
     dispatch(openModal("assignment", data));
   };
 
+  const onDelete = (data) => {
+    deleteRef.current.open(data);
+  };
+
+  const handleDelete = (data) => {
+    dispatch(
+      deleteAssignmet(data, () => {
+        dispatch(getAssignments(data?.courseId));
+      })
+    );
+  };
+
   const onCheck = (data) => {
     dispatch(openModal("submission", data));
   };
@@ -82,17 +98,24 @@ const AssignmentList = () => {
       <>
         {currentCourse ? (
           <>
-            <div className={classes.heading}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" className={classes.heading}>
               <Typography variant="h6">Assignments</Typography>
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
                 <ActionBar />
               </PermissionsGate>
-            </div>
+            </Stack>
             <VideoModal
               open={Boolean(video)}
               onClose={() => setPlayingVideo()}
               video={video}
             />
+            <PermissionsGate scopes={[SCOPES.CAN_DELETE_ASSIGNMENT]}>
+              <DeleteModal
+                ref={deleteRef}
+                getTitle={(g) => g?.assignmentTitle}
+                onSubmit={(data) => handleDelete(data)}
+              />
+            </PermissionsGate>
             <div className={classes.root}>
               {assignments.map((a, i) => {
                 return (
@@ -103,6 +126,7 @@ const AssignmentList = () => {
                     onSelectAssignment={() => handleExpand(i)}
                     setPlayingVideo={setPlayingVideo}
                     onEdit={() => onEdit(a)}
+                    onDelete={() => onDelete(a)}
                     onCheck={() => onCheck(a)}
                     isTeacher={isTeacher}
                     loginType={loginType}
@@ -147,7 +171,7 @@ const AssignmentListItem = ({
   expanded,
   setExpanded,
   onSelectAssignment,
-
+  onDelete,
   setPlayingVideo,
   onOpenAddUsersToChat,
   onEdit,
@@ -218,10 +242,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-              border: `1px solid ${theme.palette.secondary.light}`,
-              background: theme.palette.secondary.light,
-              boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-            }
+            border: `1px solid ${theme.palette.secondary.light}`,
+            background: theme.palette.secondary.light,
+            boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+          }
           : undefined
       }
       elevation={0}
@@ -272,6 +296,21 @@ const AssignmentListItem = ({
                 </IconButton>
               </Tooltip>
             </PermissionsGate>
+            <PermissionsGate scopes={[SCOPES.CAN_DELETE_ASSIGNMENT]}>
+              <Tooltip title={"Delete Assignment"}>
+                <IconButton
+                  color="error"
+                  // disabled={!isMyGuruKool}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation()
+                    onDelete();
+                  }}
+                >
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+            </PermissionsGate>
             {isTeacher && loginType !== "mygurukool" && (
               <Tooltip
                 title={
@@ -295,7 +334,7 @@ const AssignmentListItem = ({
 
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title="Check submissions">
-                <IconButton onClick={() => onCheck()} color="secondary">
+                <IconButton onClick={() => onCheck()} color="success">
                   <FactCheck />
                 </IconButton>
               </Tooltip>
@@ -440,9 +479,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.palette.fontWeights.bold,
   },
   heading: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: theme.spacing(1),
   },
 }));

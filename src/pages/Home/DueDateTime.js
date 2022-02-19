@@ -14,8 +14,6 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
   const theme = useTheme()
 
   const bgColor = () => {
-    console.log('currentDiffrence', currentDiffrence);
-
     if (currentDiffrence >= process.env.REACT_APP_DUE_DATE_BY_GREEN) {
       return theme.palette.success.main
     }

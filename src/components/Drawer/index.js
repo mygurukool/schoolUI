@@ -18,15 +18,15 @@ import { studentRoutes, teacherRoutes } from "../../routes/LeftSideBarRoutes";
 import { useDispatch } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 
-const drawerWidth = 300;
+const drawerWidth = 260;
 const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     "& .MuiPaper-root": {
       // background: theme.palette.primary.light,
-      borderTopRightRadius: theme.palette.radius.medium,
-      borderBottomRightRadius: theme.palette.radius.medium,
+      borderTopRightRadius: theme.palette.radius.base,
+      borderBottomRightRadius: theme.palette.radius.base,
     },
   },
   drawerPaper: {
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Index = ({ open, onClose }) => {
+const Index = ({ open, onClose, children }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = React.useState({});
@@ -98,13 +98,13 @@ const Index = ({ open, onClose }) => {
     >
       <div className={classes.drawerHeader}>
         <Typography></Typography>
-        <IconButton onClick={onClose} color="secondary">
+        <IconButton onClick={onClose} color="error">
           <CloseIcon />
         </IconButton>
       </div>
       <List>
-        <Divider />
-        {checkRoles("teacher").map((item, index) => (
+        {children}
+        {/* {checkRoles("teacher").map((item, index) => (
           <>
             <ListItem
               className={classes.listItem}
@@ -152,7 +152,7 @@ const Index = ({ open, onClose }) => {
               </Collapse>
             )}
           </>
-        ))}
+        ))} */}
       </List>
     </Drawer>
   );

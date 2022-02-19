@@ -2,6 +2,7 @@ import React from "react";
 import {
   // Divider,
   FormControl,
+  Grid,
   // FormControlLabel,
   // IconButton,
   InputLabel,
@@ -165,7 +166,7 @@ const SelectGroup = () => {
         />
       </PermissionsGate>
 
-      <Stack direction="row">
+      <Grid item lg={4} md={4} sm={4} xs={8}>
         <FormControl fullWidth>
           <InputLabel variant="outlined" htmlFor="uncontrolled-native">
             Group
@@ -204,7 +205,7 @@ const SelectGroup = () => {
           </Select>
         </FormControl>
 
-        <PermissionsGate
+        {/* <PermissionsGate
           scopes={[
             SCOPES.CAN_CREATE_GROUP,
             SCOPES.CAN_EDIT_GROUP,
@@ -213,12 +214,12 @@ const SelectGroup = () => {
             SCOPES.CAN_INVITE_TEACHER,
           ]}
         >
-          {/* <IconButton onClick={handleOpenMenu}>
+          <IconButton onClick={handleOpenMenu}>
             <MENUICON />
-          </IconButton> */}
-          {/* <GroupMenu /> */}
-        </PermissionsGate>
-      </Stack>
+          </IconButton>
+          <GroupMenu />
+        </PermissionsGate> */}
+      </Grid>
     </>
   );
 };

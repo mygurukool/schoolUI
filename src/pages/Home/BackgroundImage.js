@@ -67,7 +67,7 @@ const BackgroundImage = (props) => {
           backgroundImage: `url(${sectionBg})`,
         }}
       />
-      <div style={{ overflowX: 'hidden' }}>
+      <div>
         <div className={classes.clouds}>
           <img className="cloud1" src="images/cloud1.svg" />
           <img className="cloud2" src="images/cloud2.svg" />

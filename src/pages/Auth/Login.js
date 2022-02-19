@@ -72,7 +72,7 @@ const Login = (props) => {
           </Typography>
           <div className={classes.loginBtns}>
             <Grid container spacing={2}>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} md={6} xs={12} >
 
                 <ButtonBase
                   className={classes.iconBtn}
@@ -91,7 +91,7 @@ const Login = (props) => {
                   </CardContent>
                 </ButtonBase>
               </Grid>
-              <Grid item lg={6}>
+              <Grid item lg={6} sm={6} md={6} xs={12}>
 
                 <ButtonBase
                   className={classes.iconBtn}
@@ -115,7 +115,7 @@ const Login = (props) => {
             </div>
             <div className={classes.hrLine} />
           </div>
-          <Typography className={classes.subTitle} color="secondary" variant="subtitle1" sx={{ mb: 2 }}>Login to Mougli School</Typography>
+          <Typography className={classes.subTitle} color="inherit" variant="subtitle1" sx={{ mb: 2 }}>Login to Mougli School</Typography>
           <FormCreator
             mode={"add"}
             onSubmit={(e) => handleLogin(e, "mygurukool")}
@@ -199,11 +199,13 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     height: "100%",
-    width: "45%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     margin: theme.spacing(8),
+  },
+  loginBtns: {
+    width: "100%",
   },
   topTitle: {
     color: theme.palette.secondary.main,
@@ -226,12 +228,27 @@ const useStyles = makeStyles((theme) => ({
     width: "45%",
     borderRadius: theme.spacing(5),
     boxShadow: "40px 40px 90px rgba(0, 0, 0, 0.12)",
+    [theme.breakpoints.up('xs')]: {
+      width: "100%",
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: "85%",
+    },
+    [theme.breakpoints.up('md')]: {
+      width: "65%",
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: "55%",
+    },
+    [theme.breakpoints.up('xl')]: {
+      width: "45%",
+    },
   },
   subTitle: {
     textAlign: 'center',
     color: theme.palette.gray[1200],
     fontSize: theme.palette.fontSizes.base,
-    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2, 0),
   },
   link: {
     fontSize: theme.palette.fontSizes.base,

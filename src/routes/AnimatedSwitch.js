@@ -5,8 +5,6 @@ import { useTransition, animated } from "react-spring";
 export const AnimatedSwitch = (props) => {
   const location = useLocation();
 
-  console.log("location ", location);
-
   const transitions = useTransition(location, {
     keys: (l) => l.pathname,
     from: {

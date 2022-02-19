@@ -22,15 +22,21 @@ const RouteData = () => {
     <BrowserRouter>
       <Util />
       {/* <AnimatedSwitch> */}
-      <Switch>
-        <ProtectedRoute exact path="/" component={HomeRoutes} />
+      <div style={{
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        overflowX: "hidden"
+      }}>
+        <Switch>
+          <ProtectedRoute exact path="/" component={HomeRoutes} />
 
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/forgot-password" component={Forgot} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/invitation/:type/:id" component={Invitation} />
-      </Switch>
-
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/forgot-password" component={Forgot} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/invitation/:type/:id" component={Invitation} />
+        </Switch>
+      </div>
       {/* </AnimatedSwitch> */}
     </BrowserRouter>
   ) : (

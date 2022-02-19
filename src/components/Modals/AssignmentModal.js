@@ -259,11 +259,11 @@ const AssignmentModal = () => {
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-      // onSubmit={(e) => {
-      //   alert("hehe");
-      //   e.preventDefault();
-      //   formRef.current.submit();
-      // }}
+    // onSubmit={(e) => {
+    //   alert("hehe");
+    //   e.preventDefault();
+    //   formRef.current.submit();
+    // }}
     >
       <DialogTitle>
         <Box
@@ -302,7 +302,7 @@ const AssignmentModal = () => {
             spacing={2}
             className={classes.gridContainer}
           >
-            <Grid item lg={9}>
+            <Grid item lg={9} md={8} sm={7} xs={12}>
               <Stack direction="column" spacing={2}>
                 <Controller
                   name="assignmentTitle"
@@ -397,7 +397,7 @@ const AssignmentModal = () => {
                           { type: "file", metaData: value },
                         ]);
                       }}
-                      // {...register("file")}
+                    // {...register("file")}
                     />
                     <ToolTipIconButton
                       title="Upload Any File"
@@ -417,7 +417,7 @@ const AssignmentModal = () => {
                 <Stack direction="column"></Stack>
               </Stack>
             </Grid>
-            <Grid item lg={3} className={classes.sideGrid}>
+            <Grid item lg={3} md={4} sm={5} xs={12} className={classes.sideGrid}>
               <Stack direction="column" spacing={3}>
                 <TextField
                   variant="outlined"

@@ -193,56 +193,45 @@ const Home = (props) => {
         <div className={classes.innerContainet}>
           <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
-            <Grid container className={classes.container}>
-              <Grid item lg={12}>
-                <Grid container mb={2}>
-                  <Grid item lg={3}>
-                    <PermissionsGate
-                      scopes={[SCOPES.CAN_VIEW_GROUP]}
-                      exceptionLogin={"google"}
-                    >
-                      <SelectGroup />
-                    </PermissionsGate>
-                  </Grid>
-                  <Grid
-                    item
-                    container
-                    justifyContent="flex-end"
-                    alignItems="center"
-                    lg={9}
-                  >
-                    {toggleButton && (
-                      <TopSectionButtons
-                        initializeWhiteBoard={initializeWhiteBoard}
-                        initializeConference={initializeConference}
-                      />
-                    )}
-                    <Stack
-                      direaction="row"
-                      spacing={"1"}
-                      justifyContent="flex-end"
-                      alignItems="center"
-                    >
-                      {/* <Notification /> */}
-                      <PermissionsGate
-                        scopes={[
-                          SCOPES.CAN_CREATE_GROUP,
-                          SCOPES.CAN_EDIT_GROUP,
-                          SCOPES.CAN_DELETE_GROUP,
-                          SCOPES.CAN_INVITE_STUDENT,
-                          SCOPES.CAN_INVITE_TEACHER,
-                        ]}
-                      >
-                        <IconButton onClick={handleOpenMenu} variant="inherit">
-                          <MENUICON />
-                        </IconButton>
+            <div className={classes.container}>
+              <Stack direction="row" spacing={1} justifyContent="space-between" mb={2}>
+                <PermissionsGate
+                  scopes={[SCOPES.CAN_VIEW_GROUP]}
+                  exceptionLogin={"google"}
+                >
+                  <SelectGroup />
+                </PermissionsGate>
 
-                        <GroupMenu />
-                      </PermissionsGate>
-                    </Stack>
-                  </Grid>
-                </Grid>
-              </Grid>
+                {toggleButton && (
+                  <TopSectionButtons
+                    initializeWhiteBoard={initializeWhiteBoard}
+                    initializeConference={initializeConference}
+                  />
+                )}
+                <Stack
+                  direaction="row"
+                  spacing={"1"}
+                  justifyContent="flex-end"
+                  alignItems="center"
+                >
+                  {/* <Notification /> */}
+                  <PermissionsGate
+                    scopes={[
+                      SCOPES.CAN_CREATE_GROUP,
+                      SCOPES.CAN_EDIT_GROUP,
+                      SCOPES.CAN_DELETE_GROUP,
+                      SCOPES.CAN_INVITE_STUDENT,
+                      SCOPES.CAN_INVITE_TEACHER,
+                    ]}
+                  >
+                    <IconButton onClick={handleOpenMenu} variant="inherit">
+                      <MENUICON />
+                    </IconButton>
+
+                    <GroupMenu />
+                  </PermissionsGate>
+                </Stack>
+              </Stack>
               <PermissionsGate
                 scopes={[SCOPES.CAN_VIEW_COURSE]}
                 exceptionLogin={"google"}
@@ -253,7 +242,7 @@ const Home = (props) => {
                   </LoadingContainer>
                 )}
               </PermissionsGate>
-            </Grid>
+            </div>
 
             {/* middle section */}
             <Grid
@@ -265,7 +254,7 @@ const Home = (props) => {
                 exceptionLogin={"google"}
               >
                 {!isSectionMaximized && (
-                  <Grid item lg={shouldDivideSection ? 6 : 12}>
+                  <Grid item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={shouldDivideSection ? 6 : 12} xs={shouldDivideSection ? 6 : 12}>
                     <LoadingContainer isLoading={isAssignmentLoading}>
                       <AssignmentList />
                     </LoadingContainer>
@@ -341,7 +330,7 @@ const useStyles = makeStyles((theme) => ({
     minHeight: "100vh",
     maxHeight: "100%",
     overflow: "hidden",
-    padding: theme.spacing(7)
+    paddingTop: theme.spacing(7),
   },
   innerContainet: {
     height: "100%",
@@ -357,6 +346,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 0px 15px -10px rgba(0, 0, 0, 0.2)",
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
     padding: theme.spacing(3, 2.5, 0, 2.5),
+    marginBottom: theme.spacing(1),
   },
   subjectContainer: {
     display: "flex",
@@ -377,7 +367,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   middleContainer: {
-    marginTop: theme.spacing(1),
     padding: theme.spacing(3, 2.5),
   },
 }));
