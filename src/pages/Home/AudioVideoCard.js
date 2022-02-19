@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     display: "-webkit-box",
     WebkitBoxOrient: "vertical",
-    WebkitLineClamp: 2,
+    WebkitLineClamp: 1,
     textAlign: 'left',
     overflow: "hidden",
     textOverflow: "ellipsis",
@@ -42,14 +42,14 @@ const AudioVideoCard = ({ onClick, ...props }) => {
 
   return (
     <Grid item lg={props.size} onClick={handleClick}>
-      <ButtonBase onClick={onClick}>
-        <Card sx={{ display: 'flex', }} elevation={0} variant="outlined">
-          <CardMedia
+      <ButtonBase onClick={onClick} sx={{ width: "100%" }}>
+        <Card sx={{ display: 'flex', width: "100%" }} elevation={0} variant="outlined">
+          {image && <CardMedia
             component="img"
-            sx={{ width: 100 }}
+            sx={{ width: 100, height: 60 }}
             image={image}
             alt={title}
-          />
+          />}
           <CardContent>
             <Typography variant="body2" className={classes.title}>{title}</Typography>
           </CardContent>
@@ -71,7 +71,7 @@ const getImage = (a) => {
     case "youtube":
       return a.metaData.thumbnail_url;
     case "link":
-      return a.metaData.ogImage.url;
+      return a?.metaData?.ogImage?.url || 'images/link.png';
 
       break;
 

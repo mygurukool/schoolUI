@@ -529,7 +529,7 @@ const AssignmentModal = () => {
           disabled={isLoading}
           sx={{ mr: 1 }}
         >
-          {isLoading && <CircularProgress size={20} color="secondary" />}
+          {isLoading && <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />}
           Submit
         </Button>
       </DialogActions>
