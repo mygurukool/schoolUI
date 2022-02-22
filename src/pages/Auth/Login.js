@@ -67,7 +67,7 @@ const Login = (props) => {
           <Typography variant="h4" mb={2} color="inherit">
             Get Started
           </Typography>
-          <Typography mb={2} color="inherit">
+          <Typography mb={2} variant="body2" color="inherit">
             Hi, Welcome back!
           </Typography>
           <div className={classes.loginBtns}>
@@ -226,22 +226,32 @@ const useStyles = makeStyles((theme) => ({
     backdropFilter: "blur(20px)",
     padding: theme.spacing(2.5, 5),
     width: "45%",
+    height: 'auto',
     borderRadius: theme.spacing(5),
     boxShadow: "40px 40px 90px rgba(0, 0, 0, 0.12)",
     [theme.breakpoints.up('xs')]: {
       width: "100%",
+      height: '100%'
     },
     [theme.breakpoints.up('sm')]: {
       width: "85%",
+      height: 'auto',
+
     },
     [theme.breakpoints.up('md')]: {
       width: "65%",
+      height: 'auto',
+
     },
     [theme.breakpoints.up('lg')]: {
       width: "55%",
+      height: 'auto',
+
     },
     [theme.breakpoints.up('xl')]: {
       width: "45%",
+      height: 'auto',
+
     },
   },
   subTitle: {

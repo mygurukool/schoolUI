@@ -32,6 +32,7 @@ const useConference = () => {
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
+      transports: ['websocket']
     });
 
     socket.on("connect", async () => {
@@ -134,7 +135,9 @@ const useConference = () => {
   React.useEffect(() => {
     if (courseId) {
       intializeSocket({ courseId, userId });
-      socket.on("SET_CONFERENCE", handleUpComingConference);
+      if (socket) {
+        socket.on("SET_CONFERENCE", handleUpComingConference);
+      }
     }
   }, [courseId]);
 

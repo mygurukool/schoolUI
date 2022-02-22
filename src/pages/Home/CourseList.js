@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     width: theme.spacing(15),
     [theme.breakpoints.up('xs')]: {
-      width: theme.spacing(13),
+      width: theme.spacing(12),
     },
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(15),
@@ -79,8 +79,8 @@ const useStyles = makeStyles((theme) => ({
       width: theme.spacing(9),
       height: theme.spacing(9),
       [theme.breakpoints.up('xs')]: {
-        width: theme.spacing(7),
-        height: theme.spacing(7),
+        width: theme.spacing(5.5),
+        height: theme.spacing(5.5),
       },
       [theme.breakpoints.up('sm')]: {
         width: theme.spacing(9),

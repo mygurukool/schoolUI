@@ -102,6 +102,29 @@ export const dateRanges = {
   ],
 };
 
+export const ageGroups = [
+  {
+    id: 1,
+    text: '1-5'
+  },
+  {
+    id: 2,
+    text: '6-10'
+  },
+  {
+    id: 3,
+    text: '10-15'
+  },
+  {
+    id: 4,
+    text: '15-20'
+  },
+  {
+    id: 5,
+    text: '20+'
+  },
+]
+
 export const ROLES = {
   organizationOwner: "ORGANIZATION_OWNER",
   teacher: "TEACHER",

@@ -10,7 +10,7 @@ const HomeRoutes = () => {
   return (
     <>
       <Navbar position="fixed" />
-      <Sidebar />
+      {/* <Sidebar /> */}
       <NotificationHandler />
       <BackgroundImage />
 

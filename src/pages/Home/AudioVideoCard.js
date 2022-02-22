@@ -46,12 +46,12 @@ const AudioVideoCard = ({ onClick, ...props }) => {
         <Card sx={{ display: 'flex', width: "100%" }} elevation={0} variant="outlined">
           {image && <CardMedia
             component="img"
-            sx={{ width: 100, height: 60 }}
+            sx={{ width: { xs: 75, sm: 100 }, height: 60, }}
             image={image}
             alt={title}
           />}
           <CardContent>
-            <Typography variant="body2" className={classes.title}>{title}</Typography>
+            <Typography variant="body1" className={classes.title}>{title}</Typography>
           </CardContent>
         </Card>
         {/* <Card className={classes.root} elevation={0}>

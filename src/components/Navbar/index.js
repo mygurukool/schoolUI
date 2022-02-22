@@ -16,7 +16,8 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/ExitToApp";
+import TranslateTwoToneIcon from '@mui/icons-material/TranslateTwoTone';
+
 // import NotificationsIcon from '@mui/icons-material/NotificationsTwoTone'
 // import PersonIcon from '@mui/icons-material/PersonOutlineTwoTone';
 // import Settings from '@mui/icons-material/SettingsTwoTone';
@@ -31,7 +32,10 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import Drawer from "../Drawer";
-import { ArrowBack, ArrowRight, ContactSupportTwoTone, Home, HomeTwoTone, Info, InfoTwoTone } from "@mui/icons-material";
+import { ArrowBack, ArrowRight, ContactSupportTwoTone, Event, Home, HomeTwoTone, Info, InfoTwoTone } from "@mui/icons-material";
+import { openModal } from "../../redux/action/utilActions";
+import AppButton from '../AppButton'
+
 
 export default function NavBar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
@@ -209,7 +213,13 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
         className={classes.AppBar}
         {...props}
       >
-        <Toolbar variant="dense">
+        <Toolbar variant="dense"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           {/* <IconButton onClick={handleDrawerOpen} edge="start" size="small">
             <MenuIcon />
           </IconButton> */}
@@ -231,7 +241,6 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
 
           <Box
             style={{
-              flex: 3,
               display: "flex",
               justifyContent: "flex-start",
               alignItems: "center",
@@ -273,92 +282,99 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                         <NotificationsIcon fontSize="inherit" />
                         </Badge>
                     </IconButton> */}
-          <Box
+
+
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={openDrawer}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
             sx={{
-              display: { xs: 'none', sm: 'block' },
+              display: { xs: 'block', sm: 'none' },
             }}
           >
+            <List>
+              {/* <Divider />
+              <ListItem button className={classes.listItem}>
+                <ListItemIcon><HomeTwoTone /></ListItemIcon>
+                <ListItemText primary={lang("HOME")} />
+              </ListItem>
+              <Divider />
+              <ListItem button className={classes.listItem}>
+                <ListItemIcon><InfoTwoTone /></ListItemIcon>
 
-            <Drawer
-              container={container}
-              variant="temporary"
-              open={openDrawer}
-              onClose={handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-              }}
-              sx={{
-                display: { xs: 'block', sm: 'none' },
-              }}
-            >
-              <List>
-                <Divider />
-                <ListItem button className={classes.listItem}>
-                  <ListItemIcon><HomeTwoTone /></ListItemIcon>
-                  <ListItemText primary={lang("HOME")} />
-                </ListItem>
-                <Divider />
-                <ListItem button className={classes.listItem}>
-                  <ListItemIcon><InfoTwoTone /></ListItemIcon>
+                <ListItemText primary={lang("ABOUT")} />
+              </ListItem>
+              <Divider />
+              <ListItem button className={classes.listItem}>
+                <ListItemIcon><ContactSupportTwoTone /></ListItemIcon>
 
-                  <ListItemText primary={lang("ABOUT")} />
-                </ListItem>
-                <Divider />
-                <ListItem button className={classes.listItem}>
-                  <ListItemIcon><ContactSupportTwoTone /></ListItemIcon>
+                <ListItemText primary={lang("CONTACT")} />
+              </ListItem> */}
+              <Divider />
+              <ListItem button onClick={() => dispatch(openModal("calendar"))} className={classes.listItem}>
+                <ListItemIcon><Event /></ListItemIcon>
 
-                  <ListItemText primary={lang("CONTACT")} />
-                </ListItem>
-                <Divider />
-              </List>
-            </Drawer>
+                <ListItemText primary="Calendar" />
+              </ListItem>
+              <Divider />
+            </List>
+          </Drawer>
 
-            <ul className={classes.navList}>
-              <li>
-                <Typography variant="subtitle1" className={classes.navLink}>
-                  {lang("HOME")}
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="subtitle1" className={classes.navLink}>
-                  {lang("ABOUT")}
-                </Typography>
-              </li>
-              <li>
-                <Typography variant="subtitle1" className={classes.navLink}>
-                  {lang("CONTACT")}
-                </Typography>
-              </li>
-              <li>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleLanguageClick}
-                >
-                  {lang("LANGUAGE")}
-                </Button>
-              </li>
-              <li>
-                {user?.isLogged && (
-                  <IconButton onClick={handleClick} size="small">
-                    <Avatar
-                      src={user?.imageUrl && user?.imageUrl}
-                      className={classes.avatar}
-                    >
-                      {user?.name ? (
-                        <img src={user?.imageUrl} />
-                      ) : (
-                        user?.name?.charAt(0)
-                      )}
-                    </Avatar>
-                  </IconButton>
-                )}
-                {accountMenu}
-                {languageMenu}
-                {/* {notificationMenu} */}
-              </li>
-            </ul>
-          </Box>
+          <ul className={classes.navList}>
+
+            {/* <li className={classes.hideNav}>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("HOME")}
+              </Typography>
+            </li>
+            <li className={classes.hideNav}>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("ABOUT")}
+              </Typography>
+            </li>
+            <li className={classes.hideNav}>
+              <Typography variant="subtitle1" className={classes.navLink}>
+                {lang("CONTACT")}
+              </Typography>
+            </li> */}
+            <li className={classes.hideNav}>
+              <Typography variant="subtitle1" className={classes.navLink} onClick={() => dispatch(openModal("calendar"))}>
+                Calendar
+              </Typography>
+            </li>
+            <li>
+              <AppButton
+                variant="text"
+                color="secondary"
+                startIcon={<TranslateTwoToneIcon />}
+                onClick={handleLanguageClick}
+              >
+                {lang("LANGUAGE")}
+              </AppButton>
+            </li>
+            <li>
+              {user?.isLogged && (
+                <IconButton onClick={handleClick} size="small">
+                  <Avatar
+                    src={user?.imageUrl && user?.imageUrl}
+                    className={classes.avatar}
+                  >
+                    {user?.name && (
+                      user?.name?.charAt(0)
+                    )}
+                  </Avatar>
+                </IconButton>
+              )}
+              {accountMenu}
+              {languageMenu}
+              {/* {notificationMenu} */}
+            </li>
+          </ul>
+
         </Toolbar>
       </AppBar>
     </>
@@ -413,6 +429,20 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.primary.main,
     },
   },
+  hideNav: {
+    [theme.breakpoints.up('xs')]: {
+      display: 'none',
+    },
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
+    [theme.breakpoints.up('lg')]: {
+      display: 'block',
+    },
+  },
   // toolBar: {
   //   display: 'flex',
   //   width: '100%',
@@ -461,12 +491,18 @@ const useStyles = makeStyles((theme) => ({
   navList: {
     width: "100%",
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
     listStyleType: "none",
     alignItems: "center",
     "& li": {
       padding: theme.spacing(0.5),
       marginLeft: theme.spacing(2),
+      [theme.breakpoints.up('xs')]: {
+        marginLeft: theme.spacing(0),
+      },
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing(2),
+      },
     },
   },
   navLink: {
@@ -480,6 +516,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     background: theme.palette.secondary.main,
     textTransform: "capitalize",
+    [theme.breakpoints.up('xs')]: {
+      width: 24,
+      height: 24
+    },
   },
   menuButton: {
     color: "white",

@@ -28,7 +28,7 @@ import LoadingContainer from "../../components/Spinner/LoadingContainer";
 import clsx from "clsx";
 import useModal from "../../hooks/useModal";
 import TeacherAcceptModal from "../../components/Modals/TeacherAccept";
-
+import useResposive from "../../hooks/useResponsive";
 import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
 import {
   removeUserAsTeacher,
@@ -59,7 +59,6 @@ const Home = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const loginType = useSelector((state) => state.user.loginType);
-  const { toggleButton } = useSelector((state) => state.util);
   const {
     initializeWhiteBoard,
 
@@ -131,7 +130,7 @@ const Home = (props) => {
     handleCloseMenu();
     dispatch(openModal("invitepeople"));
   };
-
+  const { isDesktop, isTablet } = useResposive()
   const GroupMenu = () => {
     return (
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
@@ -194,26 +193,24 @@ const Home = (props) => {
           <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
             <div className={classes.container}>
-              <Stack direction="row" spacing={1} justifyContent="space-between" mb={2}>
+              <Stack flexDirection="row" alignItems="center" justifyContent="space-between" mb={2}>
                 <PermissionsGate
                   scopes={[SCOPES.CAN_VIEW_GROUP]}
                   exceptionLogin={"google"}
                 >
                   <SelectGroup />
                 </PermissionsGate>
-
-                {toggleButton && (
-                  <TopSectionButtons
-                    initializeWhiteBoard={initializeWhiteBoard}
-                    initializeConference={initializeConference}
-                  />
-                )}
                 <Stack
-                  direaction="row"
+                  flexDirection="row"
                   spacing={"1"}
                   justifyContent="flex-end"
                   alignItems="center"
                 >
+                  <TopSectionButtons
+                    initializeWhiteBoard={initializeWhiteBoard}
+                    initializeConference={initializeConference}
+                  />
+
                   {/* <Notification /> */}
                   <PermissionsGate
                     scopes={[
@@ -247,6 +244,7 @@ const Home = (props) => {
             {/* middle section */}
             <Grid
               container
+              direction={!isDesktop ? 'column-reverse' : 'row'}
               className={clsx(classes.container, classes.middleContainer)}
             >
               <PermissionsGate
@@ -254,13 +252,14 @@ const Home = (props) => {
                 exceptionLogin={"google"}
               >
                 {!isSectionMaximized && (
-                  <Grid item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={shouldDivideSection ? 6 : 12} xs={shouldDivideSection ? 6 : 12}>
+                  <Grid item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
                     <LoadingContainer isLoading={isAssignmentLoading}>
                       <AssignmentList />
                     </LoadingContainer>
                   </Grid>
                 )}
               </PermissionsGate>
+
               <PermissionsGate
                 scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
                 exceptionLogin={"google"}
@@ -346,6 +345,12 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 0px 15px -10px rgba(0, 0, 0, 0.2)",
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
     padding: theme.spacing(3, 2.5, 0, 2.5),
+    [theme.breakpoints.up('xs')]: {
+      padding: theme.spacing(2, 1.5, 0, 1.5),
+    },
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(2.5, 2, 0, 2),
+    },
     marginBottom: theme.spacing(1),
   },
   subjectContainer: {
@@ -367,6 +372,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   middleContainer: {
-    padding: theme.spacing(3, 2.5),
+    padding: theme.spacing(2, 1.5),
+    [theme.breakpoints.up('xs')]: {
+      padding: theme.spacing(1.5),
+    },
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(2.5),
+    },
   },
 }));

@@ -24,6 +24,7 @@ const useChat = ({ assignmentId, userId, userName }) => {
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
+      transports: ['websocket']
     });
 
     socket.on("connect", async () => {
@@ -255,12 +256,13 @@ const useChat = ({ assignmentId, userId, userName }) => {
 
   React.useEffect(() => {
     intializeSocket({ assignmentId, userId });
+    if (socket) {
+      socket.on("SEND_USER_GROUPS", appendGroups);
 
-    socket.on("SEND_USER_GROUPS", appendGroups);
+      socket.on("GET_MESSAGE", appendMessage);
 
-    socket.on("GET_MESSAGE", appendMessage);
-
-    socket.on("GET_MESSAGES", appendMessages);
+      socket.on("GET_MESSAGES", appendMessages);
+    }
   }, [assignmentId]);
 
   React.useEffect(() => {
@@ -281,18 +283,22 @@ const useChat = ({ assignmentId, userId, userName }) => {
 
   React.useEffect(() => {
     if (currentGroup) {
-      socket.emit("JOIN_ROOM", currentGroup);
-      setPage(0);
-      dispatch(setMessages([]));
-      setTimeout(() => {
-        socket.emit("SEND_MESSAGES", { ...currentGroup, page });
-      }, 2000);
+      if (socket) {
+        socket.emit("JOIN_ROOM", currentGroup);
+        setPage(0);
+        dispatch(setMessages([]));
+        setTimeout(() => {
+          socket.emit("SEND_MESSAGES", { ...currentGroup, page });
+        }, 2000);
+      }
     }
   }, [currentGroup]);
 
   React.useEffect(() => {
     if (page > 0) {
-      socket.emit("SEND_MESSAGES", { ...currentGroup, page });
+      if (socket) {
+        socket.emit("SEND_MESSAGES", { ...currentGroup, page });
+      }
     }
   }, [page]);
 

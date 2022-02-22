@@ -7,8 +7,10 @@ import {
   Grid,
   IconButton,
   Stack,
+  Typography,
 } from "@mui/material";
 import { AspectRatio as Maximize, Minimize, Close } from "@mui/icons-material";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -21,31 +23,27 @@ const WhiteBoard = ({
   handleLeaveWhiteboard,
   whiteBoardUrl,
 }) => {
+  const { currentCourse } = useSelector(state => state.common)
   return (
-    <Grid item lg={isSectionMaximized ? 12 : 6}>
-      <Card>
-        <CardHeader
-          title="Whiteboard"
-          action={
-            <Stack direction="row">
-              <IconButton onClick={() => toggleWhiteboardMinMax()}>
-                {isWhiteboardMaximized ? <Minimize /> : <Maximize />}
-              </IconButton>
-              <IconButton onClick={() => handleLeaveWhiteboard()}>
-                <Close />
-              </IconButton>
-            </Stack>
-          }
-        />
-        <CardContent>
-          <iframe
-            src={whiteBoardUrl}
-            width="100%"
-            height="500px"
-            title="W3Schools Free Online Web Tutorials"
-          ></iframe>
-        </CardContent>
-      </Card>
+    <Grid item lg={isSectionMaximized ? 12 : 6} md={isSectionMaximized ? 12 : 6} sm={12} xs={12} sx={{ ...(!isSectionMaximized && { pl: { xs: 0, sm: 2 } }), mb: 1 }}>
+
+      <Stack spacing={1} flexDirection="row" justifyContent="space-between" alignItems="center" mb={0.5}>
+        <Typography variant="h6">Whiteboard {currentCourse && `(${currentCourse.courseName})`}</Typography>
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+          <IconButton color="primary" onClick={() => toggleWhiteboardMinMax()}>
+            {isWhiteboardMaximized ? <Minimize /> : <Maximize />}
+          </IconButton>
+          <IconButton color="error" onClick={() => handleLeaveWhiteboard()}>
+            <Close />
+          </IconButton>
+        </Stack>
+      </Stack>
+      <iframe
+        src={whiteBoardUrl}
+        width="100%"
+        height="500px"
+        title="W3Schools Free Online Web Tutorials"
+      ></iframe>
     </Grid>
   );
 };

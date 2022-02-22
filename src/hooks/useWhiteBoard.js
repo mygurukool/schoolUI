@@ -53,6 +53,7 @@ const useWhiteBoard = () => {
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
+      transports: ['websocket']
     });
 
     socket.on("connect", async () => {
@@ -74,9 +75,8 @@ const useWhiteBoard = () => {
   const initializeWhiteBoard = () => {
     if (canCreateWhiteboard) {
       const orgName = generateOrgName();
-      const url = `https://wbo.ophir.dev/boards/${orgName}${
-        currentGroup?.groupName
-      }${moment().format(`DDMMYYYY`)}`;
+      const url = `https://wbo.ophir.dev/boards/${orgName}${currentGroup?.groupName
+        }${moment().format(`DDMMYYYY`)}`;
       if (isTeacher) {
         socket.emit("CREATE_WHITEBOARD", {
           courseId,
@@ -91,7 +91,9 @@ const useWhiteBoard = () => {
   React.useEffect(() => {
     if (courseId) {
       intializeSocket({ courseId, userId });
-      socket.on("SET_WHITEBOARD_URL", (data) => setWhiteBoardUrl(data));
+      if (socket) {
+        socket.on("SET_WHITEBOARD_URL", (data) => setWhiteBoardUrl(data));
+      }
     }
   }, [courseId]);
 

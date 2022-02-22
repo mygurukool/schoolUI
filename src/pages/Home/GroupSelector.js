@@ -166,7 +166,7 @@ const SelectGroup = () => {
         />
       </PermissionsGate>
 
-      <Grid item lg={4} md={4} sm={4} xs={8}>
+      <Grid item lg={4} md={4} sm={4} xs={6}>
         <FormControl fullWidth>
           <InputLabel variant="outlined" htmlFor="uncontrolled-native">
             Group

@@ -10,6 +10,7 @@ import {
   editGroup,
   getAllGroups,
 } from "../../redux/action/groupActions";
+import { ageGroups } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -77,6 +78,17 @@ const formData = [
     name: "groupName",
     label: "Group Name",
     placeholder: "eg: Class 9A, Class 1",
+    required: true,
+    size: 12,
+  },
+  {
+    type: "select",
+    name: "ageGroupId",
+    label: "Age Group",
+    options: ageGroups,
+    placeholder: "Age Group",
+    optionLabelProp: 'text',
+    optionValueProp: 'id',
     required: true,
     size: 12,
   },

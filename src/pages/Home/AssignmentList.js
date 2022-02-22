@@ -52,6 +52,7 @@ import AudioVideoCard from "./AudioVideoCard";
 import { useHistory } from "react-router";
 import DeleteModal from "../../components/Modals/DeleteModal";
 import { deleteAssignmet, getAssignments } from "../../redux/action/assignmentActions";
+import AppButton from "../../components/AppButton";
 const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -209,7 +210,7 @@ const AssignmentListItem = ({
   const isMyGuruKool = loginType === "mygurukool";
   const ChatBtn = () => {
     return (
-      <Button
+      <AppButton
         variant="contained"
         onClick={() => setEnableChat(!enableChat)}
         color="warning"
@@ -217,7 +218,7 @@ const AssignmentListItem = ({
         size="small"
       >
         Feel free to ask
-      </Button>
+      </AppButton>
     );
   };
 
@@ -342,11 +343,10 @@ const AssignmentListItem = ({
           </Stack>
         </Stack>
       </AccordionSummary>
-      <AccordionDetails className={classes.AccordionDetails}>
+      <AccordionDetails className={classes.AccordionDetails} sx={{ p: { xs: 1, sm: 2 } }}>
         <Stack
           spacing={1}
           direction="column"
-          pb={2}
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
@@ -428,8 +428,8 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
   const classes = useStyles();
   return (
     <>
-      <Stack spacing={1} direction="column" pb={2} pt={2}>
-        <Stack direction="row" justifyContent="space-between">
+      <Stack spacing={1} flexDirection="column" sx={{ pb: { xs: 0, sm: 2 }, pt: { xs: 0, sm: 2 } }} >
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle1" className={classes.title}>
             {title}
           </Typography>
