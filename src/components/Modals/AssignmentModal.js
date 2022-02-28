@@ -3,7 +3,7 @@ import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/action/utilActions";
-import CloseIcon from "@mui/icons-material/CloseOutlined";
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 
 import {
   createAssignmet,
@@ -40,8 +40,6 @@ import {
   Typography,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
-import SunEditor, { buttonList } from "suneditor-react";
-import "suneditor/dist/css/suneditor.min.css";
 import {
   AddLink,
   Close,
@@ -276,7 +274,7 @@ const AssignmentModal = () => {
           <Typography variant="subtitle1">
             {modalData ? "Edit Assginment" : "Create Assignment"}
           </Typography>
-          <IconButton aria-label="close" onClick={handleClose}>
+          <IconButton color="error" aria-label="close" onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Box>

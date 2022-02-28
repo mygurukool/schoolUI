@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
@@ -9,7 +10,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { AspectRatio as Maximize, Minimize, Close } from "@mui/icons-material";
+import { Fullscreen as Maximize, Minimize, HighlightOffTwoTone } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,14 +30,14 @@ const WhiteBoard = ({
 
       <Stack spacing={1} flexDirection="row" justifyContent="space-between" alignItems="center" mb={0.5}>
         <Typography variant="h6">Whiteboard {currentCourse && `(${currentCourse.courseName})`}</Typography>
-        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+        <div>
           <IconButton color="primary" onClick={() => toggleWhiteboardMinMax()}>
             {isWhiteboardMaximized ? <Minimize /> : <Maximize />}
           </IconButton>
           <IconButton color="error" onClick={() => handleLeaveWhiteboard()}>
-            <Close />
+            <HighlightOffTwoTone />
           </IconButton>
-        </Stack>
+        </div>
       </Stack>
       <iframe
         src={whiteBoardUrl}

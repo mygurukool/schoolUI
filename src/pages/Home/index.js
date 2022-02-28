@@ -135,7 +135,7 @@ const Home = (props) => {
     return (
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
-          <MenuItem onClick={() => handleEdit()}>
+          <MenuItem className="addGroup" onClick={() => handleEdit()}>
             <ListItemIcon>
               <ADDICON fontSize="small" />
             </ListItemIcon>
@@ -221,7 +221,7 @@ const Home = (props) => {
                       SCOPES.CAN_INVITE_TEACHER,
                     ]}
                   >
-                    <IconButton onClick={handleOpenMenu} variant="inherit">
+                    <IconButton className="groupMenu" onClick={handleOpenMenu} variant="inherit">
                       <MENUICON />
                     </IconButton>
 
@@ -252,7 +252,7 @@ const Home = (props) => {
                 exceptionLogin={"google"}
               >
                 {!isSectionMaximized && (
-                  <Grid item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
+                  <Grid sx={{ ...(whiteBoardUrl && { borderRight: '1px solid', borderColor: { md: 'gray.600', xs: 'transparent' }, pr: { md: 1.5, xs: 0 } }) }} item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
                     <LoadingContainer isLoading={isAssignmentLoading}>
                       <AssignmentList />
                     </LoadingContainer>
@@ -344,12 +344,12 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.palette.radius.base,
     boxShadow: "0px 0px 15px -10px rgba(0, 0, 0, 0.2)",
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
-    padding: theme.spacing(3, 2.5, 0, 2.5),
+    padding: theme.spacing(3, 2.5, 2.5, 2.5),
     [theme.breakpoints.up('xs')]: {
       padding: theme.spacing(2, 1.5, 0, 1.5),
     },
     [theme.breakpoints.up('sm')]: {
-      padding: theme.spacing(2.5, 2, 0, 2),
+      padding: theme.spacing(2.5, 2, 0.5, 2),
     },
     marginBottom: theme.spacing(1),
   },

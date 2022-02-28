@@ -1,27 +1,44 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100%",
-    width: "100%",
+    width: '100%',
+    height: '50vh',
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
   },
   gif: {
-    height: "50%",
-    width: "50%",
+    height: 100,
+    width: 100,
     objectFit: "contain",
   },
 }));
 
 const CustomLoading = (props) => {
   const classes = useStyles();
+  const { currentGroup } = useSelector((state) => state.common);
+  const getLoaderGif = () => {
+    switch (currentGroup.ageGroupId) {
+      case "1":
+        return 'preteen.gif'
+
+      case "2":
+        return 'teen.gif'
+
+      case "3":
+        return 'adult.gif'
+
+      default:
+        break;
+    }
+  }
   return (
     <div className={classes.root}>
-      <img src={"/images/loading.gif"} className={classes.gif} />
+      <img src={`/images/${getLoaderGif()}`} className={classes.gif} />
     </div>
   );
 };

@@ -20,6 +20,13 @@ export const openModal = (value, data) => {
   };
 };
 
+export const toggleGuide = () => {
+  return {
+    type: utilTypes.TOGGLE_GUIDE
+
+  };
+};
+
 export const closeModal = () => {
   return {
     type: utilTypes.CLOSE_MODAL,

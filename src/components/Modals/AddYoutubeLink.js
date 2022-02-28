@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import { Card, CardMedia, Stack, TextField } from "@mui/material";
-import { Close, YouTube } from "@mui/icons-material";
+import { HighlightOffTwoTone, YouTube } from "@mui/icons-material";
 import youtube from "youtube-metadata-from-url";
 
 import IconButton from "@mui/material/IconButton";
@@ -109,7 +109,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
                     setMetaData();
                   }}
                 >
-                  <Close />
+                  <HighlightOffTwoTone />
                 </IconButton>
               </Stack>
             </Stack>

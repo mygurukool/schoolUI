@@ -27,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     width: "100%",
     backgroundSize: "100% 100%",
+    [theme.breakpoints.up('xs')]: {
+      backgroundSize: "cover",
+    },
+    [theme.breakpoints.up('sm')]: {
+      backgroundSize: "100% 100%",
+    },
     backgroundRepeat: "no-repeat",
     backgroundAttachment: 'fixed',
     backgroundPosition: "center",
@@ -40,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
     bottom: 20,
     right: 0,
     zIndex: -1,
+    [theme.breakpoints.up('xs')]: {
+      width: '30%',
+    },
+    [theme.breakpoints.up('sm')]: {
+      width: '15%',
+    },
   },
   shadow: {
     width: '100%',

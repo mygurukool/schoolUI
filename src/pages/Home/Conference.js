@@ -6,7 +6,7 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
-import { AspectRatio as Maximize, Minimize, Close } from "@mui/icons-material";
+import { Fullscreen as Maximize, Minimize, HighlightOffTwoTone } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +31,7 @@ const Conference = ({
             {isConferenceMaximized ? <Minimize /> : <Maximize />}
           </IconButton>
           <IconButton color="error" onClick={() => handleLeaveConference()}>
-            <Close />
+            <HighlightOffTwoTone />
           </IconButton>
         </Stack>
       </Stack>

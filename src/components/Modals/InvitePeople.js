@@ -6,7 +6,7 @@ import { closeModal } from "../../redux/action/utilActions";
 import ClipBoardIcon from "@mui/icons-material/ContentPaste";
 import PersonAddAlt from "@mui/icons-material/PersonAddAlt";
 import Delete from "@mui/icons-material/Delete";
-import Close from "@mui/icons-material/Close";
+import Close from "@mui/icons-material/HighlightOffTwoTone";
 import PermissionGate from "../PermissionGate";
 import {
   Autocomplete,

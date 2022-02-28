@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { Close } from "@mui/icons-material";
+import { HighlightOffTwoTone } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -68,11 +68,11 @@ const StudentSelectorDrawer = ({
     >
       <Box sx={{ width: 300 }} role="presentation">
         <Box px={2} py={2}>
-          <Stack direction="row" justifyContent="space-between">
-            <Typography>Select Students</Typography>
+          <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Typography variant="subtitle1">Select Students</Typography>
 
-            <IconButton onClick={handleClose} size="small">
-              <Close />
+            <IconButton color="error" onClick={handleClose} size="small">
+              <HighlightOffTwoTone />
             </IconButton>
           </Stack>
         </Box>

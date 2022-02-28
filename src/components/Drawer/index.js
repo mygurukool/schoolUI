@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 import ExpandLess from "@mui/icons-material/ExpandMore";
 import ExpandMore from "@mui/icons-material/KeyboardArrowRight";
 import { studentRoutes, teacherRoutes } from "../../routes/LeftSideBarRoutes";

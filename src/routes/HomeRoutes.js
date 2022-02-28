@@ -5,10 +5,12 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import { NotificationHandler } from "../components/Notification";
 import BackgroundImage from "../pages/Home/BackgroundImage";
+import DesktopGuide from "../utils/DesktopGuide";
 
 const HomeRoutes = () => {
   return (
     <>
+      <DesktopGuide />
       <Navbar position="fixed" />
       {/* <Sidebar /> */}
       <NotificationHandler />

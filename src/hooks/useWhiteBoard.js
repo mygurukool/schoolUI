@@ -53,7 +53,8 @@ const useWhiteBoard = () => {
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
-      transports: ['websocket']
+      transports: ['websocket'],
+      reconnection: false
     });
 
     socket.on("connect", async () => {

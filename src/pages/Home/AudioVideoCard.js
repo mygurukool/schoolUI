@@ -41,7 +41,7 @@ const AudioVideoCard = ({ onClick, ...props }) => {
   };
 
   return (
-    <Grid item lg={props.size} onClick={handleClick}>
+    <Grid item lg={props.size} onClick={handleClick} className="audioVideo">
       <ButtonBase onClick={onClick} sx={{ width: "100%" }}>
         <Card sx={{ display: 'flex', width: "100%" }} elevation={0} variant="outlined">
           {image && <CardMedia

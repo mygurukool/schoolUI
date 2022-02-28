@@ -32,8 +32,8 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import Drawer from "../Drawer";
-import { ArrowBack, ArrowRight, ContactSupportTwoTone, Event, Home, HomeTwoTone, Info, InfoTwoTone } from "@mui/icons-material";
-import { openModal } from "../../redux/action/utilActions";
+import { ArrowBack, ArrowRight, ContactSupportTwoTone, Event, Home, HomeTwoTone, Info, InfoTwoTone, Tour } from "@mui/icons-material";
+import { openModal, toggleGuide } from "../../redux/action/utilActions";
 import AppButton from '../AppButton'
 
 
@@ -99,9 +99,10 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
       <Box className={classes.menuContainer}>
         <Avatar
           src={user?.imageUrl && user?.imageUrl}
-          style={{ marginRight: 10 }}
+          sx={{ width: { xs: 30, sm: 40 }, height: { xs: 30, sm: 40 }, mr: 1.5, bgcolor: 'primary.main' }}
+          className={classes.avatar}
         >
-          {user?.name ? <img src={user?.imageUrl} /> : user?.name?.charAt(0)}
+          {user?.name && user?.name?.charAt(0)}
         </Avatar>
         <div>
           <Typography variant="subtitle1">{user?.name || ""}</Typography>
@@ -341,10 +342,19 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 {lang("CONTACT")}
               </Typography>
             </li> */}
-            <li className={classes.hideNav}>
-              <Typography variant="subtitle1" className={classes.navLink} onClick={() => dispatch(openModal("calendar"))}>
+            <li className={classes.hideNav} >
+              <Button startIcon={<Tour />} variant="text" onClick={() => dispatch(toggleGuide())} className={classes.navLink} >
+
+                Guide
+              </Button>
+
+            </li>
+            <li className={classes.hideNav} >
+              <Button startIcon={<Event />} variant="text" onClick={() => dispatch(openModal("calendar"))} className={classes.navLink} >
+
                 Calendar
-              </Typography>
+              </Button>
+
             </li>
             <li>
               <AppButton
@@ -362,6 +372,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                   <Avatar
                     src={user?.imageUrl && user?.imageUrl}
                     className={classes.avatar}
+                    sx={{ width: { xs: 30, sm: 40 }, height: { xs: 30, sm: 40 }, bgcolor: 'primary.main' }}
                   >
                     {user?.name && (
                       user?.name?.charAt(0)
@@ -456,6 +467,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "uppercase",
     fontWeight: theme.palette.fontWeights.regular,
     color: theme.palette.text.primary,
+    whiteSpace: 'nowrap'
   },
   title: {
     fontSize: theme.palette.fontSizes.base,

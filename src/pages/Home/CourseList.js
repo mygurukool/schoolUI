@@ -19,9 +19,8 @@ import { SCOPES } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 
-import ADDICON from "@mui/icons-material/Add";
-import EDITICON from "@mui/icons-material/Edit";
-import DELETEICON from "@mui/icons-material/Delete";
+import EDITICON from "@mui/icons-material/EditTwoTone";
+import DELETEICON from "@mui/icons-material/DeleteTwoTone";
 import MENUICON from "@mui/icons-material/MoreVert";
 import DeleteModal from "../../components/Modals/DeleteModal";
 
@@ -158,6 +157,7 @@ const CoursesList = () => {
         })
       );
     } else {
+      console.log('loginType', loginType);
       dispatch(removeUserAsTeacher());
 
       dispatch(
@@ -250,7 +250,6 @@ const CoursesList = () => {
   };
 
   const CourseBtns = ({ data }) => {
-    const imaage = "https://source.unsplash.com/random";
     return (
       <ButtonBase
         onClick={() => onSelectCourse(data)}
@@ -258,12 +257,12 @@ const CoursesList = () => {
       >
         <div className={clsx(classes.courseBtn)}>
           <img
-            src={imaage}
+            src={process.env.REACT_APP_URL + data.courseImage}
             alt={data.courseName}
             // className={isActive && classes.activeCourse}
             style={{ marginBottom: 10 }}
           />
-          <Typography variant="subtitle2">{data.courseName}</Typography>
+          <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>{data.courseName}</Typography>
         </div>
       </ButtonBase>
     );
@@ -319,7 +318,7 @@ const CoursesList = () => {
         {filteredCourses &&
           filteredCourses.length > 0 &&
           filteredCourses.map((c, index) => {
-            const isActive = c.id === currentCourse?.id;
+            const isActive = c._id === currentCourse?._id;
 
             return (
               <div
@@ -351,24 +350,29 @@ const CoursesList = () => {
                     <MENUICON />
                   </IconButton>
                 </PermissionGate>
+                <div className="courseSelector">
 
-                <CourseBtns data={c} />
+                  <CourseBtns data={c} />
+                </div>
+
               </div>
             );
           })}
 
         {groups.length > 0 && (
-          <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
-            <div
-              style={{
-                margin: '0 5px 10px 5px',
-                // marginBottom: 10
-              }}
-              className={classes.courseBtnContainer}
-            >
-              <AddNewCourse />
-            </div>
-          </PermissionGate>
+          <div className="addCourse">
+            <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
+              <div
+                style={{
+                  margin: '0 5px 10px 5px',
+                  // marginBottom: 10
+                }}
+                className={classes.courseBtnContainer}
+              >
+                <AddNewCourse />
+              </div>
+            </PermissionGate>
+          </div>
         )}
       </Stack>
     </>

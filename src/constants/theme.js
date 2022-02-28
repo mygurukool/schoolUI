@@ -263,7 +263,7 @@ theme = createTheme(theme, {
           textTransform: "capitalize",
           transition: "all 0.3s ease 0s",
           "&:hover": {
-            boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
+            // boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
             transform: "translateY(-3px)",
           },
         },

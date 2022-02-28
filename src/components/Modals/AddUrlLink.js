@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import { Card, CardMedia, Stack, TextField } from "@mui/material";
-import { Close, Link, YouTube } from "@mui/icons-material";
+import { HighlightOffTwoTone, Link, YouTube } from "@mui/icons-material";
 
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
@@ -79,7 +79,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
       open={open}
       onClose={handleClose}
       onSubmit={() => handleSubmit()}
-      title="Add Website  Link"
+      title="Add Website Link"
       size="sm"
       isLoading={isLoading}
     >
@@ -107,7 +107,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
               }
               alt={metaData?.ogTitle}
             />
-            <Stack direction="row" p={2}>
+            <Stack flexDirection="row" justifyContent="space-between" width='100%' p={2}>
               <Stack>
                 <Typography component="div" variant="h6">
                   {metaData?.ogTitle}
@@ -120,17 +120,15 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
                   {metaData?.ogSiteName}
                 </Typography>
               </Stack>
-              <Stack>
-                <IconButton
-                  aria-label="previous"
-                  onClick={() => {
-                    setLocalLink();
-                    setMetaData();
-                  }}
-                >
-                  <Close />
-                </IconButton>
-              </Stack>
+              <IconButton
+                color="error"
+                onClick={() => {
+                  setLocalLink();
+                  setMetaData();
+                }}
+              >
+                <HighlightOffTwoTone />
+              </IconButton>
             </Stack>
           </Card>
         )}

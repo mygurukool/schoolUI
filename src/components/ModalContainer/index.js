@@ -12,7 +12,7 @@ import {
   CircularProgress,
   Divider,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/CloseOutlined";
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -65,7 +65,7 @@ const ModalContainer = ({
           }}
         >
           <Typography className={classes.modalTitle} variant="subtitle1">{title}</Typography>
-          <IconButton aria-label="close" onClick={onClose}>
+          <IconButton color="error" aria-label="close" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>

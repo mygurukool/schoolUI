@@ -42,6 +42,12 @@ const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
     innerBox: {
       position: 'relative',
       width: 65,
+      [theme.breakpoints.up('xs')]: {
+        width: 55,
+      },
+      [theme.breakpoints.up('sm')]: {
+        width: 65,
+      },
       flexDirection: 'column',
       display: 'flex',
       justifyContent: 'space-between',

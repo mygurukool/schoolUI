@@ -1,6 +1,6 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Route, BrowserRouter, Redirect, Switch } from "react-router-dom";
+// import { useSelector } from "react-redux";
+import { Route, BrowserRouter, Switch } from "react-router-dom";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Invitation from "../pages/Invitation";
@@ -11,7 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomeRoutes from "./HomeRoutes";
 import useAutoLogin from "../hooks/useAutoLogin";
 import Spinner from "../components/Spinner";
-import AnimatedSwitch from "./AnimatedSwitch";
+// import AnimatedSwitch from "./AnimatedSwitch";
 
 import Util from "./Util";
 

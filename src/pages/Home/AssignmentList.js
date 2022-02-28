@@ -117,23 +117,26 @@ const AssignmentList = () => {
                 onSubmit={(data) => handleDelete(data)}
               />
             </PermissionsGate>
-            <div className={classes.root}>
-              {assignments.map((a, i) => {
-                return (
-                  <AssignmentListItem
-                    key={i}
-                    {...a}
-                    expanded={expanded === i}
-                    onSelectAssignment={() => handleExpand(i)}
-                    setPlayingVideo={setPlayingVideo}
-                    onEdit={() => onEdit(a)}
-                    onDelete={() => onDelete(a)}
-                    onCheck={() => onCheck(a)}
-                    isTeacher={isTeacher}
-                    loginType={loginType}
-                  />
-                );
-              })}
+            <div className="assignmentList">
+
+              <div className={classes.root}>
+                {assignments.map((a, i) => {
+                  return (
+                    <AssignmentListItem
+                      key={i}
+                      {...a}
+                      expanded={expanded === i}
+                      onSelectAssignment={() => handleExpand(i)}
+                      setPlayingVideo={setPlayingVideo}
+                      onEdit={() => onEdit(a)}
+                      onDelete={() => onDelete(a)}
+                      onCheck={() => onCheck(a)}
+                      isTeacher={isTeacher}
+                      loginType={loginType}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </>
         ) : (
@@ -155,16 +158,14 @@ const ActionBar = () => {
     dispatch(openModal("assignment"));
   };
   return (
-    <Stack direction="row" sx={{ mb: 1 }}>
-      <Button
-        startIcon={<Add />}
-        color="primary"
-        variant="contained"
-        onClick={onAddAssignment}
-      >
-        Add
-      </Button>
-    </Stack>
+    <Button
+      startIcon={<Add />}
+      color="primary"
+      variant="contained"
+      onClick={onAddAssignment}
+    >
+      Add
+    </Button>
   );
 };
 
@@ -216,6 +217,7 @@ const AssignmentListItem = ({
         color="warning"
         startIcon={<ChatIcon />}
         size="small"
+        className="chatBtn"
       >
         Feel free to ask
       </AppButton>
@@ -229,6 +231,7 @@ const AssignmentListItem = ({
         color="success"
         startIcon={<CheckIcon />}
         size="medium"
+        className="turnInBtn"
       >
         Turn in
       </Button>
@@ -243,9 +246,9 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-            border: `1px solid ${theme.palette.secondary.light}`,
+            border: `1px solid ${theme.palette.gray[600]}`,
             background: theme.palette.secondary.light,
-            boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
           }
           : undefined
       }
@@ -266,7 +269,7 @@ const AssignmentListItem = ({
           alignItems="center"
         >
           <Stack>
-            <Typography variant="subtitle1">{assignmentTitle}</Typography>
+            <Typography variant="subtitle1" className={classes.ellipses}>{assignmentTitle}</Typography>
             {!expanded && (
               <Typography
                 color="textSecondary"
@@ -335,7 +338,7 @@ const AssignmentListItem = ({
 
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title="Check submissions">
-                <IconButton onClick={() => onCheck()} color="success">
+                <IconButton className="checkSubmission" onClick={() => onCheck()} color="success">
                   <FactCheck />
                 </IconButton>
               </Tooltip>
@@ -463,8 +466,8 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 0.3s ease 0s",
     marginBottom: 0,
     "&:hover": {
-      border: `1px solid ${theme.palette.secondary.light}`,
-      boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+      border: `1px solid ${theme.palette.gray[600]}`,
+      // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
       background: theme.palette.secondary.light,
     },
   },

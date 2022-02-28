@@ -188,6 +188,7 @@ export const userTypes = {
 export const utilTypes = {
   TOGGLE_DRAWER: "TOGGLE_DRAWER",
 
+  TOGGLE_GUIDE: "TOGGLE_GUIDE",
   SET_MESSAGES: "SET_MESSAGES",
 
   TOGGLE_FULL_SCREEN: "TOGGLE_FULL_SCREEN",

@@ -4,7 +4,7 @@ import { makeStyles, Theme } from "@mui/styles";
 import SendIcon from "@mui/icons-material/Send";
 import DocumentIcon from "@mui/icons-material/AttachFileTwoTone";
 
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 import {
   Divider,
   IconButton,
