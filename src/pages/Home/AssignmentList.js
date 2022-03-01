@@ -29,7 +29,10 @@ import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
 import CourseMaterialList from "./CourseMaterialList";
-import { CalendarToday, FactCheckTwoTone as FactCheck } from "@mui/icons-material";
+import {
+  CalendarToday,
+  FactCheckTwoTone as FactCheck,
+} from "@mui/icons-material";
 import FaceIcon from "@mui/icons-material/Face";
 import { Box } from "@mui/system";
 import clsx from "clsx";
@@ -45,13 +48,16 @@ import PermissionsGate from "../../components/PermissionGate";
 import Add from "@mui/icons-material/Add";
 import { openModal } from "../../redux/action/utilActions";
 import Edit from "@mui/icons-material/EditTwoTone";
-import Delete from "@mui/icons-material/DeleteTwoTone"
+import Delete from "@mui/icons-material/DeleteTwoTone";
 
 import parse from "html-react-parser";
 import AudioVideoCard from "./AudioVideoCard";
 import { useHistory } from "react-router";
 import DeleteModal from "../../components/Modals/DeleteModal";
-import { deleteAssignmet, getAssignments } from "../../redux/action/assignmentActions";
+import {
+  deleteAssignmet,
+  getAssignments,
+} from "../../redux/action/assignmentActions";
 import AppButton from "../../components/AppButton";
 const AssignmentList = () => {
   const classes = useStyles();
@@ -99,7 +105,12 @@ const AssignmentList = () => {
       <>
         {currentCourse ? (
           <>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" className={classes.heading}>
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              className={classes.heading}
+            >
               <Typography variant="h6">Assignments</Typography>
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
                 <ActionBar />
@@ -118,9 +129,8 @@ const AssignmentList = () => {
               />
             </PermissionsGate>
             <div className="assignmentList">
-
               <div className={classes.root}>
-                {assignments.map((a, i) => {
+                {assignments?.length > 0 ? assignments.map((a, i) => {
                   return (
                     <AssignmentListItem
                       key={i}
@@ -135,7 +145,9 @@ const AssignmentList = () => {
                       loginType={loginType}
                     />
                   );
-                })}
+                }) :
+                  <Alert severity="warning" variant="filled">There are no assignments</Alert>
+                }
               </div>
             </div>
           </>
@@ -269,7 +281,9 @@ const AssignmentListItem = ({
           alignItems="center"
         >
           <Stack>
-            <Typography variant="subtitle1" className={classes.ellipses}>{assignmentTitle}</Typography>
+            <Typography variant="subtitle1" className={classes.ellipses}>
+              {assignmentTitle}
+            </Typography>
             {!expanded && (
               <Typography
                 color="textSecondary"
@@ -307,7 +321,7 @@ const AssignmentListItem = ({
                   // disabled={!isMyGuruKool}
                   onClick={(e) => {
                     e.preventDefault();
-                    e.stopPropagation()
+                    e.stopPropagation();
                     onDelete();
                   }}
                 >
@@ -338,7 +352,11 @@ const AssignmentListItem = ({
 
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
               <Tooltip title="Check submissions">
-                <IconButton className="checkSubmission" onClick={() => onCheck()} color="success">
+                <IconButton
+                  className="checkSubmission"
+                  onClick={() => onCheck()}
+                  color="success"
+                >
                   <FactCheck />
                 </IconButton>
               </Tooltip>
@@ -346,7 +364,10 @@ const AssignmentListItem = ({
           </Stack>
         </Stack>
       </AccordionSummary>
-      <AccordionDetails className={classes.AccordionDetails} sx={{ p: { xs: 1, sm: 2 } }}>
+      <AccordionDetails
+        className={classes.AccordionDetails}
+        sx={{ p: { xs: 1, sm: 2 } }}
+      >
         <Stack
           spacing={1}
           direction="column"
@@ -396,7 +417,7 @@ const AssignmentListItem = ({
             </ItemSection>
           )}
 
-          {uploadExercises && uploadExercises.length > 0 && (
+          {uploadExercises && uploadExercises.length > 0 ? (
             <ItemSection title=" Upload Exercises">
               <Grid container>
                 {uploadExercises?.map((a, ai) => {
@@ -404,6 +425,19 @@ const AssignmentListItem = ({
                 })}
               </Grid>
             </ItemSection>
+          ) : (
+            <Grid container>
+              <Grid item lg={12}>
+                <Typography
+                  mt={2}
+                  align="center"
+                  variant="subtitle1"
+                  color="error"
+                >
+                  There are no excercises
+                </Typography>
+              </Grid>
+            </Grid>
           )}
           {hasDocuments && hasDocuments.length > 0 && (
             <ItemSection title=" Upload Exercises">
@@ -431,8 +465,16 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
   const classes = useStyles();
   return (
     <>
-      <Stack spacing={1} flexDirection="column" sx={{ pb: { xs: 0, sm: 2 }, pt: { xs: 0, sm: 2 } }} >
-        <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
+      <Stack
+        spacing={1}
+        flexDirection="column"
+        sx={{ pb: { xs: 0, sm: 2 }, pt: { xs: 0, sm: 2 } }}
+      >
+        <Stack
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography variant="subtitle1" className={classes.title}>
             {title}
           </Typography>

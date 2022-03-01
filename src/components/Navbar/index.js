@@ -316,6 +316,12 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 <ListItemText primary={lang("CONTACT")} />
               </ListItem> */}
               <Divider />
+              <ListItem button onClick={() => dispatch(toggleGuide())} className={classes.listItem}>
+                <ListItemIcon><Tour /></ListItemIcon>
+
+                <ListItemText primary="Guide" />
+              </ListItem>
+              <Divider />
               <ListItem button onClick={() => dispatch(openModal("calendar"))} className={classes.listItem}>
                 <ListItemIcon><Event /></ListItemIcon>
 
@@ -343,14 +349,14 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               </Typography>
             </li> */}
             <li className={classes.hideNav} >
-              <Button startIcon={<Tour />} variant="text" onClick={() => dispatch(toggleGuide())} className={classes.navLink} >
+              <Button startIcon={<Tour />} color="secondary" variant="text" onClick={() => dispatch(toggleGuide())} className={classes.navLink} >
 
                 Guide
               </Button>
 
             </li>
             <li className={classes.hideNav} >
-              <Button startIcon={<Event />} variant="text" onClick={() => dispatch(openModal("calendar"))} className={classes.navLink} >
+              <Button startIcon={<Event />} color="secondary" variant="text" onClick={() => dispatch(openModal("calendar"))} className={classes.navLink} >
 
                 Calendar
               </Button>

@@ -1,10 +1,6 @@
 import React from "react";
 import { makeStyles, styled } from "@mui/styles";
 import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
   Container,
   Divider,
   Grid,
@@ -14,9 +10,7 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Typography,
 } from "@mui/material";
-import ConferenceIcon from "@mui/icons-material/VideoCallTwoTone";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -26,14 +20,8 @@ import SelectGroup from "./GroupSelector";
 import AssignmentList from "./AssignmentList";
 import LoadingContainer from "../../components/Spinner/LoadingContainer";
 import clsx from "clsx";
-import useModal from "../../hooks/useModal";
 import TeacherAcceptModal from "../../components/Modals/TeacherAccept";
 import useResposive from "../../hooks/useResponsive";
-import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
-import {
-  removeUserAsTeacher,
-  setUserAsTeacher,
-} from "../../redux/action/userActions";
 import useWhiteBoard from "../../hooks/useWhiteBoard";
 import useConference from "../../hooks/useConference";
 
@@ -53,7 +41,6 @@ import EDITICON from "@mui/icons-material/EditTwoTone";
 import DELETEICON from "@mui/icons-material/DeleteTwoTone";
 import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
 import DeleteModal from "../../components/Modals/DeleteModal";
-import Notification from "../../components/Notification";
 
 const Home = (props) => {
   const classes = useStyles();
@@ -122,6 +109,8 @@ const Home = (props) => {
     );
   };
 
+
+
   const handleEdit = (data) => {
     dispatch(openModal("group", data));
     handleCloseMenu();
@@ -178,8 +167,11 @@ const Home = (props) => {
     );
   };
 
+
+
   return (
     <>
+
       <TeacherAcceptModal />
       <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
         <DeleteModal

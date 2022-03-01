@@ -54,11 +54,20 @@ const Uploadexercise = ({ ...props }) => {
 
   const onViewFile = (e, d) => {
     e.stopPropagation();
+
+    if (d.ogTitle) {
+      window.open(d.ogUrl, "_blank");
+      return;
+    }
+
     dispatch(openModal("fileview", d));
   };
   const onDownloadFile = (e, d) => {
     e.stopPropagation();
-
+    if (d.ogTitle) {
+      window.open(d.ogUrl, "_blank");
+      return;
+    }
     window.open(`${BASEURL}/file/download/${d.id || d._id}`);
   };
 
@@ -104,7 +113,7 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-            // {...register("file")}
+              // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>
@@ -176,6 +185,8 @@ const Uploadexercise = ({ ...props }) => {
 export default Uploadexercise;
 
 const getTitle = (a) => {
+  if (a.ogTitle) return a.ogTitle;
+
   return a.filename || a.title;
   // switch (a.type) {
   //   case :

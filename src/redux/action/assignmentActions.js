@@ -42,8 +42,11 @@ export const createAssignmet = (data, cb, errorCb) => {
   Object.keys(data).forEach((key) => {
     if (key === "uploadExercises") {
       data.uploadExercises.forEach((f) => {
-        console.log("loop", f.metaData);
-        formData.append("uploadExercises", f.metaData);
+        if (f.type === "link") {
+          formData.append("uploadExercises", JSON.stringify([f.metaData]));
+        } else {
+          formData.append("uploadExercises", f.metaData);
+        }
       });
     } else if (key === "audioVideo") {
       formData.append("audioVideo", JSON.stringify(data.audioVideo));
@@ -74,12 +77,17 @@ export const createAssignmet = (data, cb, errorCb) => {
 };
 
 export const editAssignmet = (data, cb, errorCb) => {
+  console.log("editAssignmet", data);
   const formData = new FormData();
   Object.keys(data).forEach((key) => {
     if (key === "uploadExercises") {
       data.uploadExercises.forEach((f) => {
         console.log("loop", f.metaData);
-        formData.append("uploadExercises", f.metaData);
+        if (f.type === "link") {
+          formData.append("uploadExercises", JSON.stringify([f.metaData]));
+        } else {
+          formData.append("uploadExercises", f.metaData);
+        }
       });
     } else if (key === "audioVideo") {
       formData.append("audioVideo", JSON.stringify(data.audioVideo));
