@@ -427,16 +427,7 @@ const AssignmentListItem = ({
             </ItemSection>
           ) : (
             <Grid container>
-              <Grid item lg={12}>
-                <Typography
-                  mt={2}
-                  align="center"
-                  variant="subtitle1"
-                  color="error"
-                >
-                  There are no excercises
-                </Typography>
-              </Grid>
+              <FileCard assignmentId={id || _id} key={1} title="No exercise uploaded" />
             </Grid>
           )}
           {hasDocuments && hasDocuments.length > 0 && (

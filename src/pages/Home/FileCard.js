@@ -113,22 +113,23 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-              // {...register("file")}
+            // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>
-              <IconButton
+              {fileId && <> <IconButton
                 color="neutral"
                 onClick={(event) => onViewFile(event, props)}
               >
                 <ViewIcon fontSize="small" />
               </IconButton>
-              <IconButton
-                color="neutral"
-                onClick={(event) => onDownloadFile(event, props)}
-              >
-                <DownloadIcon fontSize="small" />
-              </IconButton>
+                <IconButton
+                  color="neutral"
+                  onClick={(event) => onDownloadFile(event, props)}
+                >
+                  <DownloadIcon fontSize="small" />
+                </IconButton>
+              </>}
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT_WORK]}>
                 <IconButton
                   color="green"

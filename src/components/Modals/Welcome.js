@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import useModal from "../../hooks/useModal";
+import { useDispatch, useSelector } from "react-redux";
+import { closeModal } from "../../redux/action/utilActions";
 const useStyles = makeStyles((theme) => ({
   bg: {
     width: '100%',
@@ -15,26 +17,33 @@ const useStyles = makeStyles((theme) => ({
 const WelcomeModal = () => {
 
   const classes = useStyles();
-  const {
-    open,
-    openModal,
-    closeModal,
-  } = useModal();
+  const { modalOpen, modalData } = useSelector((state) => state.util);
+  const { name, organization, id } = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const open = modalOpen === 'welcome'
+  // const {
+  //   open,
+  //   openModal,
+  //   closeModal,
+  // } = useModal();
 
   const handleClose = () => {
-    closeModal()
-    localStorage.setItem('haslogged', JSON.stringify(true))
+    dispatch(closeModal())
+    // localStorage.setItem('haslogged', JSON.stringify(true))
   }
 
-  React.useEffect(() => {
-    const hasLogged = localStorage.getItem('haslogged')
-    if (hasLogged) {
-      return
-    } else {
-      openModal()
-      localStorage.setItem('haslogged', JSON.stringify(true))
-    }
-  })
+  // React.useEffect(() => {
+  //   const hasLogged = localStorage.getItem('haslogged')
+  //   if (hasLogged) {
+  //     return
+  //   } else {
+  //     openModal()
+  //     localStorage.setItem('haslogged', JSON.stringify(true))
+  //   }
+  // })
+
+  const isCreator = organization?.userId === id
+
   return (
     <Dialog
       open={open}
@@ -42,20 +51,21 @@ const WelcomeModal = () => {
       title="Add Website Link"
       maxWidth="xs"
     >
-      <div className={classes.bg}>
+      <div className={classes.bg} />
 
-      </div>
       <DialogTitle>
         <Typography sx={{ textAlign: 'center' }} variant="h5">Welcome to Mougli School</Typography>
       </DialogTitle>
-      <DialogContent >
+      <DialogContent>
         <DialogContentText>
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
+          <Typography sx={{ mb: 1 }}>Dear {name},</Typography>
+          <Typography sx={{ mb: 1 }}>{isCreator ? 'Congratulations on setting up your Organization' : 'Congratulations on joining Organization'} {organization?.organizationName}</Typography>
+          <Typography>Welcome to the world of future of Education, fun way to learn!! (more text, properly)</Typography>
         </DialogContentText>
       </DialogContent>
-      <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', mb: 2 }}>
+      <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>
         <Button onClick={handleClose} variant="contained">START LEARNING</Button>
+        <Button onClick={handleClose} color="secondary" variant="contained">START A TOUR GUIDE</Button>
       </DialogActions>
     </Dialog>
   );

@@ -157,6 +157,11 @@ const AssignmentModal = () => {
   const handleSubmitExplanationModal = (link) => {
     setExplanationFiles([...explanationFiles, link]);
   };
+
+  const handleSubmitFileModal = (link) => {
+    // console.log("hello", link);
+    setUploadedFiles([...uploadedFiles, link]);
+  };
   const handleDeleteExplanationFile = (file, fileIndex) => {
     setExplanationFiles(explanationFiles.filter((d) => d !== file));
   };
@@ -228,7 +233,21 @@ const AssignmentModal = () => {
         setExplanationFiles(modalData?.audioVideo);
       }
       if (modalData?.uploadExercises) {
-        setUploadedFiles(modalData?.uploadExercises);
+        let files = [];
+        modalData?.uploadExercises?.map((ex) => {
+          console.log("uploadExercises", ex);
+          if (ex.ogTitle) {
+            files.push({ type: "link", metaData: ex });
+            // setUploadedFiles([
+            //   ...uploadedFiles,
+            //   { type: "link", metaData: ex },
+            // ]);
+          } else {
+            files.push(ex);
+            // setUploadedFiles([...uploadedFiles, ex]);
+          }
+        });
+        setUploadedFiles(files);
       }
       if (modalData?.dueDate) {
         setValue(
@@ -257,11 +276,11 @@ const AssignmentModal = () => {
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-    // onSubmit={(e) => {
-    //   alert("hehe");
-    //   e.preventDefault();
-    //   formRef.current.submit();
-    // }}
+      // onSubmit={(e) => {
+      //   alert("hehe");
+      //   e.preventDefault();
+      //   formRef.current.submit();
+      // }}
     >
       <DialogTitle>
         <Box
@@ -289,7 +308,7 @@ const AssignmentModal = () => {
         <AddUrlLink
           open={linkOpen}
           onClose={handleCloseLinkModal}
-          onSubmit={handleSubmitExplanationModal}
+          onSubmit={handleSubmitFileModal}
           data={linkModalData}
         />
 
@@ -365,12 +384,6 @@ const AssignmentModal = () => {
                       icon={<YouTube />}
                       onClick={() => openYoutubeModal()}
                     />
-
-                    <ToolTipIconButton
-                      title="Add Any Website Link"
-                      icon={<AddLink />}
-                      onClick={() => openLinkModal()}
-                    />
                   </Stack>
 
                   <Stack>
@@ -383,7 +396,7 @@ const AssignmentModal = () => {
                 <Stack>
                   <InputLabel>Upload Excersice</InputLabel>
 
-                  <Stack direction="row" mt={2}>
+                  <Stack direction="row" mt={2} spacing={2}>
                     <input
                       ref={uploadInputRef}
                       hidden
@@ -395,12 +408,18 @@ const AssignmentModal = () => {
                           { type: "file", metaData: value },
                         ]);
                       }}
-                    // {...register("file")}
+                      // {...register("file")}
                     />
                     <ToolTipIconButton
                       title="Upload Any File"
                       icon={<UploadFile />}
                       onClick={() => uploadInputRef.current.click()}
+                    />
+
+                    <ToolTipIconButton
+                      title="Add Any Website Link"
+                      icon={<AddLink />}
+                      onClick={() => openLinkModal()}
                     />
                   </Stack>
 
@@ -415,7 +434,14 @@ const AssignmentModal = () => {
                 <Stack direction="column"></Stack>
               </Stack>
             </Grid>
-            <Grid item lg={3} md={4} sm={5} xs={12} className={classes.sideGrid}>
+            <Grid
+              item
+              lg={3}
+              md={4}
+              sm={5}
+              xs={12}
+              className={classes.sideGrid}
+            >
               <Stack direction="column" spacing={3}>
                 <TextField
                   variant="outlined"
@@ -527,7 +553,9 @@ const AssignmentModal = () => {
           disabled={isLoading}
           sx={{ mr: 1 }}
         >
-          {isLoading && <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />}
+          {isLoading && (
+            <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+          )}
           Submit
         </Button>
       </DialogActions>

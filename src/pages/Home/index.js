@@ -244,7 +244,7 @@ const Home = (props) => {
                 exceptionLogin={"google"}
               >
                 {!isSectionMaximized && (
-                  <Grid sx={{ ...(whiteBoardUrl && { borderRight: '1px solid', borderColor: { md: 'gray.600', xs: 'transparent' }, pr: { md: 1.5, xs: 0 } }) }} item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
+                  <Grid sx={{ ...((whiteBoardUrl || isConfrenceOpen) && { borderRight: '1px solid', borderColor: { md: 'gray.600', xs: 'transparent' }, pr: { md: 1.5, xs: 0 } }) }} item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
                     <LoadingContainer isLoading={isAssignmentLoading}>
                       <AssignmentList />
                     </LoadingContainer>
@@ -282,7 +282,7 @@ const Home = (props) => {
             </Grid>
           </Container>
         </div>
-      </div>
+      </div >
     </>
   );
 };

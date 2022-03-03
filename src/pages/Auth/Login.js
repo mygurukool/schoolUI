@@ -17,6 +17,7 @@ import { useGoogleLogin } from "react-google-login";
 import * as _gconsts from "../../constants/gConsts";
 import setToken from "../../helpers/setToken";
 import { useDispatch, useSelector } from "react-redux";
+import { openModal } from "../../redux/action/utilActions";
 
 const Login = (props) => {
   const classes = useStyles();
@@ -49,7 +50,15 @@ const Login = (props) => {
 
   //login functions
   const handleLogin = (data, loginType) => {
-    dispatch(loginUser({ ...data, loginType: loginType }));
+    dispatch(loginUser({ ...data, loginType: loginType }, () => {
+      const hasLogged = localStorage.getItem('haslogged')
+      if (hasLogged) {
+        return
+      } else {
+        dispatch(openModal("welcome"))
+        localStorage.setItem('haslogged', JSON.stringify(true))
+      }
+    }));
   };
 
   const handleGoogleLogin = async () => {
@@ -256,14 +265,10 @@ const useStyles = makeStyles((theme) => ({
   },
   subTitle: {
     textAlign: 'center',
-    color: theme.palette.gray[1200],
-    fontSize: theme.palette.fontSizes.base,
     padding: theme.spacing(2, 0),
   },
   link: {
-    fontSize: theme.palette.fontSizes.base,
     margin: theme.spacing(2, 0),
-    fontWeight: theme.palette.fontWeights.semiBold,
     cursor: "pointer",
   },
   btn: {
