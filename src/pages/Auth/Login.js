@@ -15,15 +15,17 @@ import { loginUser } from "../../redux/action/userActions";
 import { useGoogleLogin } from "react-google-login";
 
 import * as _gconsts from "../../constants/gConsts";
-import setToken from "../../helpers/setToken";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
-
+import useModal from "../../hooks/useModal";
+import GoogleLoginWarning from "../../components/Modals/GoogleLoginWarning";
 const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const { isLogged } = useSelector((state) => state.user);
+
+  const { open, openModal: openWarningModal, closeModal } = useModal();
 
   React.useEffect(() => {
     if (isLogged) {
@@ -50,27 +52,39 @@ const Login = (props) => {
 
   //login functions
   const handleLogin = (data, loginType) => {
-    dispatch(loginUser({ ...data, loginType: loginType }, () => {
-      const hasLogged = localStorage.getItem('haslogged')
-      if (hasLogged) {
-        return
-      } else {
-        dispatch(openModal("welcome"))
-        localStorage.setItem('haslogged', JSON.stringify(true))
-      }
-    }));
+    dispatch(
+      loginUser({ ...data, loginType: loginType }, () => {
+        const hasLogged = localStorage.getItem("haslogged");
+        if (hasLogged) {
+          return;
+        } else {
+          dispatch(openModal("welcome"));
+          localStorage.setItem("haslogged", JSON.stringify(true));
+        }
+      })
+    );
   };
 
   const handleGoogleLogin = async () => {
-    signIn();
+    // signIn();
+    openWarningModal();
   };
 
-  const handleMicrosoftLogin = () => { };
+  const handleMicrosoftLogin = () => {};
 
-  const handleRegister = () => { };
-  const theme = useTheme()
+  const handleRegister = () => {};
+  const theme = useTheme();
   return (
     <div className={classes.root}>
+      <GoogleLoginWarning
+        open={open}
+        onClose={closeModal}
+        onSubmit={() => {
+          closeModal();
+
+          signIn();
+        }}
+      />
       <Card elevation={0} className={classes.card}>
         <CardContent>
           <Typography variant="h4" mb={2} color="inherit">
@@ -81,8 +95,7 @@ const Login = (props) => {
           </Typography>
           <div className={classes.loginBtns}>
             <Grid container spacing={2}>
-              <Grid item lg={6} sm={6} md={6} xs={12} >
-
+              <Grid item lg={6} sm={6} md={6} xs={12}>
                 <ButtonBase
                   className={classes.iconBtn}
                   style={{ border: `1px solid ${theme.palette.primary.main}` }}
@@ -101,7 +114,6 @@ const Login = (props) => {
                 </ButtonBase>
               </Grid>
               <Grid item lg={6} sm={6} md={6} xs={12}>
-
                 <ButtonBase
                   className={classes.iconBtn}
                   style={{ border: `1px solid ${theme.palette.primary.main}` }}
@@ -124,7 +136,14 @@ const Login = (props) => {
             </div>
             <div className={classes.hrLine} />
           </div>
-          <Typography className={classes.subTitle} color="inherit" variant="subtitle1" sx={{ mb: 2 }}>Login to Mougli School</Typography>
+          <Typography
+            className={classes.subTitle}
+            color="inherit"
+            variant="subtitle1"
+            sx={{ mb: 2 }}
+          >
+            Login to Mougli School
+          </Typography>
           <FormCreator
             mode={"add"}
             onSubmit={(e) => handleLogin(e, "mygurukool")}
@@ -235,36 +254,32 @@ const useStyles = makeStyles((theme) => ({
     backdropFilter: "blur(20px)",
     padding: theme.spacing(2.5, 5),
     width: "45%",
-    height: 'auto',
+    height: "auto",
     borderRadius: theme.spacing(5),
     boxShadow: "40px 40px 90px rgba(0, 0, 0, 0.12)",
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up("xs")]: {
       width: "100%",
-      height: '100%'
+      height: "100%",
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: "85%",
-      height: 'auto',
-
+      height: "auto",
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       width: "65%",
-      height: 'auto',
-
+      height: "auto",
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       width: "55%",
-      height: 'auto',
-
+      height: "auto",
     },
-    [theme.breakpoints.up('xl')]: {
+    [theme.breakpoints.up("xl")]: {
       width: "45%",
-      height: 'auto',
-
+      height: "auto",
     },
   },
   subTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     padding: theme.spacing(2, 0),
   },
   link: {
@@ -289,7 +304,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "&:hover": {
       background: theme.palette.primary.main,
-      boxShadow: '0px 8px 15px rgba(0, 0, 0, 0.2)',
+      boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
 
       "& .MuiTypography-root": {
         color: theme.palette.white,

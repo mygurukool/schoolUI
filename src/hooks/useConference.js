@@ -32,8 +32,8 @@ const useConference = () => {
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
       query: { data },
-      transports: ['websocket'],
-      reconnection: false
+      transports: ["websocket"],
+      reconnection: false,
     });
 
     socket.on("connect", async () => {
@@ -43,7 +43,6 @@ const useConference = () => {
 
   //methos
   const handleUpComingConference = async (data) => {
-    console.log("data", data);
     setIsConferenceOpen(true);
     setTimeout(() => {
       const domain = "meet.jit.si";
@@ -86,7 +85,7 @@ const useConference = () => {
   };
 
   const initializeConference = async () => {
-    if (canCreateConference)
+    if (canCreateConference && !isConfrenceOpen)
       try {
         setIsConferenceOpen(true);
         setTimeout(() => {

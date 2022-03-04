@@ -60,7 +60,7 @@ const WelcomeModal = () => {
         <DialogContentText>
           <Typography sx={{ mb: 1 }}>Dear {name},</Typography>
           <Typography sx={{ mb: 1 }}>{isCreator ? 'Congratulations on setting up your Organization' : 'Congratulations on joining Organization'} {organization?.organizationName}</Typography>
-          <Typography>Welcome to the world of future of Education, fun way to learn!! (more text, properly)</Typography>
+          <Typography>Welcome to the world of future of Education, fun way to learn!!</Typography>
         </DialogContentText>
       </DialogContent>
       <DialogActions sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 2 }}>

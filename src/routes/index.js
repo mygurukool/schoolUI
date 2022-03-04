@@ -11,6 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomeRoutes from "./HomeRoutes";
 import useAutoLogin from "../hooks/useAutoLogin";
 import Spinner from "../components/Spinner";
+import Privacy from '../pages/privacy'
 // import AnimatedSwitch from "./AnimatedSwitch";
 
 import Util from "./Util";
@@ -35,6 +36,7 @@ const RouteData = () => {
           <Route exact path="/forgot-password" component={Forgot} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/invitation/:type/:id" component={Invitation} />
+          <Route exact path="/privacy" component={Privacy} />
         </Switch>
       </div>
       {/* </AnimatedSwitch> */}

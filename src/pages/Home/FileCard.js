@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 const Uploadexercise = ({ ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const title = getTitle(props);
+  const title = getTitle(props) || 'No exercise material available';
   const assignmentId = props.assignmentId;
   const fileId = props.id || props._id;
   const files = props.files;
@@ -84,7 +84,7 @@ const Uploadexercise = ({ ...props }) => {
   const handleDelete = (e, fileId) => {
     e.stopPropagation();
 
-    dispatch(deleteExcerciseFile({ fileId }));
+    dispatch(deleteExcerciseFile({ fileId, assignmentId }));
   };
 
   return (

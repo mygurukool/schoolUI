@@ -10,6 +10,7 @@ import {
   Menu,
   MenuItem,
   Stack,
+  Typography,
 } from "@mui/material";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -282,6 +283,9 @@ const Home = (props) => {
             </Grid>
           </Container>
         </div>
+        <div className={classes.platformName}>
+          <Typography>Mougli.school</Typography>
+        </div>
       </div >
     </>
   );
@@ -328,7 +332,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     overflowY: "auto",
   },
+  platformName: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
 
+    position: "absolute",
+    bottom: 30,
+    left: 30,
+  },
   container: {
     width: "100%",
     height: "auto",
