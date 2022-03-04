@@ -32,9 +32,55 @@ const initialstate = {
   submission: undefined,
 };
 
+const getFilteredAssignments = (arr, data) => {
+  const findIndex = arr.findIndex(
+    (a) => a.id === data.assignmentId || a._id === data.assignmentId
+  );
+
+  const findFile = arr[findIndex].uploadExercises.findIndex(
+    (a) => a.id === data.fileId
+  );
+  arr[findIndex].uploadExercises[findFile].files.push(data);
+  return arr;
+};
+
+const getFiltereddeletedAssignments = (arr, data) => {
+  const findIndex = arr.findIndex(
+    (a) => a.id === data.assignmentId || a._id === data.assignmentId
+  );
+
+  const findFile = arr[findIndex].uploadExercises.findIndex(
+    (a) => a.id === data.fileId
+  );
+  const newFiles = arr[findIndex].uploadExercises[findFile].files.filter(
+    (f) => f.id !== data.id
+  );
+
+  arr[findIndex].uploadExercises[findFile].files = newFiles;
+  return arr;
+};
+
 const sizeReducer = (state = initialstate, action) => {
   const getData = () => action.payload.data.data;
   switch (action.type) {
+    case studentTypes.UPLOAD_EXCERCISE_FILE_SUCCESS:
+      return {
+        ...state,
+        assignments: getFilteredAssignments(
+          state.assignments,
+          action.payload.data.data
+        ),
+      };
+
+    case studentTypes.DELETE_EXCERCISE_FILE_SUCCESS:
+      return {
+        ...state,
+        assignments: getFiltereddeletedAssignments(
+          state.assignments,
+          action.payload.data.data
+        ),
+      };
+
     case eventTypes.GET_EVENTS_SUCCESS:
       return {
         ...state,

@@ -16,7 +16,7 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-import TranslateTwoToneIcon from '@mui/icons-material/TranslateTwoTone';
+import TranslateTwoToneIcon from "@mui/icons-material/TranslateTwoTone";
 
 // import NotificationsIcon from '@mui/icons-material/NotificationsTwoTone'
 // import PersonIcon from '@mui/icons-material/PersonOutlineTwoTone';
@@ -32,10 +32,19 @@ import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
 import Drawer from "../Drawer";
-import { ArrowBack, ArrowRight, ContactSupportTwoTone, Event, Home, HomeTwoTone, Info, InfoTwoTone, Tour } from "@mui/icons-material";
+import {
+  ArrowBack,
+  ArrowRight,
+  ContactSupportTwoTone,
+  Event,
+  Home,
+  HomeTwoTone,
+  Info,
+  InfoTwoTone,
+  Tour,
+} from "@mui/icons-material";
 import { openModal, toggleGuide } from "../../redux/action/utilActions";
-import AppButton from '../AppButton'
-
+import AppButton from "../AppButton";
 
 export default function NavBar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
@@ -99,7 +108,12 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
       <Box className={classes.menuContainer}>
         <Avatar
           src={user?.imageUrl && user?.imageUrl}
-          sx={{ width: { xs: 30, sm: 40 }, height: { xs: 30, sm: 40 }, mr: 1.5, bgcolor: 'primary.main' }}
+          sx={{
+            width: { xs: 30, sm: 40 },
+            height: { xs: 30, sm: 40 },
+            mr: 1.5,
+            bgcolor: "primary.main",
+          }}
           className={classes.avatar}
         >
           {user?.name && user?.name?.charAt(0)}
@@ -204,7 +218,8 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   //         </Box>
   //     </Menu>
   // );
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
   return (
     <>
       <AppBar
@@ -214,7 +229,8 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
         className={classes.AppBar}
         {...props}
       >
-        <Toolbar variant="dense"
+        <Toolbar
+          variant="dense"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -235,7 +251,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
             <MenuIcon />
           </IconButton>
@@ -284,7 +300,6 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                         </Badge>
                     </IconButton> */}
 
-
           <Drawer
             container={container}
             variant="temporary"
@@ -294,7 +309,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: 'block', sm: 'none' },
+              display: { xs: "block", sm: "none" },
             }}
           >
             <List>
@@ -316,14 +331,26 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 <ListItemText primary={lang("CONTACT")} />
               </ListItem> */}
               <Divider />
-              <ListItem button onClick={() => dispatch(toggleGuide())} className={classes.listItem}>
-                <ListItemIcon><Tour /></ListItemIcon>
+              <ListItem
+                button
+                onClick={() => dispatch(toggleGuide())}
+                className={classes.listItem}
+              >
+                <ListItemIcon>
+                  <Tour />
+                </ListItemIcon>
 
                 <ListItemText primary="Guide" />
               </ListItem>
               <Divider />
-              <ListItem button onClick={() => dispatch(openModal("calendar"))} className={classes.listItem}>
-                <ListItemIcon><Event /></ListItemIcon>
+              <ListItem
+                button
+                onClick={() => dispatch(openModal("calendar"))}
+                className={classes.listItem}
+              >
+                <ListItemIcon>
+                  <Event />
+                </ListItemIcon>
 
                 <ListItemText primary="Calendar" />
               </ListItem>
@@ -332,7 +359,6 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
           </Drawer>
 
           <ul className={classes.navList}>
-
             {/* <li className={classes.hideNav}>
               <Typography variant="subtitle1" className={classes.navLink}>
                 {lang("HOME")}
@@ -348,19 +374,29 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 {lang("CONTACT")}
               </Typography>
             </li> */}
-            <li className={classes.hideNav} >
-              <Button startIcon={<Tour />} color="secondary" variant="text" onClick={() => dispatch(toggleGuide())} className={classes.navLink} >
-
-                Guide
-              </Button>
-
+            <li className={classes.hideNav}>
+              <div className="guideBtn">
+                <Button
+                  startIcon={<Tour />}
+                  color="secondary"
+                  variant="text"
+                  onClick={() => dispatch(toggleGuide())}
+                  className={classes.navLink}
+                >
+                  Guide
+                </Button>
+              </div>
             </li>
-            <li className={classes.hideNav} >
-              <Button startIcon={<Event />} color="secondary" variant="text" onClick={() => dispatch(openModal("calendar"))} className={classes.navLink} >
-
+            <li className={classes.hideNav}>
+              <Button
+                startIcon={<Event />}
+                color="secondary"
+                variant="text"
+                onClick={() => dispatch(openModal("calendar"))}
+                className={classes.navLink}
+              >
                 Calendar
               </Button>
-
             </li>
             <li>
               <AppButton
@@ -378,11 +414,13 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                   <Avatar
                     src={user?.imageUrl && user?.imageUrl}
                     className={classes.avatar}
-                    sx={{ width: { xs: 30, sm: 40 }, height: { xs: 30, sm: 40 }, bgcolor: 'primary.main' }}
+                    sx={{
+                      width: { xs: 30, sm: 40 },
+                      height: { xs: 30, sm: 40 },
+                      bgcolor: "primary.main",
+                    }}
                   >
-                    {user?.name && (
-                      user?.name?.charAt(0)
-                    )}
+                    {user?.name && user?.name?.charAt(0)}
                   </Avatar>
                 </IconButton>
               )}
@@ -391,7 +429,6 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               {/* {notificationMenu} */}
             </li>
           </ul>
-
         </Toolbar>
       </AppBar>
     </>
@@ -447,17 +484,17 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   hideNav: {
-    [theme.breakpoints.up('xs')]: {
-      display: 'none',
+    [theme.breakpoints.up("xs")]: {
+      display: "none",
     },
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
-    [theme.breakpoints.up('md')]: {
-      display: 'block',
+    [theme.breakpoints.up("md")]: {
+      display: "block",
     },
-    [theme.breakpoints.up('lg')]: {
-      display: 'block',
+    [theme.breakpoints.up("lg")]: {
+      display: "block",
     },
   },
   // toolBar: {
@@ -473,7 +510,7 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "uppercase",
     fontWeight: theme.palette.fontWeights.regular,
     color: theme.palette.text.primary,
-    whiteSpace: 'nowrap'
+    whiteSpace: "nowrap",
   },
   title: {
     fontSize: theme.palette.fontSizes.base,
@@ -515,10 +552,10 @@ const useStyles = makeStyles((theme) => ({
     "& li": {
       padding: theme.spacing(0.5),
       marginLeft: theme.spacing(2),
-      [theme.breakpoints.up('xs')]: {
+      [theme.breakpoints.up("xs")]: {
         marginLeft: theme.spacing(0),
       },
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(2),
       },
     },
@@ -534,9 +571,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     background: theme.palette.secondary.main,
     textTransform: "capitalize",
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up("xs")]: {
       width: 24,
-      height: 24
+      height: 24,
     },
   },
   menuButton: {

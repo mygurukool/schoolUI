@@ -21,7 +21,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [metaData, setMetaData] = React.useState();
   const [error, setError] = React.useState();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setError();
     const value = e.target.value;
@@ -62,7 +62,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   const handleSubmit = () => {
     if (!metaData) {
       dispatch(showSnackBar("Please Enter a link", "error"));
-      return
+      return;
     }
     // if (!urlRegex.test(metaData)) {
     //   dispatch(showSnackBar("Please Enter a valid link", "error"));
@@ -102,12 +102,15 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
             <CardMedia
               component="img"
               sx={{ width: 151 }}
-              image={
-                metaData?.ogImage?.url || "images/link.png"
-              }
+              image={metaData?.ogImage?.url || "images/link.png"}
               alt={metaData?.ogTitle}
             />
-            <Stack flexDirection="row" justifyContent="space-between" width='100%' p={2}>
+            <Stack
+              flexDirection="row"
+              justifyContent="space-between"
+              width="100%"
+              p={2}
+            >
               <Stack>
                 <Typography component="div" variant="h6">
                   {metaData?.ogTitle}

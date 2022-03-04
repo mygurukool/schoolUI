@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  CircularProgress,
   IconButton,
   List,
   ListItem,
@@ -45,10 +46,11 @@ const useStyles = makeStyles((theme) => ({
 const Uploadexercise = ({ ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const title = getTitle(props) || 'No exercise material available';
+  const title = getTitle(props) || "No exercise material available";
   const assignmentId = props.assignmentId;
   const fileId = props.id || props._id;
   const files = props.files;
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const uploadInputRef = React.useRef();
 
@@ -72,19 +74,31 @@ const Uploadexercise = ({ ...props }) => {
   };
 
   const onUploadFile = (e, d) => {
-    e.stopPropagation();
+    // e.stopPropagation();
 
     uploadInputRef.current.click();
   };
 
   const handleUpload = (file) => {
-    dispatch(uploadExcerciseFile({ file, assignmentId, fileId }));
+    // console.log("handleUpload", file, file, assignmentId, fileId);
+    setIsLoading(true);
+    dispatch(
+      uploadExcerciseFile(
+        { file, assignmentId, fileId },
+        () => {
+          closeLoading();
+        },
+        () => closeLoading()
+      )
+    );
   };
-
-  const handleDelete = (e, fileId) => {
+  const closeLoading = () => {
+    setIsLoading(false);
+  };
+  const handleDelete = (e, id, fileId) => {
     e.stopPropagation();
 
-    dispatch(deleteExcerciseFile({ fileId, assignmentId }));
+    dispatch(deleteExcerciseFile({ id, fileId, assignmentId }));
   };
 
   return (
@@ -113,35 +127,43 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-            // {...register("file")}
+              // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>
-              {fileId && <> <IconButton
-                color="neutral"
-                onClick={(event) => onViewFile(event, props)}
-              >
-                <ViewIcon fontSize="small" />
-              </IconButton>
-                <IconButton
-                  color="neutral"
-                  onClick={(event) => onDownloadFile(event, props)}
-                >
-                  <DownloadIcon fontSize="small" />
-                </IconButton>
-              </>}
+              {fileId && (
+                <>
+                  {" "}
+                  <IconButton
+                    color="neutral"
+                    onClick={(event) => onViewFile(event, props)}
+                  >
+                    <ViewIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    color="neutral"
+                    onClick={(event) => onDownloadFile(event, props)}
+                  >
+                    <DownloadIcon fontSize="small" />
+                  </IconButton>
+                </>
+              )}
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT_WORK]}>
-                <IconButton
-                  color="green"
-                  onClick={(event) => onUploadFile(event)}
-                >
-                  <UploadIcon fontSize="small" />
-                </IconButton>
+                {isLoading ? (
+                  <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+                ) : (
+                  <IconButton
+                    color="green"
+                    onClick={(event) => onUploadFile(event)}
+                  >
+                    <UploadIcon fontSize="small" />
+                  </IconButton>
+                )}
               </PermissionsGate>
             </div>
           </div>
         </AccordionSummary>
-
+        {console.log("AccordionSummary", files)}
         {files && files.length > 0 && (
           <AccordionDetails style={{ padding: 0, margin: 0 }}>
             <div style={{ width: "100%" }}>
@@ -150,7 +172,7 @@ const Uploadexercise = ({ ...props }) => {
                   console.log("fileID", f);
                   return (
                     <ListItem key={fi}>
-                      <ListItemText primary={f.file.filename} />
+                      <ListItemText primary={f?.file?.filename} />
                       <ListItemSecondaryAction>
                         <IconButton
                           color="primary"
@@ -166,7 +188,9 @@ const Uploadexercise = ({ ...props }) => {
                         </IconButton>
                         <IconButton
                           color="primary"
-                          onClick={(e) => handleDelete(e, f.id || f._id)}
+                          onClick={(e) =>
+                            handleDelete(e, f.id || f._id, fileId)
+                          }
                         >
                           <DeleteIcon fontSize="small" />
                         </IconButton>

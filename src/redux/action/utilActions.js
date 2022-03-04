@@ -22,8 +22,13 @@ export const openModal = (value, data) => {
 
 export const toggleGuide = () => {
   return {
-    type: utilTypes.TOGGLE_GUIDE
+    type: utilTypes.TOGGLE_GUIDE,
+  };
+};
 
+export const toggleWelcomeGuide = () => {
+  return {
+    type: utilTypes.TOGGLE_WELCOME_GUIDE,
   };
 };
 

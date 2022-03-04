@@ -42,10 +42,12 @@ export const createAssignmet = (data, cb, errorCb) => {
   Object.keys(data).forEach((key) => {
     if (key === "uploadExercises") {
       data.uploadExercises.forEach((f) => {
-        if (f.type === "link") {
-          formData.append("uploadExercises", JSON.stringify([f.metaData]));
-        } else {
-          formData.append("uploadExercises", f.metaData);
+        if (f.type) {
+          if (f.type === "link") {
+            formData.append("uploadExercises", JSON.stringify([f.metaData]));
+          } else {
+            formData.append("uploadExercises", f.metaData);
+          }
         }
       });
     } else if (key === "audioVideo") {
@@ -83,10 +85,13 @@ export const editAssignmet = (data, cb, errorCb) => {
     if (key === "uploadExercises") {
       data.uploadExercises.forEach((f) => {
         console.log("loop", f.metaData);
-        if (f.type === "link") {
-          formData.append("uploadExercises", JSON.stringify([f.metaData]));
-        } else {
-          formData.append("uploadExercises", f.metaData);
+        if (f.type) {
+          if (f.type === "link") {
+            formData.append("uploadExercises", JSON.stringify([f.metaData]));
+          } else {
+            console.log("editAssignmet", f);
+            formData.append("uploadExercises", f.metaData);
+          }
         }
       });
     } else if (key === "audioVideo") {
@@ -128,6 +133,24 @@ export const deleteAssignmet = (data, cb, errorCb) => {
       },
       successMessage: "Assignmet deleted successfully",
       errorMessage: "Failed to delete assignment",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
+export const deleteUploadedFile = (data, cb, errorCb) => {
+  return {
+    type: assignmentTypes.DELETE_UPLOADED_FILE,
+    payload: {
+      request: {
+        url: assignmentApi.DELETE_EXCERCISE_FILE,
+        method: "delete",
+        data: data,
+      },
+      successMessage: "file deleted successfully",
+      errorMessage: "Failed to delete file",
       enableMessage: true,
       cb: cb,
       errorCb: errorCb,

@@ -54,13 +54,13 @@ const Login = (props) => {
   const handleLogin = (data, loginType) => {
     dispatch(
       loginUser({ ...data, loginType: loginType }, () => {
-        const hasLogged = localStorage.getItem("haslogged");
-        if (hasLogged) {
-          return;
-        } else {
-          dispatch(openModal("welcome"));
-          localStorage.setItem("haslogged", JSON.stringify(true));
-        }
+        // const hasLogged = localStorage.getItem("haslogged");
+        // if (hasLogged) {
+        //   return;
+        // } else {
+        dispatch(openModal("welcome"));
+        // localStorage.setItem("haslogged", JSON.stringify(true));
+        // }
       })
     );
   };

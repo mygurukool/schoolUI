@@ -69,6 +69,7 @@ import {
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateFromHTML } from "draft-js-import-html";
 import draftToHtml from "draftjs-to-html";
+import { deleteUploadedFile } from "../../redux/action/assignmentActions";
 
 const defaultValues = {
   assignmentTitle: undefined,
@@ -167,7 +168,23 @@ const AssignmentModal = () => {
   };
 
   const handleDeleteUploadFile = (file, fileIndex) => {
-    setUploadedFiles(uploadedFiles.filter((d) => d !== file));
+    const fileId = file?.id || file?.metaData?.id;
+
+    if (fileId) {
+      dispatch(
+        deleteUploadedFile(
+          {
+            id: file.id || file?.metaData?.id,
+            assignmentId: modalData.id || modalData._id,
+          },
+          () => {
+            setUploadedFiles(uploadedFiles.filter((d) => d !== file));
+          }
+        )
+      );
+    } else {
+      setUploadedFiles(uploadedFiles.filter((d) => d !== file));
+    }
   };
 
   const onSubmit = (data) => {
@@ -183,6 +200,8 @@ const AssignmentModal = () => {
     const rawContentState = convertToRaw(editorState.getCurrentContent());
 
     const markup = draftToHtml(rawContentState);
+
+    console.log("uploaded", uploadedFiles);
 
     setIsLoading(true);
     if (mode === "add") {
@@ -200,6 +219,9 @@ const AssignmentModal = () => {
           () => {
             handleClose();
             dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
+          },
+          () => {
+            setIsLoading(false);
           }
         )
       );
@@ -212,12 +234,20 @@ const AssignmentModal = () => {
             courseId: currentCourse?._id || currentCourse?.id,
 
             audioVideo: explanationFiles,
-            uploadExercises: uploadedFiles,
+            uploadExercises: uploadedFiles.filter((f) => {
+              if (f?.metaData.id || f.id) {
+                return false;
+              }
+              return true;
+            }),
             instructions: markup,
           },
           () => {
             handleClose();
             dispatch(getAssignments(currentCourse?._id || currentCourse?.id));
+          },
+          () => {
+            setIsLoading(false);
           }
         )
       );
@@ -550,12 +580,12 @@ const AssignmentModal = () => {
             e.preventDefault();
             btnRef.current.click();
           }}
-          disabled={isLoading}
+          // disabled={isLoading}
           sx={{ mr: 1 }}
         >
-          {isLoading && (
-            <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
-          )}
+          {/* {isLoading && ( */}
+          <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+          {/* )} */}
           Submit
         </Button>
       </DialogActions>

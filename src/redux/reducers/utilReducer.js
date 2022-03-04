@@ -5,7 +5,9 @@ const initialstate = {
   modalOpen: undefined,
   modalData: undefined,
   toggleButton: false,
-  isGuideOpen: true,
+  isGuideOpen: false,
+  isWelcomeGuideOpen: false,
+
   notifications: [],
 };
 
@@ -49,6 +51,12 @@ const utilReducer = (state = initialstate, action) => {
       return {
         ...state,
         isGuideOpen: !state.isGuideOpen,
+      };
+
+    case utilTypes.TOGGLE_WELCOME_GUIDE:
+      return {
+        ...state,
+        isWelcomeGuideOpen: !state.isWelcomeGuideOpen,
       };
 
     case utilTypes.OPEN_MODAL:

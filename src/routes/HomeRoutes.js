@@ -4,12 +4,15 @@ import Home from "../pages/Home";
 import Navbar from "../components/Navbar";
 // import { NotificationHandler } from "../components/Notification";
 import BackgroundImage from "../pages/Home/BackgroundImage";
-import DesktopGuide from "../utils/DesktopGuide";
+import DesktopGuide from "../guide/DesktopGuide";
+import WelcomeGuide from "../guide/WelcomeGuide";
 
 const HomeRoutes = () => {
   return (
     <>
       <DesktopGuide />
+      <WelcomeGuide />
+
       <Navbar position="fixed" />
       {/* <Sidebar /> */}
       {/* <NotificationHandler /> */}

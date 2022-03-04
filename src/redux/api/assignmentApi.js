@@ -5,6 +5,7 @@ const assignmentApi = {
   GET_ASSIGNMENTS: "/assignment",
 
   GET_SUBMISSION: "/assignment/submissions",
+  DELETE_EXCERCISE_FILE: "/assignment/exercisefile",
 };
 
 export default assignmentApi;
