@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Stack } from "@mui/material";
-import lang from "../../hooks/useLanguage";
 import ConferenceIcon from "@mui/icons-material/PeopleAltTwoTone";
 import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
@@ -10,6 +9,7 @@ import { SCOPES } from "../../constants";
 import VideoLabelTwoToneIcon from '@mui/icons-material/VideoLabelTwoTone';
 import AppButton from "../../components/AppButton";
 import { useSelector } from "react-redux";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
   const classes = useStyles();
   const { currentCourse } = useSelector(state => state.common)
+  const translate = useLanguages()
 
   return (
     <Stack direction="row" space="2">
@@ -55,7 +56,7 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
 
           }}
         >
-          White Board
+          {translate("WHITE_BOARD")}
         </AppButton>
 
       </PermissionsGate>
@@ -72,7 +73,7 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           onClick={() => initializeConference()}
 
         >
-          {lang("conference")}
+          {translate("CONFERENCE")}
         </AppButton>
 
       </PermissionsGate>

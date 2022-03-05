@@ -19,11 +19,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 import useModal from "../../hooks/useModal";
 import GoogleLoginWarning from "../../components/Modals/GoogleLoginWarning";
+import useLanguages from "../../hooks/useLanguage";
 const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const { isLogged } = useSelector((state) => state.user);
+  const translate = useLanguages()
 
   const { open, openModal: openWarningModal, closeModal } = useModal();
 
@@ -70,9 +72,27 @@ const Login = (props) => {
     openWarningModal();
   };
 
-  const handleMicrosoftLogin = () => {};
+  const formData = [
+    {
+      type: "email",
+      name: "email",
+      label: translate("EMAIL_ADDRESS"),
+      placeholder: translate("EMAIL_ADDRESS_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "password",
+      name: "password",
+      label: translate("PASSWORD"),
+      placeholder: translate("PASSWORD_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+  ];
 
-  const handleRegister = () => {};
+  const handleMicrosoftLogin = () => { };
+  const handleRegister = () => { };
   const theme = useTheme();
   return (
     <div className={classes.root}>
@@ -88,10 +108,10 @@ const Login = (props) => {
       <Card elevation={0} className={classes.card}>
         <CardContent>
           <Typography variant="h4" mb={2} color="inherit">
-            Get Started
+            {translate("GET_STARTED")}
           </Typography>
           <Typography mb={2} variant="body2" color="inherit">
-            Hi, Welcome back!
+            {translate("WELCOME_BACK")}
           </Typography>
           <div className={classes.loginBtns}>
             <Grid container spacing={2}>
@@ -108,7 +128,7 @@ const Login = (props) => {
                       className={classes.icon}
                     />
                     <Typography variant="subtitle1">
-                      Login to Microsoft Teams
+                      {translate("LOGIN_TO_MT")}
                     </Typography>
                   </CardContent>
                 </ButtonBase>
@@ -122,7 +142,7 @@ const Login = (props) => {
                   <CardContent>
                     <img src="images/gc.svg" className={classes.icon} />
                     <Typography variant="subtitle1">
-                      Login to Google Classroom
+                      {translate("LOGIN_TO_GC")}
                     </Typography>
                   </CardContent>
                 </ButtonBase>
@@ -142,7 +162,7 @@ const Login = (props) => {
             variant="subtitle1"
             sx={{ mb: 2 }}
           >
-            Login to Mougli School
+            {translate("LOGIN_TO_MS")}
           </Typography>
           <FormCreator
             mode={"add"}
@@ -167,20 +187,20 @@ const Login = (props) => {
                 className={classes.link}
                 onClick={() => history.push("/forgot-password")}
               >
-                Forgot Password?
+                {translate("FORGOT_PASSWORD")}
               </Link>
             </Typography>
           </div>
 
           <Typography className={classes.subTitle}>
-            Or create your own{" "}
+            {translate("CREATE_OWN")}{" "}
             <Link
               className={classes.link}
               onClick={handleRegister}
               onClick={() => history.push("/register")}
               color="inherit"
             >
-              School Account
+              {translate("SCHOOL_ACCOUNT")}
             </Link>
           </Typography>
         </CardContent>
@@ -190,25 +210,6 @@ const Login = (props) => {
 };
 
 export default Login;
-
-const formData = [
-  {
-    type: "email",
-    name: "email",
-    label: "Email Address",
-    placeholder: "Enter email address",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "password",
-    name: "password",
-    label: "Password",
-    placeholder: "Enter password",
-    required: true,
-    size: 12,
-  },
-];
 
 //styles
 

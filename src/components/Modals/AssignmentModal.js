@@ -70,6 +70,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { stateFromHTML } from "draft-js-import-html";
 import draftToHtml from "draftjs-to-html";
 import { deleteUploadedFile } from "../../redux/action/assignmentActions";
+import useLanguages from "../../hooks/useLanguage";
 
 const defaultValues = {
   assignmentTitle: undefined,
@@ -82,6 +83,7 @@ const AssignmentModal = () => {
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createEmpty()
   );
+  const translate = useLanguages()
   React.useEffect(() => {
     console.log("editorState", editorState);
   }, [editorState]);
@@ -127,10 +129,10 @@ const AssignmentModal = () => {
     (state) => state.common
   );
 
-  console.log("students", students);
+  // console.log("students", students);
 
-  const courseId = currentCourse?.id || currentCourse?._id;
-  const groupId = currentGroup?.id || currentGroup?._id;
+  // const courseId = currentCourse?.id || currentCourse?._id;
+  // const groupId = currentGroup?.id || currentGroup?._id;
   const [isLoading, setIsLoading] = React.useState(false);
 
   const mode = modalData ? "edit" : "add";
@@ -146,9 +148,9 @@ const AssignmentModal = () => {
     setIsLoading(false);
   };
 
-  const handleYoutubeModal = (link) => {
-    openYoutubeModal(link);
-  };
+  // const handleYoutubeModal = (link) => {
+  //   openYoutubeModal(link);
+  // };
   const handleCloseYoutubeModal = (link) => {
     closeYoutubeModal();
   };
@@ -203,7 +205,7 @@ const AssignmentModal = () => {
 
     const markup = draftToHtml(rawContentState);
 
-    console.log("uploaded", uploadedFiles);
+    // console.log("uploaded", uploadedFiles);
 
     setIsLoading(true);
     if (mode === "add") {
@@ -267,7 +269,7 @@ const AssignmentModal = () => {
       if (modalData?.uploadExercises) {
         let files = [];
         modalData?.uploadExercises?.map((ex) => {
-          console.log("uploadExercises", ex);
+          // console.log("uploadExercises", ex);
           if (ex.ogTitle) {
             files.push({ type: "link", metaData: ex });
             // setUploadedFiles([
@@ -308,11 +310,11 @@ const AssignmentModal = () => {
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-      // onSubmit={(e) => {
-      //   alert("hehe");
-      //   e.preventDefault();
-      //   formRef.current.submit();
-      // }}
+    // onSubmit={(e) => {
+    //   alert("hehe");
+    //   e.preventDefault();
+    //   formRef.current.submit();
+    // }}
     >
       <DialogTitle>
         <Box
@@ -323,7 +325,7 @@ const AssignmentModal = () => {
           }}
         >
           <Typography variant="subtitle1">
-            {modalData ? "Edit Assginment" : "Create Assignment"}
+            {modalData ? translate("EDIT_ASSIGNMENT") : translate("CREATE_ASSIGNMENT")}
           </Typography>
           <IconButton color="error" aria-label="close" onClick={handleClose}>
             <CloseIcon />
@@ -384,7 +386,7 @@ const AssignmentModal = () => {
                     return (
                       <>
                         <InputLabel id="instruction" variant="standard">
-                          Instructions
+                          {translate("INSTRUCTIONS")}
                         </InputLabel>
                         <Editor
                           editorState={editorState}
@@ -408,7 +410,7 @@ const AssignmentModal = () => {
                 />
 
                 <Stack>
-                  <InputLabel>Audio/Video Explanation</InputLabel>
+                  <InputLabel>{translate("AUDIO_VIDEO_EXPLANATION")}</InputLabel>
 
                   <Stack direction="row" spacing={2} mt={2}>
                     <ToolTipIconButton
@@ -426,7 +428,7 @@ const AssignmentModal = () => {
                   </Stack>
                 </Stack>
                 <Stack>
-                  <InputLabel>Upload Excersice</InputLabel>
+                  <InputLabel>{translate("UPLOAD_EXERCISE")}</InputLabel>
 
                   <Stack direction="row" mt={2} spacing={2}>
                     <input
@@ -440,16 +442,16 @@ const AssignmentModal = () => {
                           { type: "file", metaData: value },
                         ]);
                       }}
-                      // {...register("file")}
+                    // {...register("file")}
                     />
                     <ToolTipIconButton
-                      title="Upload Any File"
+                      title={translate("UPLOAD_ANY_FILE")}
                       icon={<UploadFile />}
                       onClick={() => uploadInputRef.current.click()}
                     />
 
                     <ToolTipIconButton
-                      title="Add Any Website Link"
+                      title={translate("ADD_ANY_WEBSITE_LINK")}
                       icon={<AddLink />}
                       onClick={() => openLinkModal()}
                     />
@@ -486,7 +488,7 @@ const AssignmentModal = () => {
                   control={control}
                   render={({ field }) => (
                     <>
-                      <InputLabel>Students</InputLabel>
+                      <InputLabel>{translate("STUDENTS")}</InputLabel>
                       <TextField
                         readOnly
                         onClick={() => openStudentSidebar()}
@@ -515,7 +517,7 @@ const AssignmentModal = () => {
                       <TextField
                         fullWidth
                         variant="outlined"
-                        label="Points"
+                        label={translate("POINTS")}
                         type="number"
                         min={-1}
                         max={100}
@@ -546,7 +548,7 @@ const AssignmentModal = () => {
                               }
                             />
                           )}
-                          label="Due date and time"
+                          label={translate("DUE_DATE_TIME")}
                           inputFormat={DATETIMEFORMAT}
                           value={moment(field.value, DATETIMEFORMAT)}
                           onChange={(newValue) => {
@@ -559,7 +561,7 @@ const AssignmentModal = () => {
                   rules={{
                     required: {
                       value: true,
-                      message: "Due Date is required",
+                      message: translate("DUE_DATE_TIME_REQUIRED"),
                     },
                   }}
                 />
@@ -572,7 +574,7 @@ const AssignmentModal = () => {
 
       <DialogActions>
         <Button type="reset" color="secondary" onClick={() => handleClose()}>
-          Cancel
+          {translate("CANCEL")}
         </Button>
         <Button
           type={"submit"}
@@ -588,7 +590,7 @@ const AssignmentModal = () => {
           {isLoading && (
             <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
           )}
-          Submit
+          {translate("SUBMIT")}
         </Button>
       </DialogActions>
     </Dialog>

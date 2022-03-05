@@ -7,6 +7,7 @@ import {
   useFieldArray,
 } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import useLanguages from "../../hooks/useLanguage";
 import * as Inputs from "./Inputs";
 
 const FormCreator = ({
@@ -22,8 +23,8 @@ const FormCreator = ({
   size,
   optionsData,
   watchFields = [],
-  onWatchChange = () => {},
-  onWatchArray = () => {},
+  onWatchChange = () => { },
+  onWatchArray = () => { },
   onDelete,
 }) => {
   const methods = useForm({
@@ -94,7 +95,7 @@ const FormCreator = ({
   React.useEffect(() => {
     setFormErrors(formState.errors);
   }, [formState]);
-
+  const translate = useLanguages()
   // console.log("formState", formState);
 
   return (
@@ -162,7 +163,7 @@ const FormCreator = ({
                   sx={{ mr: 1 }}
                 >
                   {isLoading && <CircularProgress color="secondary" />}
-                  Submit
+                  {translate("SUBMIT")}
                 </Button>
                 {onCancel && (
                   <Button
@@ -171,7 +172,7 @@ const FormCreator = ({
                     disabled={isLoading}
                     onClick={() => handleClose()}
                   >
-                    Cancel
+                    {translate("CANCEL")}
                   </Button>
                 )}
               </div>
@@ -182,7 +183,7 @@ const FormCreator = ({
                   disabled={isLoading}
                   onClick={() => onDelete()}
                 >
-                  Delete
+                  {translate("DELETE")}
                 </Button>
               )}
             </Stack>

@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { HighlightOffTwoTone } from "@mui/icons-material";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -55,7 +56,7 @@ const StudentSelectorDrawer = ({
   const setAllStudents = () => {
     setSelectedStudents(allStudents.map((a) => a?.id || a._id));
   };
-
+  const translate = useLanguages()
   return (
     <Drawer
       open={open}
@@ -69,7 +70,7 @@ const StudentSelectorDrawer = ({
       <Box sx={{ width: 300 }} role="presentation">
         <Box px={2} py={2}>
           <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Typography variant="subtitle1">Select Students</Typography>
+            <Typography variant="subtitle1">{translate("SELECT_STUDENTS")}</Typography>
 
             <IconButton color="error" onClick={handleClose} size="small">
               <HighlightOffTwoTone />

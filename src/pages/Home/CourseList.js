@@ -28,9 +28,10 @@ import { deleteCourse, getAllCourses } from "../../redux/action/coursesActions";
 import { removeUserAsTeacher } from "../../redux/action/userActions";
 import { setCurrentCourse } from "../../redux/action/commonActions";
 import { getAssignments } from "../../redux/action/assignmentActions";
-import { getAllStudents } from "../../redux/action/studentActions";
-import { getAllTeachers } from "../../redux/action/teacherActions";
+// import { getAllStudents } from "../../redux/action/studentActions";
+// import { getAllTeachers } from "../../redux/action/teacherActions";
 import { styled } from "@mui/system";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,6 +140,7 @@ const CoursesList = () => {
       return c.groupId === currentGroup?.id || c.groupId === currentGroup?._id;
     }
   });
+  const translate = useLanguages()
 
   const onSelectCourse = (c) => {
     dispatch(setCurrentCourse(c));
@@ -241,7 +243,7 @@ const CoursesList = () => {
             // className={isActive && classes.activeCourse}
             style={{ marginBottom: 10 }}
           />
-          <Typography variant="subtitle2">Add New Course</Typography>
+          <Typography variant="subtitle2">{translate("ADD_NEW_COURSE")}</Typography>
         </div>
       </ButtonBase>
     );
@@ -275,13 +277,13 @@ const CoursesList = () => {
           <ListItemIcon>
             <EDITICON fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Edit </ListItemText>
+          <ListItemText>{translate("EDIT")}</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => onDelete()}>
           <ListItemIcon>
             <DELETEICON fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>{translate("DELETE")}</ListItemText>
         </MenuItem>
       </StyledMenu>
     );
@@ -316,7 +318,7 @@ const CoursesList = () => {
               variant="filled"
               style={{ marginBottom: 20 }}
             >
-              Please create a group to add courses
+              {translate("CREATE_COURSE_ALERT")}
             </Alert>
           )}
         </PermissionGate>
@@ -337,7 +339,7 @@ const CoursesList = () => {
                   classes.courseBtnContainer,
                   isActive && classes.activeCourse
                 )}
-                // className={classes.courseBtnContainer}
+              // className={classes.courseBtnContainer}
               >
                 <PermissionGate
                   scopes={[

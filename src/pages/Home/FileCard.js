@@ -127,13 +127,12 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-              // {...register("file")}
+            // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>
               {fileId && (
                 <>
-                  {" "}
                   <IconButton
                     color="neutral"
                     onClick={(event) => onViewFile(event, props)}

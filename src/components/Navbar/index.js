@@ -27,7 +27,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../../redux/action/userActions";
 import { useHistory } from "react-router-dom";
 import languages from "../../utils/languages.json";
-import lang from "../../hooks/useLanguage";
+import useLanguage from "../../hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import clsx from "clsx";
@@ -60,6 +60,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   const { i18n } = useTranslation();
   const history = useHistory();
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const translate = useLanguage()
 
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
@@ -145,7 +146,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
           onClick={() => handleLogout()}
           fullWidth
         >
-          Logout
+          {translate("LOGOUT")}
         </Button>
       </Box>
     </StyledMenu>
@@ -220,6 +221,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   // );
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
   return (
     <>
       <AppBar
@@ -340,7 +342,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                   <Tour />
                 </ListItemIcon>
 
-                <ListItemText primary="Guide" />
+                <ListItemText primary={translate("GUIDE")} />
               </ListItem>
               <Divider />
               <ListItem
@@ -352,7 +354,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                   <Event />
                 </ListItemIcon>
 
-                <ListItemText primary="Calendar" />
+                <ListItemText primary={translate("CALENDER")} />
               </ListItem>
               <Divider />
             </List>
@@ -383,7 +385,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                   onClick={() => dispatch(toggleGuide())}
                   className={classes.navLink}
                 >
-                  Guide
+                  {translate("GUIDE")}
                 </Button>
               </div>
             </li>
@@ -395,7 +397,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 onClick={() => dispatch(openModal("calendar"))}
                 className={classes.navLink}
               >
-                Calendar
+                {translate("CALENDER")}
               </Button>
             </li>
             <li>
@@ -405,7 +407,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 startIcon={<TranslateTwoToneIcon />}
                 onClick={handleLanguageClick}
               >
-                {lang("LANGUAGE")}
+                {translate("LANGUAGE")}
               </AppButton>
             </li>
             <li>

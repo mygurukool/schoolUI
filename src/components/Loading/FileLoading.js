@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Typography } from "@mui/material";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,10 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 const FileLoading = () => {
   const classes = useStyles();
+  const translate = useLanguages()
   return (
     <div className={classes.root}>
       <img src="/images/gifs/fileloading.gif" className={classes.img} />
-      <Typography>Loading File</Typography>
+      <Typography>{translate("LOADING_FILE")}</Typography>
     </div>
   );
 };

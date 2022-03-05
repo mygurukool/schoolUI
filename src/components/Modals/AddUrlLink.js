@@ -11,6 +11,7 @@ import { BASEURL } from "../../constants";
 import { useDispatch } from "react-redux";
 import { showSnackBar } from "../../redux/action/snackActions";
 import { urlRegex } from "../../helpers/regex";
+import useLanguages from "../../hooks/useLanguage";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
@@ -22,6 +23,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   const [metaData, setMetaData] = React.useState();
   const [error, setError] = React.useState();
   const dispatch = useDispatch();
+  const translate = useLanguages()
   const handleChange = (e) => {
     setError();
     const value = e.target.value;
@@ -61,7 +63,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   };
   const handleSubmit = () => {
     if (!metaData) {
-      dispatch(showSnackBar("Please Enter a link", "error"));
+      dispatch(showSnackBar(translate("PLAESE_ENTER_LINK"), "error"));
       return;
     }
     // if (!urlRegex.test(metaData)) {
@@ -79,7 +81,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
       open={open}
       onClose={handleClose}
       onSubmit={() => handleSubmit()}
-      title="Add Website Link"
+      title={translate("ADD_WEBSITE_LINK")}
       size="sm"
       isLoading={isLoading}
     >

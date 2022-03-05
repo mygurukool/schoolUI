@@ -5,17 +5,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Alert,
-  Avatar,
   Button,
-  ButtonBase,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Chip,
-  Collapse,
   Divider,
   Grid,
   IconButton,
@@ -28,13 +18,9 @@ import {
 import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
-import CourseMaterialList from "./CourseMaterialList";
 import {
-  CalendarToday,
   FactCheckTwoTone as FactCheck,
 } from "@mui/icons-material";
-import FaceIcon from "@mui/icons-material/Face";
-import { Box } from "@mui/system";
 import clsx from "clsx";
 import Videocard from "./VideoCard";
 import VideoModal from "./VideoModal";
@@ -59,11 +45,12 @@ import {
   getAssignments,
 } from "../../redux/action/assignmentActions";
 import AppButton from "../../components/AppButton";
+import useLanguages from "../../hooks/useLanguage";
 const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
   const deleteRef = React.useRef();
+  const translate = useLanguages()
 
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
@@ -111,7 +98,7 @@ const AssignmentList = () => {
               alignItems="center"
               className={classes.heading}
             >
-              <Typography variant="h6">Assignments</Typography>
+              <Typography variant="h6">{translate("ASSIGNMENTS")}</Typography>
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT]}>
                 <ActionBar />
               </PermissionsGate>
@@ -149,7 +136,7 @@ const AssignmentList = () => {
                   })
                 ) : (
                   <Alert severity="warning" variant="filled">
-                    There are no assignments
+                    {translate("THERE_ARE_NO_ASSIGNMENTS")}
                   </Alert>
                 )}
               </div>
@@ -157,7 +144,7 @@ const AssignmentList = () => {
           </>
         ) : (
           <Alert severity="warning" variant="filled">
-            Please Select a course
+            {translate("PLEASE_SELECT_COURSE")}
           </Alert>
         )}
       </>
@@ -169,7 +156,7 @@ export default AssignmentList;
 
 const ActionBar = () => {
   const dispatch = useDispatch();
-
+  const translate = useLanguages()
   const onAddAssignment = () => {
     dispatch(openModal("assignment"));
   };
@@ -180,7 +167,7 @@ const ActionBar = () => {
       variant="contained"
       onClick={onAddAssignment}
     >
-      Add
+      {translate("ADD")}
     </Button>
   );
 };
@@ -225,6 +212,7 @@ const AssignmentListItem = ({
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
   const isMyGuruKool = loginType === "mygurukool";
+  const translate = useLanguages()
   const ChatBtn = () => {
     return (
       <AppButton
@@ -235,7 +223,7 @@ const AssignmentListItem = ({
         size="small"
         className="chatBtn"
       >
-        Feel free to ask
+        {translate("FEEL_FREE_TO_ASK")}
       </AppButton>
     );
   };
@@ -249,7 +237,7 @@ const AssignmentListItem = ({
         size="medium"
         className="turnInBtn"
       >
-        Turn in
+        {translate("TURN_IN")}
       </Button>
     );
   };
@@ -262,10 +250,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-              border: `1px solid ${theme.palette.gray[600]}`,
-              background: theme.palette.secondary.light,
-              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-            }
+            border: `1px solid ${theme.palette.gray[600]}`,
+            background: theme.palette.secondary.light,
+            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+          }
           : undefined
       }
       elevation={0}
@@ -337,8 +325,8 @@ const AssignmentListItem = ({
               <Tooltip
                 title={
                   isMyGuruKool
-                    ? "Edit Assignment"
-                    : "This functionality is not available Right now"
+                    ? translate("EDIT_ASSIGNMENT")
+                    : translate("THIS_FUNCTIONALITY_IS_NOT_AVAILABLE")
                 }
               >
                 <IconButton
@@ -438,7 +426,7 @@ const AssignmentListItem = ({
               <FileCard
                 assignmentId={id || _id}
                 key={1}
-                title="No exercise material available"
+                title={translate("NO_EXERCISE_MATERIAL_AVAILABLE")}
               />
             </Grid>
           )}

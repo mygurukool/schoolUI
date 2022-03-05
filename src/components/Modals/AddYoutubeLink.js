@@ -8,6 +8,7 @@ import youtube from "youtube-metadata-from-url";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import getVideoId from "get-video-id";
+import useLanguages from "../../hooks/useLanguage";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
@@ -18,7 +19,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [metaData, setMetaData] = React.useState();
   const [error, setError] = React.useState();
-
+  const translate = useLanguages()
   const handleChange = (e) => {
     setError();
     const value = e.target.value;
@@ -37,7 +38,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
           setIsLoading(false);
         });
     } else {
-      setError("Not a youtube link");
+      setError(translate("NOT_YOUTUBE_LINK"));
       setIsLoading(false);
     }
   };
@@ -49,7 +50,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
   };
   const handleSubmit = () => {
     if (!metaData) {
-      alert("Please Enter a link");
+      alert(translate("PLAESE_ENTER_LINK"));
     }
     onSubmit({
       type: "youtube",
@@ -62,13 +63,13 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
       open={open}
       onClose={handleClose}
       onSubmit={() => handleSubmit()}
-      title="Add Youtube Video Link"
+      title={translate("ADD_YOUTUBE_VIDEO_LINK")}
       size="sm"
       isLoading={isLoading}
     >
       <Stack direction="column" spacing={2}>
         <TextField
-          label="Youtube Video Link"
+          label={translate("YOUTUBE_VIDEO_LINK")}
           variant="outlined"
           error={error}
           helperText={error}

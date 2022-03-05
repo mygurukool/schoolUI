@@ -33,6 +33,7 @@ import NavBar from "../../Navbar";
 import { ArrowBack } from "@mui/icons-material";
 import ModalContainer from "../../ModalContainer";
 import { closeSubmissionModal } from "../../../redux/action/utilActions";
+import useLanguages from "../../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Submissions = (props) => {
   const dispatch = useDispatch();
-
+  const translate = useLanguages()
   const classes = useStyles();
   const [currentStudent, setCurrentStudent] = React.useState();
   const [points, setPoints] = React.useState();
@@ -117,7 +118,7 @@ const Submissions = (props) => {
     </Typography>,
   ];
 
-  console.log("submission", submission);
+  // console.log("submission", submission);
   return (
     <ModalContainer
       open={open}
@@ -142,14 +143,14 @@ const Submissions = (props) => {
                 <ListItemIcon>
                   <ArrowBack />
                 </ListItemIcon>
-                <ListItemText primary={`Back to Subjects`} />
+                <ListItemText primary={translate("BACK_TO_SUBJECTS")} />
               </ListItem>
             </List>
             <Divider />
             <List
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
-                  Students
+                  {translate("STUDENTS")}
                 </ListSubheader>
               }
             >
@@ -183,7 +184,7 @@ const Submissions = (props) => {
           </Box>
 
           {!currentStudent ? (
-            <Alert severity="warning">Please select a student</Alert>
+            <Alert severity="warning">{translate("PLEASE_SELECT_STUDENT")}</Alert>
           ) : (
             <Grid container>
               <Grid item lg={9}>
@@ -194,7 +195,7 @@ const Submissions = (props) => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      Files
+                      {translate("FILE")}
                     </Typography>
                     {currentStudent?.uploadExercises?.map((a, ai) => {
                       return <FileCard assignmentId={id} key={ai} {...a} />;
@@ -211,15 +212,15 @@ const Submissions = (props) => {
                       color="text.secondary"
                       gutterBottom
                     >
-                      Marks
+                      {translate("MARKS")}
                     </Typography>
                     <Stack direction="row" spacing={2}>
                       <TextField
                         variant="outlined"
                         value={points}
                         type="number"
-                        label="Points"
-                        placeholder="Enter marks"
+                        label={translate("POINTS")}
+                        placeholder={translate("ENTER_MARKS")}
                         onChange={(e) => setPoints(e.target.value)}
                       />
 
@@ -228,7 +229,7 @@ const Submissions = (props) => {
                         onClick={() => onSubmit()}
                         disabled={!points}
                       >
-                        Save
+                        {translate("SAVE")}
                       </Button>
                     </Stack>
                   </CardContent>

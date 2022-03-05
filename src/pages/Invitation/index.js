@@ -11,6 +11,7 @@ import {
 import { PERMISSIONS } from "../../constants";
 import removeToken from "../../helpers/removeToken";
 import { logoutUser } from "../../redux/action/userActions";
+import useLanguages from "../../hooks/useLanguage";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -56,13 +57,50 @@ const Invitation = (props) => {
   React.useEffect(() => {
     dispatch(getInvitationDetails(id));
   }, [id, dispatch]);
+  const translate = useLanguages()
+
+
+  const formData = [
+    {
+      type: "email",
+      name: "email",
+      label: translate("EMAIL_ADDRESS"),
+      placeholder: translate("EMAIL_ADDRESS_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "text",
+      name: "name",
+      label: translate("FULL_NAME"),
+      placeholder: translate("FULL_NAME_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "password",
+      name: "password",
+      label: translate("PASSWORD"),
+      placeholder: translate("PASSWORD_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "password",
+      name: "repassword",
+      label: translate("RE_ENTER_PASSWORD"),
+      placeholder: translate("RE_ENTER_PASSWORD"),
+      required: true,
+      size: 12,
+    },
+  ];
 
   return (
     <div className={classes.root}>
       <Card sx={{ width: "50%" }}>
         <CardContent>
-          <Typography variant="h6" textAlign="center">
-            Congratulation, You have been invited to join the class of{" "}
+          <Typography variant="h6" textAlign="center">{translate("INVITED_TO_JOIN")}
+            {" "}
             {invitation?.groupName} by {invitation?.inviteeName}
           </Typography>
         </CardContent>
@@ -81,39 +119,6 @@ const Invitation = (props) => {
 };
 
 export default Invitation;
-const formData = [
-  {
-    type: "email",
-    name: "email",
-    label: "Email Address",
-    placeholder: "Enter email address",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "text",
-    name: "name",
-    label: "Full Name",
-    placeholder: "Enter Your Name",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "password",
-    name: "password",
-    label: "Password",
-    placeholder: "Enter New Password",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "password",
-    name: "repassword",
-    label: "Re-enter Password",
-    placeholder: "Renter New  Password",
-    required: true,
-    size: 12,
-  },
-];
+
 
 

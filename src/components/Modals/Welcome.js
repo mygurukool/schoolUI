@@ -17,6 +17,7 @@ import {
   toggleGuide,
 } from "../../redux/action/utilActions";
 import Joyride from "react-joyride";
+import useLanguages from "../../hooks/useLanguage";
 const useStyles = makeStyles((theme) => ({
   bg: {
     width: "100%",
@@ -65,7 +66,7 @@ const WelcomeModal = () => {
     handleClose();
     dispatch(toggleGuide());
   };
-
+  const translate = useLanguages()
   return (
     <>
       <Dialog
@@ -78,20 +79,20 @@ const WelcomeModal = () => {
 
         <DialogTitle>
           <Typography sx={{ textAlign: "center" }} variant="h5">
-            Welcome to Mougli School
+            {translate("WELCOME_TO_MOUGLI_SCHOOL")}
           </Typography>
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <Typography sx={{ mb: 1 }}>Dear {name},</Typography>
+            <Typography sx={{ mb: 1 }}> {translate("DEAR")} {name},</Typography>
             <Typography sx={{ mb: 1 }}>
               {isCreator
-                ? "Congratulations on setting up your Organization"
-                : "Congratulations on joining Organization"}{" "}
+                ? translate("CONG_SETUP_ORG")
+                : translate("CONG_JOINING_ORG")}{" "}
               {organization?.organizationName}
             </Typography>
             <Typography>
-              Welcome to the world of future of Education, fun way to learn!!
+              {translate("WELCOME_MESSAGE")}
             </Typography>
           </DialogContentText>
         </DialogContent>
@@ -104,10 +105,10 @@ const WelcomeModal = () => {
           }}
         >
           <Button onClick={onLearning} variant="contained">
-            START LEARNING
+            {translate("START_LEARNING")}
           </Button>
           <Button onClick={onStartTour} color="secondary" variant="contained">
-            START A TOUR GUIDE
+            {translate("START_GUIDE")}
           </Button>
         </DialogActions>
       </Dialog>

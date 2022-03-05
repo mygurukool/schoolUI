@@ -2,6 +2,7 @@ import { useTheme } from "@emotion/react";
 import React from "react";
 import ReactJoyride from "react-joyride";
 import { useDispatch, useSelector } from "react-redux";
+import useLanguages from "../hooks/useLanguage";
 import { toggleGuide } from "../redux/action/utilActions";
 
 const DesktopGuide = () => {
@@ -14,6 +15,8 @@ const DesktopGuide = () => {
     (state) => state.util
   );
   const [step, setStep] = React.useState(1);
+
+  const translate = useLanguages()
 
   const steps = [
     {
@@ -28,58 +31,58 @@ const DesktopGuide = () => {
       content: (
         <h2>
           {groups?.length === 0
-            ? `Create new groups from here`
-            : "Manage Groups from here"}
+            ? translate("CREATE_GROUP_HERE")
+            : translate("MANAGE_GROUP_HERE")}
         </h2>
       ),
 
       target: ".groupMenu",
     },
     {
-      content: <h2>Add New Group From Here</h2>,
+      content: <h2>{translate("ADD_GROUP_HERE")}</h2>,
 
       target: ".addGroup",
     },
     {
-      content: <h2>Change and select groups from here</h2>,
+      content: <h2>{translate("CHANGE_SELECT_GROUP_HERE")}</h2>,
 
       target: ".groupSelector",
     },
 
     {
-      content: <h2> select courses from here</h2>,
+      content: <h2>{translate("SELECT_COURSE_FROM_HERE")}</h2>,
 
       target: ".makeStyles-courseBtnContainer-83",
     },
     {
-      content: <h2> create courses from here</h2>,
+      content: <h2>{translate("CREATE_COURSE_HERE")}</h2>,
 
       target: ".addCourse",
     },
 
     {
-      content: <h2> Here is the list of assignments</h2>,
+      content: <h2>{translate("HERE_IS_LIST_OF_ASSIGNMENTS")}</h2>,
 
       target: ".assignmentList",
     },
 
     {
-      content: <h2> Chat with teacher</h2>,
+      content: <h2>{translate("CHAT_WITH_TEACHER")}</h2>,
 
       target: ".chatBtn",
     },
     {
-      content: <h2> Submit Your Assignment</h2>,
+      content: <h2>{translate("SUBMIT_YOUR_ASSIGNMENT")}</h2>,
 
       target: ".turnInBtn",
     },
     {
-      content: <h2> Click here to view content</h2>,
+      content: <h2>{translate("CLICK_HERE_TO_VIEW_CONTENT")}</h2>,
 
       target: ".audioVideo",
     },
     {
-      content: <h2> Click here to check submissions</h2>,
+      content: <h2>{translate("CLICK_HERE_TO_CHECK_SUBMISSIONS")}</h2>,
 
       target: ".checkSubmission",
     },
@@ -112,7 +115,7 @@ const DesktopGuide = () => {
           },
         }}
         callback={(state) => handleStepChange(state)}
-        // stepIndex={step}
+      // stepIndex={step}
       />
     </div>
   );

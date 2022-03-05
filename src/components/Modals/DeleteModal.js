@@ -1,7 +1,7 @@
 import React, { useImperativeHandle } from "react";
 import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
-import { useDispatch, useSelector } from "react-redux";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -26,14 +26,17 @@ const DeleteModal = React.forwardRef(({ getTitle, onSubmit }, ref) => {
     handleClose();
     onSubmit(data);
   };
+
+  const translate = useLanguages()
+
   return (
     <ModalContainer
       open={Boolean(data)}
-      title={`Are you sure you want to delete ${getTitle(data)}`}
+      title={`${translate("SURE_WANT_TO_DELETE")} ${getTitle(data)}`}
       onClose={() => handleClose()}
       size="xs"
       onSubmit={() => handleSubmit()}
-      submitTitle="Delete"
+      submitTitle={translate("DELETE")}
     ></ModalContainer>
   );
 });

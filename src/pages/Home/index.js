@@ -42,6 +42,7 @@ import EDITICON from "@mui/icons-material/EditTwoTone";
 import DELETEICON from "@mui/icons-material/DeleteTwoTone";
 import INVITEICON from "@mui/icons-material/PersonAddAltTwoTone";
 import DeleteModal from "../../components/Modals/DeleteModal";
+import useLanguages from "../../hooks/useLanguage";
 
 const Home = (props) => {
   const classes = useStyles();
@@ -77,7 +78,7 @@ const Home = (props) => {
       dispatch(getAllCourses());
     }
   }, []);
-
+  const translate = useLanguages()
   const shouldDivideSection = whiteBoardUrl || isConfrenceOpen;
 
   const isSectionMaximized = isWhiteboardMaximized || isConferenceMaximized;
@@ -129,7 +130,7 @@ const Home = (props) => {
             <ListItemIcon>
               <ADDICON fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Add group</ListItemText>
+            <ListItemText>{translate("ADD_GROUP")}</ListItemText>
           </MenuItem>
         </PermissionsGate>
 
@@ -140,7 +141,7 @@ const Home = (props) => {
                 <ListItemIcon>
                   <EDITICON fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
+                <ListItemText>{translate("EDIT")} {currentGroup?.groupName}</ListItemText>
               </MenuItem>
             </PermissionsGate>
             <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
@@ -148,7 +149,7 @@ const Home = (props) => {
                 <ListItemIcon>
                   <DELETEICON fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
+                <ListItemText>{translate("DELETE")} {currentGroup?.groupName}</ListItemText>
               </MenuItem>
             </PermissionsGate>
             <Divider />
@@ -159,7 +160,7 @@ const Home = (props) => {
                 <ListItemIcon>
                   <INVITEICON fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>Invite People</ListItemText>
+                <ListItemText>{translate("INVITE_PEOPLE")}</ListItemText>
               </MenuItem>
             </PermissionsGate>
           </>

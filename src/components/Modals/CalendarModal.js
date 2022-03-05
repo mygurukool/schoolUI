@@ -31,6 +31,7 @@ import {
   ListItemText,
   Stack,
 } from "@mui/material";
+import useLanguages from "../../hooks/useLanguage";
 
 const localizer = momentLocalizer(moment);
 
@@ -300,7 +301,7 @@ const EventModal = ({
   onDelete,
 }) => {
   const isEditMode = Boolean(data?.users);
-
+  const translate = useLanguages()
   const users = [
     {
       type: "label",
@@ -451,10 +452,7 @@ const generateForm = ({ isOwner, isTeacher }) => {
 };
 
 const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
-  const classes = useStyles();
-
-  const handleSubmit = (data) => {};
-
+  const translate = useLanguages()
   return (
     <ModalContainer
       open={open}
@@ -498,7 +496,7 @@ const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
       </List>
 
       <Stack direction="column" spacing={2}>
-        <h3>Are You Joining ?</h3>
+        <h3>{translate("ARE_YOU_JOINING")}</h3>
 
         <Stack direction="row" justifyContent="space-between">
           <div>
@@ -510,7 +508,7 @@ const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
                 onSubmit("Joining");
               }}
             >
-              Yes
+              {translate("YES")}
             </Button>
           </div>
 
@@ -523,7 +521,8 @@ const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
                 onSubmit("Not Joining");
               }}
             >
-              No
+              {translate("NO")}
+
             </Button>
             <Button
               variant="contained"
@@ -533,7 +532,7 @@ const AcceptEvent = ({ open, onClose, data, onSubmit, userId }) => {
                 onSubmit("May Be Joining");
               }}
             >
-              May Be
+              {translate("MAYBE")}
             </Button>
           </Stack>
         </Stack>

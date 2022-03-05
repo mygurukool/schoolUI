@@ -10,13 +10,14 @@ import {
   editCourse,
   getAllCourses,
 } from "../../redux/action/coursesActions";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
 const CreateCourse = () => {
-  const classes = useStyles();
+  const translate = useLanguages();
   const dispatch = useDispatch();
   const { modalOpen, modalData } = useSelector((state) => state.util);
   const { organizationId, id } = useSelector((state) => state.user);
@@ -49,6 +50,27 @@ const CreateCourse = () => {
     }
   };
 
+  const createformData = [
+    {
+      type: "text",
+      name: "courseName",
+      label: translate("NAME"),
+      placeholder: translate("NAME_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "multiselect",
+      name: "groupId",
+      label: translate("CLASS_NAME"),
+      placeholder: translate("CLASS_NAME_PLACEHOLDER"),
+      required: true,
+      size: 12,
+      hasOptions: true,
+      optionLabelProp: "groupName",
+      optionValueProp: "id",
+    },
+  ];
   return (
     <ModalContainer
       open={open}
@@ -74,36 +96,7 @@ const CreateCourse = () => {
   );
 };
 
-export default CreateCourse;
-const createformData = [
-  {
-    type: "text",
-    name: "courseName",
-    label: "Name",
-    placeholder: "eg: English, French",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "multiselect",
-    name: "groupId",
-    label: "Class Name",
-    placeholder: "Name of the Class the Course should belong to.",
-    required: true,
-    size: 12,
-    hasOptions: true,
-    optionLabelProp: "groupName",
-    optionValueProp: "id",
-  },
-];
 
-const editformData = [
-  {
-    type: "text",
-    name: "courseName",
-    label: "Name",
-    placeholder: "eg: English, French",
-    required: true,
-    size: 12,
-  },
-];
+export default CreateCourse;
+
+

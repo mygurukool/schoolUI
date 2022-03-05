@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { Fullscreen as Maximize, Minimize, HighlightOffTwoTone } from "@mui/icons-material";
 import { useSelector } from "react-redux";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -25,11 +26,12 @@ const WhiteBoard = ({
   whiteBoardUrl,
 }) => {
   const { currentCourse } = useSelector(state => state.common)
+  const translate = useLanguages()
   return (
     <Grid item lg={isSectionMaximized ? 12 : 6} md={isSectionMaximized ? 12 : 6} sm={12} xs={12} sx={{ ...(!isSectionMaximized && { pl: { xs: 0, sm: 2 } }), mb: 1 }}>
 
       <Stack spacing={1} flexDirection="row" justifyContent="space-between" alignItems="center" mb={0.5}>
-        <Typography variant="h6">Whiteboard {currentCourse && `(${currentCourse.courseName})`}</Typography>
+        <Typography variant="h6">{translate("WHITE_BOARD")} {currentCourse && `(${currentCourse.courseName})`}</Typography>
         <div>
           <IconButton color="primary" onClick={() => toggleWhiteboardMinMax()}>
             {isWhiteboardMaximized ? <Minimize /> : <Maximize />}
@@ -43,7 +45,6 @@ const WhiteBoard = ({
         src={whiteBoardUrl}
         width="100%"
         height="500px"
-        title="W3Schools Free Online Web Tutorials"
       ></iframe>
     </Grid>
   );

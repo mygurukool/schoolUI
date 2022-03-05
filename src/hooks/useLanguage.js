@@ -1,8 +1,11 @@
 import { useTranslation } from "react-i18next";
 
-const useLanguages = (value) => {
+const useLanguages = () => {
     const { t, i18n, ready } = useTranslation();
-    return t(value)
+    const translate = (value) => {
+        return t(value)
+    }
+    return translate
 }
 
 export default useLanguages;

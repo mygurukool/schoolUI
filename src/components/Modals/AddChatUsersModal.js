@@ -3,6 +3,7 @@ import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -19,7 +20,7 @@ const AddChatUsersModal = ({ open, onClose, options, onSubmit }) => {
       setSelected([]);
     }
   };
-
+  const translate = useLanguages()
   return (
     <ModalContainer
       open={open}
@@ -43,7 +44,7 @@ const AddChatUsersModal = ({ open, onClose, options, onSubmit }) => {
           setSelected(val);
         }}
         renderInput={(params) => (
-          <TextField {...params} label="Add chat users" />
+          <TextField {...params} label={translate("ADD_CHAT_USERS")} />
         )}
       />
     </ModalContainer>

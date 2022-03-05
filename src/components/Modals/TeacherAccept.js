@@ -6,6 +6,7 @@ import useModal from "../../hooks/useModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserAsTeacher } from "../../redux/action/userActions";
 import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,7 +30,7 @@ const TeacherAccept = () => {
 
     dispatch(setUserAsTeacher());
   };
-
+  const translate = useLanguages()
   React.useEffect(() => {
     const founData = checkIfUserIsTeacher(id, teachers);
     if (founData) {
@@ -43,16 +44,14 @@ const TeacherAccept = () => {
       onClose={() => closeTeacherPrompt()}
       size="xs"
     >
-      Welcome! You are identified as Teacher. Please approve, to present you
-      additional Permissions and Authorize MyGuruKool App to facilitate you with
-      access control to all your Google Classroom Courses!
+      {translate("TEACHER_ACCEPT_MESSAGE")}
       <DialogActions>
         <Button
           color="primary"
           variant="contained"
           onClick={() => onApproveAsTeacher()}
         >
-          Yes I Approve
+          {translate("YES_I_APPROVE")}
         </Button>
       </DialogActions>
     </ModalContainer>

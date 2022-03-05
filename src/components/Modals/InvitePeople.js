@@ -41,6 +41,7 @@ import {
 } from "../../redux/action/studentActions";
 import { ROLES, SCOPES } from "../../constants";
 import { usePermissions } from "../PermissionGate";
+import useLanguages from "../../hooks/useLanguage";
 
 const InvitePeople = () => {
   const classes = useStyles();
@@ -52,6 +53,8 @@ const InvitePeople = () => {
   const { currentCourse, currentGroup, teachers, students } = useSelector(
     (state) => state.common
   );
+
+  const translate = useLanguages()
 
   const groupId = currentGroup?.id || currentGroup?._id;
 
@@ -88,7 +91,7 @@ const InvitePeople = () => {
   };
 
   const onInvite = (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     dispatch(
       invitePeople(
         {
@@ -142,7 +145,7 @@ const InvitePeople = () => {
   return (
     <ModalContainer
       open={open}
-      title={"People"}
+      title={translate("PEOPLE")}
       onClose={() => handleClose()}
       size="md"
     >
@@ -299,7 +302,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
       </IconButton>
     );
   };
-
+  const translate = useLanguages()
   return (
     <Card variant="outlined" className={classes.section}>
       <CardHeader subheader={title} action={<CloseAction />} />
@@ -332,7 +335,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           <CardContent>
             <Stack direction="column" spacing={3}>
               <Stack>
-                <Typography variant="subtitle2">Invite Link</Typography>
+                <Typography variant="subtitle2">{translate("INVITE_LINK")}</Typography>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -361,7 +364,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           onClick={() => onInvite(inviteList)}
         >
           <Button variant="contained" color="primary">
-            {isLoading && <CircularProgress />} Invite
+            {isLoading && <CircularProgress />} {translate("INVITE")}
           </Button>
         </Stack>
       </CardActions>

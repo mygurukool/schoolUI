@@ -11,13 +11,14 @@ import {
   getAllGroups,
 } from "../../redux/action/groupActions";
 import { ageGroups } from "../../constants";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
 const GroupModal = () => {
-  const classes = useStyles();
+  const translate = useLanguages();
   const dispatch = useDispatch();
   const { modalOpen, modalData } = useSelector((state) => state.util);
   const { organizationId, id } = useSelector((state) => state.user);
@@ -52,6 +53,29 @@ const GroupModal = () => {
       );
     }
   };
+
+  const formData = [
+    {
+      type: "text",
+      name: "groupName",
+      label: translate("GROUP_NAME"),
+      placeholder: translate("GROUP_NAME_PLACEHOLDER"),
+      required: true,
+      size: 12,
+    },
+    {
+      type: "select",
+      name: "ageGroupId",
+      label: translate("AGE_GROUP"),
+      options: ageGroups,
+      placeholder: translate("AGE_GROUP"),
+      optionLabelProp: 'text',
+      optionValueProp: 'id',
+      required: true,
+      size: 12,
+    },
+  ];
+
   return (
     <ModalContainer
       open={open}
@@ -72,24 +96,4 @@ const GroupModal = () => {
 };
 
 export default GroupModal;
-const formData = [
-  {
-    type: "text",
-    name: "groupName",
-    label: "Group Name",
-    placeholder: "eg: Class 9A, Class 1",
-    required: true,
-    size: 12,
-  },
-  {
-    type: "select",
-    name: "ageGroupId",
-    label: "Age Group",
-    options: ageGroups,
-    placeholder: "Age Group",
-    optionLabelProp: 'text',
-    optionValueProp: 'id',
-    required: true,
-    size: 12,
-  },
-];
+

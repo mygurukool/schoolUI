@@ -13,6 +13,7 @@ import {
   Divider,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -46,7 +47,7 @@ const ModalContainer = ({
   hideButtons,
 }) => {
   const classes = useStyles();
-
+  const translate = useLanguages()
   return (
     <Dialog
       onClose={onClose}
@@ -83,7 +84,7 @@ const ModalContainer = ({
                 onClick={onClose}
                 color="secondary"
               >
-                Cancel
+                {translate("CANCEL")}
               </Button>
             )}
             {onSubmit && (
@@ -96,7 +97,7 @@ const ModalContainer = ({
                 {isLoading ? (
                   <CircularProgress color="inherit" size={25} />
                 ) : (
-                  submitTitle || "Submit"
+                  submitTitle || translate("SUBMIT")
                 )}
               </Button>
             )}

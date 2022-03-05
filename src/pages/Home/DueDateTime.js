@@ -4,12 +4,14 @@ import { Box, Tooltip, Typography } from "@mui/material";
 import moment from "moment";
 import { DUEDATETIMEFORMAT, DUEDATECOLORS, DATETIMEFORMAT } from "../../constants";
 import { Info } from "@mui/icons-material";
+import useLanguages from "../../hooks/useLanguage";
 
 const DueDateTime = ({ dueDateTime, currentDiffrence }) => {
+  const translate = useLanguages()
   const isExpired =
     currentDiffrence > 0
-      ? `${currentDiffrence} Days Remaining`
-      : `This assignment is expired`;
+      ? `${currentDiffrence} ${translate("DAYS_REMAINING")}`
+      : translate("ASSIGNMENT_EXPIRED");
 
   const theme = useTheme()
 

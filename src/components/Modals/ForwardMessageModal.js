@@ -13,6 +13,7 @@ import {
   ListSubheader,
 } from "@mui/material";
 import { RenderAvatar } from "../Chat";
+import useLanguages from "../../hooks/useLanguage";
 
 const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
   const [selected, setSelected] = React.useState([]);
@@ -25,7 +26,7 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
       setSelected([]);
     }
   };
-
+  const translate = useLanguages()
   return (
     <ModalContainer
       open={open}
@@ -70,7 +71,7 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Students
+            {translate("STUDENTS")}
           </ListSubheader>
         }
       >
@@ -99,7 +100,7 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Teachers
+            {translate("TEACHERS")}
           </ListSubheader>
         }
       >

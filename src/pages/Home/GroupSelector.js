@@ -41,6 +41,7 @@ import { styled } from "@mui/system";
 import { showSnackBar } from "../../redux/action/snackActions";
 import { getAllStudents } from "../../redux/action/studentActions";
 import { getAllTeachers } from "../../redux/action/teacherActions";
+import useLanguages from "../../hooks/useLanguage";
 
 const SelectGroup = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const SelectGroup = () => {
   const groupNames = groups.map((g) => g.groupName);
 
   const filteredGroups = [...new Set(groupNames)];
+  const translate = useLanguages()
 
   // const [anchorEl, setAnchorEl] = React.useState(null);
   // const open = Boolean(anchorEl);
@@ -187,15 +189,14 @@ const SelectGroup = () => {
             variant="outlined"
             htmlFor="uncontrolled-native"
           >
-            Group
+            {translate("GROUP")}
           </InputLabel>
           <Select
             ref={fieldRef}
             fullWidth
             variant="outlined"
             size="small"
-            label="Group"
-            placeholder="Choose Group"
+            label={translate("GROUP")}
             value={selectedGroup}
             onChange={({ target: { value } }) => {
               const foundGroup = groups.find((g) => g?.groupName === value);
@@ -208,7 +209,7 @@ const SelectGroup = () => {
 
             {filteredGroups.length === 0 && (
               <MenuItem value="" disabled selected dense>
-                No Groups available
+                {translate("NO_GROUP_AVAILABLE")}
               </MenuItem>
             )}
 
