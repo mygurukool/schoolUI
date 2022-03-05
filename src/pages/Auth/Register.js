@@ -8,6 +8,7 @@ import { createOrganization } from "../../redux/action/organizationActions";
 import { useHistory } from "react-router";
 import { PERMISSIONS, ROLES } from "../../constants";
 import { loginUser, logoutUser } from "../../redux/action/userActions";
+import { openModal } from "../../redux/action/utilActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,7 +128,11 @@ const RegisterForm = () => {
         () => {
           // history.push("/login");
 
-          dispatch(loginUser({ ...data, loginType: "mygurukool" }));
+          dispatch(
+            loginUser({ ...data, loginType: "mygurukool" }, () => {
+              dispatch(openModal("welcome"));
+            })
+          );
         }
       )
     );

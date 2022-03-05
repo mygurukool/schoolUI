@@ -33,12 +33,14 @@ import {
   setCurrentGroup,
 } from "../../redux/action/commonActions";
 import PermissionsGate from "../../components/PermissionGate";
-import { SCOPES } from "../../constants";
+import { ROLES, SCOPES } from "../../constants";
 // import { getAllStudents } from "../../redux/action/studentActions";
 // import { getAllTeachers } from "../../redux/action/teacherActions";
 import { getAllCourses } from "../../redux/action/coursesActions";
 import { styled } from "@mui/system";
 import { showSnackBar } from "../../redux/action/snackActions";
+import { getAllStudents } from "../../redux/action/studentActions";
+import { getAllTeachers } from "../../redux/action/teacherActions";
 
 const SelectGroup = () => {
   const dispatch = useDispatch();
@@ -63,6 +65,18 @@ const SelectGroup = () => {
     setSelectedGroup(value?.groupName);
     dispatch(showSnackBar(`Group changed to ${value.groupName}`));
     dispatch(getAllCourses({ groupId: value?._id || value?.id }));
+    dispatch(
+      getAllStudents({
+        groupId: value?._id || value?.id,
+        role: ROLES["student"],
+      })
+    );
+    dispatch(
+      getAllTeachers({
+        groupId: value?._id || value?.id,
+        role: ROLES["teacher"],
+      })
+    );
     if (loginType === "google") {
       dispatch(removeUserAsTeacher());
     }
@@ -168,7 +182,11 @@ const SelectGroup = () => {
 
       <Grid item lg={4} md={4} sm={4} xs={6} className="groupSelector">
         <FormControl fullWidth>
-          <InputLabel variant="outlined" htmlFor="uncontrolled-native">
+          <InputLabel
+            size="small"
+            variant="outlined"
+            htmlFor="uncontrolled-native"
+          >
             Group
           </InputLabel>
           <Select
@@ -189,7 +207,7 @@ const SelectGroup = () => {
             {/* </PermissionGate> */}
 
             {filteredGroups.length === 0 && (
-              <MenuItem value="" disabled selected>
+              <MenuItem value="" disabled selected dense>
                 No Groups available
               </MenuItem>
             )}

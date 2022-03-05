@@ -169,7 +169,6 @@ const Uploadexercise = ({ ...props }) => {
             <div style={{ width: "100%" }}>
               <List dense={true}>
                 {files.map((f, fi) => {
-                  console.log("fileID", f);
                   return (
                     <ListItem key={fi}>
                       <ListItemText primary={f?.file?.filename} />

@@ -46,7 +46,7 @@ import Chat from "../../components/Chat";
 import { useSelector, useDispatch } from "react-redux";
 import PermissionsGate from "../../components/PermissionGate";
 import Add from "@mui/icons-material/Add";
-import { openModal } from "../../redux/action/utilActions";
+import { openModal, openSubmissionModal } from "../../redux/action/utilActions";
 import Edit from "@mui/icons-material/EditTwoTone";
 import Delete from "@mui/icons-material/DeleteTwoTone";
 
@@ -97,7 +97,7 @@ const AssignmentList = () => {
   };
 
   const onCheck = (data) => {
-    dispatch(openModal("submission", data));
+    dispatch(openSubmissionModal("submission", data));
   };
 
   return (
@@ -130,24 +130,28 @@ const AssignmentList = () => {
             </PermissionsGate>
             <div className="assignmentList">
               <div className={classes.root}>
-                {assignments?.length > 0 ? assignments.map((a, i) => {
-                  return (
-                    <AssignmentListItem
-                      key={i}
-                      {...a}
-                      expanded={expanded === i}
-                      onSelectAssignment={() => handleExpand(i)}
-                      setPlayingVideo={setPlayingVideo}
-                      onEdit={() => onEdit(a)}
-                      onDelete={() => onDelete(a)}
-                      onCheck={() => onCheck(a)}
-                      isTeacher={isTeacher}
-                      loginType={loginType}
-                    />
-                  );
-                }) :
-                  <Alert severity="warning" variant="filled">There are no assignments</Alert>
-                }
+                {assignments?.length > 0 ? (
+                  assignments.map((a, i) => {
+                    return (
+                      <AssignmentListItem
+                        key={i}
+                        {...a}
+                        expanded={expanded === i}
+                        onSelectAssignment={() => handleExpand(i)}
+                        setPlayingVideo={setPlayingVideo}
+                        onEdit={() => onEdit(a)}
+                        onDelete={() => onDelete(a)}
+                        onCheck={() => onCheck(a)}
+                        isTeacher={isTeacher}
+                        loginType={loginType}
+                      />
+                    );
+                  })
+                ) : (
+                  <Alert severity="warning" variant="filled">
+                    There are no assignments
+                  </Alert>
+                )}
               </div>
             </div>
           </>
@@ -258,10 +262,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-            border: `1px solid ${theme.palette.gray[600]}`,
-            background: theme.palette.secondary.light,
-            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-          }
+              border: `1px solid ${theme.palette.gray[600]}`,
+              background: theme.palette.secondary.light,
+              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            }
           : undefined
       }
       elevation={0}
@@ -354,7 +358,11 @@ const AssignmentListItem = ({
               <Tooltip title="Check submissions">
                 <IconButton
                   className="checkSubmission"
-                  onClick={() => onCheck()}
+                  onClick={(e) => {
+                    e.preventDefault();
+
+                    onCheck();
+                  }}
                   color="success"
                 >
                   <FactCheck />
@@ -427,7 +435,11 @@ const AssignmentListItem = ({
             </ItemSection>
           ) : (
             <Grid container>
-              <FileCard assignmentId={id || _id} key={1} title="No exercise material available" />
+              <FileCard
+                assignmentId={id || _id}
+                key={1}
+                title="No exercise material available"
+              />
             </Grid>
           )}
           {hasDocuments && hasDocuments.length > 0 && (

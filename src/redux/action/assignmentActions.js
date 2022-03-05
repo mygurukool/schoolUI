@@ -37,6 +37,22 @@ export const getSubmission = (data, cb, errorCb) => {
   };
 };
 
+export const getStudentFiles = (data, cb, errorCb) => {
+  return {
+    type: assignmentTypes.GET_STUDENT_FILES,
+    payload: {
+      request: {
+        url: assignmentApi.GET_STUDENT_FILES,
+        method: "get",
+        params: data,
+      },
+      enableMessage: false,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
 export const createAssignmet = (data, cb, errorCb) => {
   const formData = new FormData();
   Object.keys(data).forEach((key) => {

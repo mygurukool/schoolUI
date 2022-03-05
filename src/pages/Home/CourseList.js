@@ -41,12 +41,12 @@ const useStyles = makeStyles((theme) => ({
   },
   courseBtnContainer: {
     borderRadius: theme.palette.radius.base,
-    transition: 'all 0.3s ease-in-out',
-    '&:hover': {
+    transition: "all 0.3s ease-in-out",
+    "&:hover": {
       backgroundColor: theme.palette.secondary.light,
       color: theme.palette.black,
       // boxShadow: '0px 5px 15px rgba(0, 0, 0, 0.15)',
-    }
+    },
   },
   courseBtn: {
     margin: theme.spacing(1, 0, 0, 0),
@@ -55,16 +55,16 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     flexDirection: "column",
     width: theme.spacing(15),
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up("xs")]: {
       width: theme.spacing(12),
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: theme.spacing(15),
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up("md")]: {
       width: theme.spacing(15),
     },
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up("lg")]: {
       width: theme.spacing(15),
     },
     alignItems: "center",
@@ -77,19 +77,19 @@ const useStyles = makeStyles((theme) => ({
     "& img": {
       width: theme.spacing(9),
       height: theme.spacing(9),
-      [theme.breakpoints.up('xs')]: {
+      [theme.breakpoints.up("xs")]: {
         width: theme.spacing(5.5),
         height: theme.spacing(5.5),
       },
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9),
         height: theme.spacing(9),
       },
-      [theme.breakpoints.up('md')]: {
+      [theme.breakpoints.up("md")]: {
         width: theme.spacing(9),
         height: theme.spacing(9),
       },
-      [theme.breakpoints.up('lg')]: {
+      [theme.breakpoints.up("lg")]: {
         width: theme.spacing(9),
         height: theme.spacing(9),
       },
@@ -101,7 +101,6 @@ const useStyles = makeStyles((theme) => ({
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
-
   },
   activeCourse: {
     backgroundColor: theme.palette.primary.main,
@@ -146,30 +145,29 @@ const CoursesList = () => {
 
     dispatch(getAssignments(c._id || c.id));
     if (loginType === "mygurukool") {
-      dispatch(
-        getAllStudents({
-          groupId: c.groupId,
-        })
-      );
-      dispatch(
-        getAllTeachers({
-          groupId: c.groupId,
-        })
-      );
+      // dispatch(
+      //   getAllStudents({
+      //     groupId: c.groupId,
+      //   })
+      // );
+      // dispatch(
+      //   getAllTeachers({
+      //     groupId: c.groupId,
+      //   })
+      // );
     } else {
-      console.log('loginType', loginType);
       dispatch(removeUserAsTeacher());
 
-      dispatch(
-        getAllStudents({
-          courseId: c?.id || c?._id,
-        })
-      );
-      dispatch(
-        getAllTeachers({
-          courseId: c?.id || c?._id,
-        })
-      );
+      // dispatch(
+      //   getAllStudents({
+      //     courseId: c?.id || c?._id,
+      //   })
+      // );
+      // dispatch(
+      //   getAllTeachers({
+      //     courseId: c?.id || c?._id,
+      //   })
+      // );
     }
   };
 
@@ -262,7 +260,9 @@ const CoursesList = () => {
             // className={isActive && classes.activeCourse}
             style={{ marginBottom: 10 }}
           />
-          <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>{data.courseName}</Typography>
+          <Typography variant="subtitle1" sx={{ textTransform: "capitalize" }}>
+            {data.courseName}
+          </Typography>
         </div>
       </ButtonBase>
     );
@@ -311,7 +311,13 @@ const CoursesList = () => {
       >
         <PermissionGate scopes={[SCOPES.canCreate]}>
           {groups.length === 0 && (
-            <Alert severity="warning" variant="filled" style={{ marginBottom: 20 }}>Please create a group to add courses</Alert>
+            <Alert
+              severity="warning"
+              variant="filled"
+              style={{ marginBottom: 20 }}
+            >
+              Please create a group to add courses
+            </Alert>
           )}
         </PermissionGate>
 
@@ -324,11 +330,14 @@ const CoursesList = () => {
               <div
                 style={{
                   position: "relative",
-                  margin: '0 5px 10px 5px',
+                  margin: "0 5px 10px 5px",
                   // marginBottom: 20
                 }}
-                className={clsx(classes.courseBtnContainer, isActive && classes.activeCourse)}
-              // className={classes.courseBtnContainer}
+                className={clsx(
+                  classes.courseBtnContainer,
+                  isActive && classes.activeCourse
+                )}
+                // className={classes.courseBtnContainer}
               >
                 <PermissionGate
                   scopes={[
@@ -338,7 +347,7 @@ const CoursesList = () => {
                   ]}
                 >
                   <IconButton
-                    color='inherit'
+                    color="inherit"
                     onClick={(e) => handleOpenMenu(e, c)}
                     style={{
                       position: "absolute",
@@ -351,10 +360,8 @@ const CoursesList = () => {
                   </IconButton>
                 </PermissionGate>
                 <div className="courseSelector">
-
                   <CourseBtns data={c} />
                 </div>
-
               </div>
             );
           })}
@@ -364,7 +371,7 @@ const CoursesList = () => {
             <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
               <div
                 style={{
-                  margin: '0 5px 10px 5px',
+                  margin: "0 5px 10px 5px",
                   // marginBottom: 10
                 }}
                 className={classes.courseBtnContainer}
@@ -379,33 +386,29 @@ const CoursesList = () => {
   );
 };
 
-const StyledMenu = styled((props) => (
-  <Menu
-    elevation={0}
-    {...props}
-  />
-))(({ theme }) => ({
-  "& .MuiPaper-root": {
-    borderRadius: 6,
-    marginTop: theme.spacing(1),
-    color:
-      theme.palette.mode === "light"
-        ? "rgb(55, 65, 81)"
-        : theme.palette.grey[300],
-    boxShadow:
-      "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
-    "& .MuiMenu-list": {
-      padding: "4px 0",
-    },
-    "& .MuiMenuItem-root": {
-      "& .MuiSvgIcon-root": {
-        fontSize: 18,
-        color: theme.palette.text.secondary,
-        marginRight: theme.spacing(1.5),
+const StyledMenu = styled((props) => <Menu elevation={0} {...props} />)(
+  ({ theme }) => ({
+    "& .MuiPaper-root": {
+      borderRadius: 6,
+      marginTop: theme.spacing(1),
+      color:
+        theme.palette.mode === "light"
+          ? "rgb(55, 65, 81)"
+          : theme.palette.grey[300],
+      boxShadow:
+        "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
+      "& .MuiMenu-list": {
+        padding: "4px 0",
+      },
+      "& .MuiMenuItem-root": {
+        "& .MuiSvgIcon-root": {
+          fontSize: 18,
+          color: theme.palette.text.secondary,
+          marginRight: theme.spacing(1.5),
+        },
       },
     },
-  },
-}));
+  })
+);
 
 export default CoursesList;
-

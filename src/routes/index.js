@@ -11,7 +11,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import HomeRoutes from "./HomeRoutes";
 import useAutoLogin from "../hooks/useAutoLogin";
 import Spinner from "../components/Spinner";
-import Privacy from '../pages/privacy'
+import Privacy from "../pages/Privacy";
 // import AnimatedSwitch from "./AnimatedSwitch";
 
 import Util from "./Util";
@@ -23,12 +23,14 @@ const RouteData = () => {
     <BrowserRouter>
       <Util />
       {/* <AnimatedSwitch> */}
-      <div style={{
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        overflowX: "hidden"
-      }}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+          overflowX: "hidden",
+        }}
+      >
         <Switch>
           <ProtectedRoute exact path="/" component={HomeRoutes} />
 

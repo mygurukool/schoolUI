@@ -127,6 +127,8 @@ const AssignmentModal = () => {
     (state) => state.common
   );
 
+  console.log("students", students);
+
   const courseId = currentCourse?.id || currentCourse?._id;
   const groupId = currentGroup?.id || currentGroup?._id;
   const [isLoading, setIsLoading] = React.useState(false);
@@ -580,12 +582,12 @@ const AssignmentModal = () => {
             e.preventDefault();
             btnRef.current.click();
           }}
-          // disabled={isLoading}
+          disabled={isLoading}
           sx={{ mr: 1 }}
         >
-          {/* {isLoading && ( */}
-          <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
-          {/* )} */}
+          {isLoading && (
+            <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
+          )}
           Submit
         </Button>
       </DialogActions>

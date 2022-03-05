@@ -6,6 +6,8 @@ const assignmentApi = {
 
   GET_SUBMISSION: "/assignment/submissions",
   DELETE_EXCERCISE_FILE: "/assignment/exercisefile",
+
+  GET_STUDENT_FILES: "/assignment/files",
 };
 
 export default assignmentApi;

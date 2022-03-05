@@ -19,7 +19,26 @@ export const openModal = (value, data) => {
     },
   };
 };
+export const closeModal = () => {
+  return {
+    type: utilTypes.CLOSE_MODAL,
+  };
+};
 
+export const openSubmissionModal = (value, data) => {
+  return {
+    type: utilTypes.OPEN_SUBMISSION_MODAL,
+    payload: {
+      value: value,
+      data: data,
+    },
+  };
+};
+export const closeSubmissionModal = () => {
+  return {
+    type: utilTypes.CLOSE_SUBMISSION_MODAL,
+  };
+};
 export const toggleGuide = () => {
   return {
     type: utilTypes.TOGGLE_GUIDE,
@@ -29,12 +48,6 @@ export const toggleGuide = () => {
 export const toggleWelcomeGuide = () => {
   return {
     type: utilTypes.TOGGLE_WELCOME_GUIDE,
-  };
-};
-
-export const closeModal = () => {
-  return {
-    type: utilTypes.CLOSE_MODAL,
   };
 };
 

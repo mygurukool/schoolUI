@@ -32,7 +32,7 @@ import { giveMarks } from "../../../redux/action/teacherActions";
 import NavBar from "../../Navbar";
 import { ArrowBack } from "@mui/icons-material";
 import ModalContainer from "../../ModalContainer";
-import { closeModal } from "../../../redux/action/utilActions";
+import { closeSubmissionModal } from "../../../redux/action/utilActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,15 +52,18 @@ const Submissions = (props) => {
   const [currentStudent, setCurrentStudent] = React.useState();
   const [points, setPoints] = React.useState();
 
-  const { currentGroup, currentCourse } = useSelector((state) => state.common);
-  const { modalOpen, modalData: submission } = useSelector(
+  const { currentGroup, currentCourse, submission } = useSelector(
+    (state) => state.common
+  );
+  const { submissionModalOpen, submissionModalData: assignment } = useSelector(
     (state) => state.util
   );
-  const open = modalOpen === "submission";
+  const open = submissionModalOpen === "submission";
 
-  const id = submission?.id;
+  const id = assignment?.id || assignment?._id;
   const students = submission?.students;
 
+  console.log("assignment", assignment, submission);
   const handleStudentClick = (s) => {
     if (s.points) {
       setPoints(s.points);
@@ -69,7 +72,7 @@ const Submissions = (props) => {
   };
 
   const handleClose = () => {
-    dispatch(closeModal());
+    dispatch(closeSubmissionModal());
   };
   const onSubmit = () => {
     dispatch(
@@ -233,32 +236,6 @@ const Submissions = (props) => {
               </Grid>
             </Grid>
           )}
-          {/* {currentStudent && (
-          <Grid item lg={9}>
-            {currentStudent?.uploadExercises?.map((a, ai) => {
-              return <FileCard assignmentId={id} key={ai} {...a} />;
-            })}
-
-            <Stack>
-              <TextField
-                variant="outlined"
-                value={points}
-                type="number"
-                label="Points"
-                placeholder="Enter marks"
-                onChange={(e) => setPoints(e.target.value)}
-              />
-
-              <Button
-                variant="contained"
-                onClick={() => onSubmit()}
-                disabled={!points}
-              >
-                Submit
-              </Button>
-            </Stack>
-          </Grid>
-        )} */}
         </Box>
       </Box>
     </ModalContainer>

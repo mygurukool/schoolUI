@@ -13,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   gif: {
-    height: 100,
-    width: 100,
+    height: 150,
+    width: 150,
     objectFit: "contain",
   },
 }));
@@ -34,7 +34,7 @@ const CustomLoading = (props) => {
         return "adult.gif";
 
       default:
-        break;
+        return "tenor.gif";
     }
   };
 

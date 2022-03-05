@@ -4,6 +4,9 @@ const initialstate = {
   language: "gu",
   modalOpen: undefined,
   modalData: undefined,
+
+  submissionModalOpen: undefined,
+  submissionModalData: undefined,
   toggleButton: false,
   isGuideOpen: false,
   isWelcomeGuideOpen: false,
@@ -42,11 +45,6 @@ const utilReducer = (state = initialstate, action) => {
         toggleButton: !state.toggleButton,
       };
 
-    case utilTypes.TOGGLE_DRAWER:
-      return {
-        ...state,
-        drawerOpen: !state.drawerOpen,
-      };
     case utilTypes.TOGGLE_GUIDE:
       return {
         ...state,
@@ -71,6 +69,20 @@ const utilReducer = (state = initialstate, action) => {
         ...state,
         modalOpen: undefined,
         modalData: undefined,
+      };
+
+    case utilTypes.OPEN_SUBMISSION_MODAL:
+      return {
+        ...state,
+        submissionModalOpen: action.payload.value,
+        submissionModalData: action.payload.data,
+      };
+
+    case utilTypes.CLOSE_SUBMISSION_MODAL:
+      return {
+        ...state,
+        submissionModalOpen: undefined,
+        submissionModalData: undefined,
       };
 
     case "SPINNER_START":
