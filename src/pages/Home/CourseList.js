@@ -140,7 +140,7 @@ const CoursesList = () => {
       return c.groupId === currentGroup?.id || c.groupId === currentGroup?._id;
     }
   });
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   const onSelectCourse = (c) => {
     dispatch(setCurrentCourse(c));
@@ -243,7 +243,9 @@ const CoursesList = () => {
             // className={isActive && classes.activeCourse}
             style={{ marginBottom: 10 }}
           />
-          <Typography variant="subtitle2">{translate("ADD_NEW_COURSE")}</Typography>
+          <Typography variant="subtitle2">
+            {translate("ADD_NEW_COURSE")}
+          </Typography>
         </div>
       </ButtonBase>
     );
@@ -339,7 +341,7 @@ const CoursesList = () => {
                   classes.courseBtnContainer,
                   isActive && classes.activeCourse
                 )}
-              // className={classes.courseBtnContainer}
+                // className={classes.courseBtnContainer}
               >
                 <PermissionGate
                   scopes={[
@@ -369,8 +371,8 @@ const CoursesList = () => {
           })}
 
         {groups.length > 0 && (
-          <div className="addCourse">
-            <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
+          <PermissionGate scopes={[SCOPES.CAN_CREATE_COURSE]}>
+            <div className="addCourse">
               <div
                 style={{
                   margin: "0 5px 10px 5px",
@@ -380,8 +382,8 @@ const CoursesList = () => {
               >
                 <AddNewCourse />
               </div>
-            </PermissionGate>
-          </div>
+            </div>
+          </PermissionGate>
         )}
       </Stack>
     </>

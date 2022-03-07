@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Submissions = (props) => {
   const dispatch = useDispatch();
-  const translate = useLanguages()
+  const translate = useLanguages();
   const classes = useStyles();
   const [currentStudent, setCurrentStudent] = React.useState();
   const [points, setPoints] = React.useState();
@@ -184,7 +184,9 @@ const Submissions = (props) => {
           </Box>
 
           {!currentStudent ? (
-            <Alert severity="warning">{translate("PLEASE_SELECT_STUDENT")}</Alert>
+            <Alert severity="warning">
+              {translate("PLEASE_SELECT_STUDENT")}
+            </Alert>
           ) : (
             <Grid container>
               <Grid item lg={9}>

@@ -13,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import ADDICON from "@mui/icons-material/Add";
+import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
   wrapForm: {
@@ -48,6 +49,7 @@ const TextInput = ({
   const classes = useStyles();
   const [value, setValue] = React.useState("");
   const textInputRef = React.useRef();
+  const translate = useLanguages()
   const handleSend = () => {
     console.log("handlesend", value);
     if (value && value !== "") {
@@ -97,7 +99,6 @@ const TextInput = ({
           startAdornment: (
             <InputAdornment position="start">
               <IconButton
-                aria-label="toggle password visibility"
                 edge="end"
                 color="secondary"
                 sx={{ mr: 0.1 }}
@@ -110,7 +111,6 @@ const TextInput = ({
             <InputAdornment position="end">
               {isTeacher && (
                 <IconButton
-                  aria-label="toggle password visibility"
                   edge="end"
                   color="secondary"
                   onClick={() => {
@@ -121,7 +121,6 @@ const TextInput = ({
                 </IconButton>
               )}
               <IconButton
-                aria-label="toggle password visibility"
                 edge="end"
                 color="secondary"
                 disabled={value === ""}
@@ -140,7 +139,7 @@ const TextInput = ({
           disableUnderline: true,
         }}
         fullWidth
-        placeholder="Type a message"
+        placeholder={translate("TYPE_A_MESSAGE")}
         variant="standard"
       />
     </div>

@@ -53,7 +53,7 @@ const SelectGroup = () => {
   const groupNames = groups.map((g) => g.groupName);
 
   const filteredGroups = [...new Set(groupNames)];
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   // const [anchorEl, setAnchorEl] = React.useState(null);
   // const open = Boolean(anchorEl);
@@ -64,6 +64,7 @@ const SelectGroup = () => {
   const handleChange = (value) => {
     dispatch(removeAssignmentData());
     dispatch(removeCurrentCourse());
+    console.log("handleChange", value);
     setSelectedGroup(value?.groupName);
     dispatch(showSnackBar(`Group changed to ${value.groupName}`));
     dispatch(getAllCourses({ groupId: value?._id || value?.id }));

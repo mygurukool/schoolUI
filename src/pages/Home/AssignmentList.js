@@ -18,9 +18,7 @@ import {
 import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
-import {
-  FactCheckTwoTone as FactCheck,
-} from "@mui/icons-material";
+import { FactCheckTwoTone as FactCheck } from "@mui/icons-material";
 import clsx from "clsx";
 import Videocard from "./VideoCard";
 import VideoModal from "./VideoModal";
@@ -50,7 +48,7 @@ const AssignmentList = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const deleteRef = React.useRef();
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   const [expanded, setExpanded] = React.useState();
   const [video, setPlayingVideo] = React.useState();
@@ -156,7 +154,7 @@ export default AssignmentList;
 
 const ActionBar = () => {
   const dispatch = useDispatch();
-  const translate = useLanguages()
+  const translate = useLanguages();
   const onAddAssignment = () => {
     dispatch(openModal("assignment"));
   };
@@ -212,7 +210,7 @@ const AssignmentListItem = ({
   const hasAudioVideo = materials.filter((d) => d.youtubeVideo);
   const hasDocuments = materials.filter((d) => d.driveFile);
   const isMyGuruKool = loginType === "mygurukool";
-  const translate = useLanguages()
+  const translate = useLanguages();
   const ChatBtn = () => {
     return (
       <AppButton
@@ -250,10 +248,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-            border: `1px solid ${theme.palette.gray[600]}`,
-            background: theme.palette.secondary.light,
-            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-          }
+              border: `1px solid ${theme.palette.gray[600]}`,
+              background: theme.palette.secondary.light,
+              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            }
           : undefined
       }
       elevation={0}
@@ -369,7 +367,14 @@ const AssignmentListItem = ({
           direction="column"
           divider={<Divider orientation="horizontal" flexItem />}
         >
-          <ItemSection title="Exercise Instructions" endAction={TurnInBtn}>
+          <ItemSection
+            title="Exercise Instructions"
+            endAction={
+              <PermissionsGate scopes={[SCOPES.CAN_SUBMIT_ASSIGNMENT]}>
+                <TurnInBtn />
+              </PermissionsGate>
+            }
+          >
             <Typography variant="body2">
               {parse(`<div> ${instructions}</div>`)}
             </Typography>
@@ -378,7 +383,7 @@ const AssignmentListItem = ({
           {hasAudioVideo && (
             <ItemSection
               title="Exercise Audio/ Video Explanation"
-              endAction={ChatBtn}
+              endAction={<ChatBtn />}
             >
               <Grid container>
                 <Grid item lg={enableChat ? 6 : 12} md={enableChat ? 6 : 12}>
@@ -415,7 +420,7 @@ const AssignmentListItem = ({
 
           {uploadExercises && uploadExercises.length > 0 ? (
             <ItemSection title=" Upload Exercises">
-              <Grid container>
+              <Grid container className="uploadExercises">
                 {uploadExercises?.map((a, ai) => {
                   return <FileCard assignmentId={id || _id} key={ai} {...a} />;
                 })}
@@ -469,7 +474,7 @@ const ItemSection = ({ title, children, endAction: EndAction }) => {
           <Typography variant="subtitle1" className={classes.title}>
             {title}
           </Typography>
-          {EndAction && <EndAction />}
+          {EndAction && EndAction}
         </Stack>
 
         {children}

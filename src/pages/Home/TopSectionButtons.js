@@ -6,7 +6,7 @@ import PermissionsGate from "../../components/PermissionGate";
 import { SCOPES } from "../../constants";
 // import Whiteboard from "../../assets/icons/Whiteboard";
 // import Conference from "../../assets/icons/Conference";
-import VideoLabelTwoToneIcon from '@mui/icons-material/VideoLabelTwoTone';
+import VideoLabelTwoToneIcon from "@mui/icons-material/VideoLabelTwoTone";
 import AppButton from "../../components/AppButton";
 import { useSelector } from "react-redux";
 import useLanguages from "../../hooks/useLanguage";
@@ -17,12 +17,11 @@ const useStyles = makeStyles((theme) => ({
 
 const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
   const classes = useStyles();
-  const { currentCourse } = useSelector(state => state.common)
-  const translate = useLanguages()
+  const { currentCourse } = useSelector((state) => state.common);
+  const translate = useLanguages();
 
   return (
     <Stack direction="row" space="2">
-
       <PermissionsGate
         scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
         exceptionLogin={"google"}
@@ -47,18 +46,17 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           variant="contained"
           startIcon={<VideoLabelTwoToneIcon />}
           disabled={!currentCourse}
+          className="whiteboardBtn"
           // startIcon={<Whiteboard color="white" />}
           onClick={() => {
             initializeWhiteBoard();
           }}
           sx={{
             marginRight: 1,
-
           }}
         >
           {translate("WHITE_BOARD")}
         </AppButton>
-
       </PermissionsGate>
       <PermissionsGate
         scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
@@ -71,11 +69,10 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           // startIcon={<Conference color="white" />}
           startIcon={<ConferenceIcon />}
           onClick={() => initializeConference()}
-
+          className="conferenceBtn"
         >
           {translate("CONFERENCE")}
         </AppButton>
-
       </PermissionsGate>
 
       {/* 

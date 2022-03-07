@@ -89,9 +89,9 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
               image={metaData?.thumbnail_url}
               alt={metaData?.thumbnail_url}
             />
-            <Stack direction="row" p={2}>
-              <Stack>
-                <Typography component="div" variant="h6">
+            <Stack flexDirection="row" p={2} justifyContent="space-between" sx={{ width: '100%' }}>
+              <div>
+                <Typography component="div" variant="subtitle1">
                   {metaData?.title}
                 </Typography>
                 <Typography
@@ -101,8 +101,8 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
                 >
                   {metaData?.author_name}
                 </Typography>
-              </Stack>
-              <Stack>
+              </div>
+              <div>
                 <IconButton
                   aria-label="previous"
                   onClick={() => {
@@ -112,7 +112,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
                 >
                   <HighlightOffTwoTone />
                 </IconButton>
-              </Stack>
+              </div>
             </Stack>
           </Card>
         )}
