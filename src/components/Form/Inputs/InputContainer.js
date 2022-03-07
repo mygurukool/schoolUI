@@ -11,7 +11,7 @@ const InputContainer = ({
   ...props
 }) => {
   return (
-    <Grid item lg={size} sm={size} md={size} xs={size}>
+    <Grid item lg={size} sm={size} md={size} xs={12}>
       {children}
     </Grid>
 

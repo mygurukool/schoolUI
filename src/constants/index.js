@@ -71,14 +71,6 @@ export const DUEDATECOLORS = [
 
 export const DUEDATETIMEFORMAT = `DD/MM/YYYY HH:mm`;
 
-export const FRAMEDATA = [
-  { title: "Logo", value: "logo" },
-  { title: "Mobile", value: "mobile" },
-  { title: "Email", value: "email" },
-  { title: "Address", value: "address" },
-  { title: "Website", value: "website" },
-  { title: "Person Image", value: "personImage" },
-];
 
 export const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
