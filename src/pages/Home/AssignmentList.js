@@ -248,10 +248,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-              border: `1px solid ${theme.palette.gray[600]}`,
-              background: theme.palette.secondary.light,
-              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-            }
+            border: `1px solid ${theme.palette.gray[600]}`,
+            background: theme.palette.secondary.light,
+            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+          }
           : undefined
       }
       elevation={0}
@@ -341,7 +341,7 @@ const AssignmentListItem = ({
             )}
 
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-              <Tooltip title="Check submissions">
+              <Tooltip title={translate("CHECK_SUBMISSIONS")}>
                 <IconButton
                   className="checkSubmission"
                   onClick={(e) => {
@@ -368,7 +368,7 @@ const AssignmentListItem = ({
           divider={<Divider orientation="horizontal" flexItem />}
         >
           <ItemSection
-            title="Exercise Instructions"
+            title={translate("EXERCISE_INSTRUCTIONS")}
             endAction={
               <PermissionsGate scopes={[SCOPES.CAN_SUBMIT_ASSIGNMENT]}>
                 <TurnInBtn />
@@ -382,7 +382,7 @@ const AssignmentListItem = ({
 
           {hasAudioVideo && (
             <ItemSection
-              title="Exercise Audio/ Video Explanation"
+              title={translate("EXERCISE_AUDIO_VIDEO_EXPLANTION")}
               endAction={<ChatBtn />}
             >
               <Grid container>
@@ -419,7 +419,7 @@ const AssignmentListItem = ({
           )}
 
           {uploadExercises && uploadExercises.length > 0 ? (
-            <ItemSection title=" Upload Exercises">
+            <ItemSection title={translate("UPLOAD_EXERCISE")}>
               <Grid container className="uploadExercises">
                 {uploadExercises?.map((a, ai) => {
                   return <FileCard assignmentId={id || _id} key={ai} {...a} />;
@@ -436,7 +436,7 @@ const AssignmentListItem = ({
             </Grid>
           )}
           {hasDocuments && hasDocuments.length > 0 && (
-            <ItemSection title=" Upload Exercises">
+            <ItemSection title={translate("UPLOAD_EXERCISE")}>
               <Grid container>
                 {hasDocuments.map((a, i) => {
                   return (

@@ -20,9 +20,9 @@ const DesktopGuide = () => {
 
   const steps = [
     {
-      content: <h2>Let's begin our journey of learning!</h2>,
+      content: <h2>{translate("BEGIN_JOURNEY")}</h2>,
       locale: {
-        skip: <strong aria-label="skip">SKIP</strong>,
+        skip: <strong aria-label="skip">{translate("SKIP")}</strong>,
       },
       placement: "center",
       target: "body",
@@ -152,7 +152,7 @@ const DesktopGuide = () => {
           },
         }}
         callback={(state) => handleStepChange(state)}
-        // stepIndex={step}
+      // stepIndex={step}
       />
     </div>
   );

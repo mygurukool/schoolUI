@@ -46,8 +46,11 @@
   "THIS_FUNCTIONALITY_IS_NOT_AVAILABLE": "This functionality is not available Right now",
   "NO_EXERCISE_MATERIAL_AVAILABLE": "No exercise material available",
   "INSTRUCTIONS": "Instructions",
+  "EXERCISE_INSTRUCTIONS": "Exercise Instructions",
   "AUDIO_VIDEO_EXPLANATION": "Audio/Video Explanation",
+  "EXERCISE_AUDIO_VIDEO_EXPLANTION": "Exercise Audio/ Video Explanation",
   "UPLOAD_EXERCISE": "Upload Excersice",
+  "CHECK_SUBMISSIONS": "Check Submissions",
   "UPLOAD_ANY_FILE": "Upload Any File",
   "ADD_ANY_WEBSITE_LINK": "Add Any Website Link",
   "STUDENTS": "Students",
@@ -120,5 +123,14 @@
   "REGISTER_NOW": "Register Now",
   "PLEASE_FILL_THE_DETAILS": "Please fill the details",
   "AN_ERROR_OCCURED": "An Error Occured",
-  "TYPE_A_MESSAGE": "Type a message"
+  "TYPE_A_MESSAGE": "Type a message",
+  "HERE_IS_THE_LIST_OF_UPLOADED_FILES": "Here is the list of uploaded files",
+  "CLICK_HERE_TO_VIEW_FILE": "Click here to view file",
+  "CLICK_HERE_TO_DOWNLOAD_FILE": "Click here to download file",
+  "CLICK_HERE_TO_UPLOAD_FILE": "Click here to upload file",
+  "CLICK_HERE_TO_VIEW_UPLOADED_FILES": "Click here to view uploaded files",
+  "BEGIN_JOURNEY": "Let's begin our journey of learning!",
+  "SKIP": "SKIP",
+  "CLICK_HERE_FOR_WHITEBOARD": "Click here for white board",
+  "CLICK_HERE_FOR_CONFERENCE": "Click here for conference"
 }
