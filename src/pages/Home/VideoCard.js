@@ -33,7 +33,7 @@ const Videocard = ({ onClick, title, ...props }) => {
           <CardMedia
             className={classes.img}
             image={props.thumbnailUrl}
-            title="Live from space album cover"
+            title={title}
           />
           <CardContent className={classes.content}>
             <Typography variant="subtitle2">{title}</Typography>
