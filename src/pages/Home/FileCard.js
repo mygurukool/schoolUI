@@ -51,6 +51,7 @@ const Uploadexercise = ({ ...props }) => {
   const fileId = props.id || props._id;
   const files = props.files;
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isExpanded, setIsExpanded] = React.useState(false);
 
   const uploadInputRef = React.useRef();
 
@@ -74,14 +75,14 @@ const Uploadexercise = ({ ...props }) => {
   };
 
   const onUploadFile = (e, d) => {
-    // e.stopPropagation();
-
     uploadInputRef.current.click();
   };
 
   const handleUpload = (file) => {
     // console.log("handleUpload", file, file, assignmentId, fileId);
-    setIsLoading(true);
+    setIsLoading("upload");
+    setIsExpanded(true);
+
     dispatch(
       uploadExcerciseFile(
         { file, assignmentId, fileId },
@@ -97,13 +98,27 @@ const Uploadexercise = ({ ...props }) => {
   };
   const handleDelete = (e, id, fileId) => {
     e.stopPropagation();
+    setIsLoading(id);
 
-    dispatch(deleteExcerciseFile({ id, fileId, assignmentId }));
+    dispatch(
+      deleteExcerciseFile(
+        { id, fileId, assignmentId },
+        () => {
+          closeLoading();
+        },
+        () => closeLoading()
+      )
+    );
   };
 
   return (
     <>
-      <Accordion className={classes.root} elevation={0} variant="outlined">
+      <Accordion
+        className={classes.root}
+        elevation={0}
+        variant="outlined"
+        expanded={isExpanded}
+      >
         <AccordionSummary
           className={classes.AccordionSummary}
           expandIcon={
@@ -112,8 +127,10 @@ const Uploadexercise = ({ ...props }) => {
           aria-label="Expand"
           aria-controls="additional-actions1-content"
           id="additional-actions1-header"
+          onClick={() => setIsExpanded(!isExpanded)}
         >
           <div
+            className="fileCard"
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -138,24 +155,28 @@ const Uploadexercise = ({ ...props }) => {
                   <IconButton
                     color="neutral"
                     onClick={(event) => onViewFile(event, props)}
+                    className="viewFile"
                   >
                     <ViewIcon fontSize="small" />
                   </IconButton>
+
                   <IconButton
                     color="neutral"
                     onClick={(event) => onDownloadFile(event, props)}
+                    className="downloadFile"
                   >
                     <DownloadIcon fontSize="small" />
                   </IconButton>
                 </>
               )}
               <PermissionsGate scopes={[SCOPES.CAN_CREATE_ASSIGNMENT_WORK]}>
-                {isLoading ? (
+                {isLoading === "upload" ? (
                   <CircularProgress size={20} sx={{ mr: 1 }} color="inherit" />
                 ) : (
                   <IconButton
                     color="green"
                     onClick={(event) => onUploadFile(event)}
+                    className="uploadFile"
                   >
                     <UploadIcon fontSize="small" />
                   </IconButton>
@@ -186,14 +207,22 @@ const Uploadexercise = ({ ...props }) => {
                         >
                           <DownloadIcon fontSize="small" />
                         </IconButton>
-                        <IconButton
-                          color="primary"
-                          onClick={(e) =>
-                            handleDelete(e, f.id || f._id, fileId)
-                          }
-                        >
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
+                        {isLoading === f.id || f._id ? (
+                          <CircularProgress
+                            size={20}
+                            sx={{ mr: 1 }}
+                            color="inherit"
+                          />
+                        ) : (
+                          <IconButton
+                            color="primary"
+                            onClick={(e) =>
+                              handleDelete(e, f.id || f._id, fileId)
+                            }
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        )}
                       </ListItemSecondaryAction>
                     </ListItem>
                   );

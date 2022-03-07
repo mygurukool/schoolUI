@@ -83,7 +83,7 @@ const AssignmentModal = () => {
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createEmpty()
   );
-  const translate = useLanguages()
+  const translate = useLanguages();
   React.useEffect(() => {
     console.log("editorState", editorState);
   }, [editorState]);
@@ -192,10 +192,10 @@ const AssignmentModal = () => {
   };
 
   const onSubmit = (data) => {
-    console.log("data", data);
     if (!data.students) {
-      data.students = students;
+      data.students = students.map((s) => s._id || s.id);
     }
+
     // if (data?.students.length === 0) {
     //   alert("Please select students");
     // } else {
@@ -310,11 +310,11 @@ const AssignmentModal = () => {
       fullScreen
       onClose={() => handleClose()}
       hideButtons
-    // onSubmit={(e) => {
-    //   alert("hehe");
-    //   e.preventDefault();
-    //   formRef.current.submit();
-    // }}
+      // onSubmit={(e) => {
+      //   alert("hehe");
+      //   e.preventDefault();
+      //   formRef.current.submit();
+      // }}
     >
       <DialogTitle>
         <Box
@@ -325,7 +325,9 @@ const AssignmentModal = () => {
           }}
         >
           <Typography variant="subtitle1">
-            {modalData ? translate("EDIT_ASSIGNMENT") : translate("CREATE_ASSIGNMENT")}
+            {modalData
+              ? translate("EDIT_ASSIGNMENT")
+              : translate("CREATE_ASSIGNMENT")}
           </Typography>
           <IconButton color="error" aria-label="close" onClick={handleClose}>
             <CloseIcon />
@@ -410,7 +412,9 @@ const AssignmentModal = () => {
                 />
 
                 <Stack>
-                  <InputLabel>{translate("AUDIO_VIDEO_EXPLANATION")}</InputLabel>
+                  <InputLabel>
+                    {translate("AUDIO_VIDEO_EXPLANATION")}
+                  </InputLabel>
 
                   <Stack direction="row" spacing={2} mt={2}>
                     <ToolTipIconButton
@@ -442,7 +446,7 @@ const AssignmentModal = () => {
                           { type: "file", metaData: value },
                         ]);
                       }}
-                    // {...register("file")}
+                      // {...register("file")}
                     />
                     <ToolTipIconButton
                       title={translate("UPLOAD_ANY_FILE")}

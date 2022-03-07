@@ -16,7 +16,7 @@ const DesktopGuide = () => {
   );
   const [step, setStep] = React.useState(1);
 
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   const steps = [
     {
@@ -52,12 +52,23 @@ const DesktopGuide = () => {
     {
       content: <h2>{translate("SELECT_COURSE_FROM_HERE")}</h2>,
 
-      target: ".makeStyles-courseBtnContainer-83",
+      target: ".courseSelector",
     },
     {
       content: <h2>{translate("CREATE_COURSE_HERE")}</h2>,
 
       target: ".addCourse",
+    },
+
+    {
+      content: <h2>{translate("CLICK_HERE_FOR_WHITEBOARD")}</h2>,
+
+      target: ".whiteboardBtn",
+    },
+    {
+      content: <h2>{translate("CLICK_HERE_FOR_CONFERENCE")}</h2>,
+
+      target: ".conferenceBtn",
     },
 
     {
@@ -80,6 +91,32 @@ const DesktopGuide = () => {
       content: <h2>{translate("CLICK_HERE_TO_VIEW_CONTENT")}</h2>,
 
       target: ".audioVideo",
+    },
+    {
+      content: <h2>{translate("HERE_IS_THE_LIST_OF_UPLOADED_FILES")}</h2>,
+
+      target: ".uploadExercises",
+    },
+    {
+      content: <h2>{translate("CLICK_HERE_TO_VIEW_FILE")}</h2>,
+
+      target: ".viewFile",
+    },
+    {
+      content: <h2>{translate("CLICK_HERE_TO_DOWNLOAD_FILE")}</h2>,
+
+      target: ".downloadFile",
+    },
+
+    {
+      content: <h2>{translate("CLICK_HERE_TO_UPLOAD_FILE")}</h2>,
+
+      target: ".uploadFile",
+    },
+    {
+      content: <h2>{translate("CLICK_HERE_TO_VIEW_UPLOADED_FILES")}</h2>,
+
+      target: ".fileCard",
     },
     {
       content: <h2>{translate("CLICK_HERE_TO_CHECK_SUBMISSIONS")}</h2>,
@@ -115,7 +152,7 @@ const DesktopGuide = () => {
           },
         }}
         callback={(state) => handleStepChange(state)}
-      // stepIndex={step}
+        // stepIndex={step}
       />
     </div>
   );

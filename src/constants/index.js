@@ -71,7 +71,6 @@ export const DUEDATECOLORS = [
 
 export const DUEDATETIMEFORMAT = `DD/MM/YYYY HH:mm`;
 
-
 export const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
@@ -97,17 +96,17 @@ export const dateRanges = {
 export const ageGroups = [
   {
     id: 1,
-    text: 'Preteen'
+    text: "Preteen",
   },
   {
     id: 2,
-    text: 'Teen'
+    text: "Teen",
   },
   {
     id: 3,
-    text: 'Adult'
+    text: "Adult",
   },
-]
+];
 
 export const ROLES = {
   organizationOwner: "ORGANIZATION_OWNER",
@@ -120,6 +119,8 @@ export const SCOPES = {
   CAN_EDIT_TEACHER: "CAN-EDIT-TEACHER",
   CAN_DELETE_TEACHER: "CAN-DELETE-TEACHER",
   CAN_VIEW_TEACHER: "CAN-VIEW-TEACHER",
+
+  CAN_SUBMIT_ASSIGNMENT: "CAN-SUBMIT-ASSIGNMENT",
 
   CAN_INVITE_TEACHER: "CAN-INVITE-TEACHER",
 
@@ -237,6 +238,7 @@ export const PERMISSIONS = {
     SCOPES.CAN_EDIT_ASSIGNMENT_WORK,
     SCOPES.CAN_DELETE_ASSIGNMENT_WORK,
     SCOPES.CAN_VIEW_ASSIGNMENT_WORK,
+    SCOPES.CAN_SUBMIT_ASSIGNMENT,
   ],
   [ROLES.teacher]: teacherScopes,
 
