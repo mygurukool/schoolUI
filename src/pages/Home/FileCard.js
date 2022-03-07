@@ -106,7 +106,9 @@ const Uploadexercise = ({ ...props }) => {
       <Accordion className={classes.root} elevation={0} variant="outlined">
         <AccordionSummary
           className={classes.AccordionSummary}
-          expandIcon={<ExpandMoreIcon />}
+          expandIcon={
+            files && files.length > 0 ? <ExpandMoreIcon /> : undefined
+          }
           aria-label="Expand"
           aria-controls="additional-actions1-content"
           id="additional-actions1-header"
@@ -127,7 +129,7 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-            // {...register("file")}
+              // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>

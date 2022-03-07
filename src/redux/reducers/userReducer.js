@@ -82,6 +82,7 @@ const sizeReducer = (state = initialstate, action) => {
 
         error: undefined,
         ...getData()?.user,
+        loginType: getData().loginType,
         organization: getData().organization,
         isGoogleLogin: getData().loginType === "google",
         isMicroSoftLogin: getData().loginType === "microsoft",
