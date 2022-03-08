@@ -11,6 +11,7 @@ import {
   Button,
   CircularProgress,
   Divider,
+  Tooltip,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 import useLanguages from "../../hooks/useLanguage";
@@ -24,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   },
   modalTitle: {
     fontWeight: theme.palette.fontWeights.bold,
-    textTransform: "capitalize",
     fontSize: theme.palette.fontSizes.md,
     color: theme.palette.text.primary,
   },
@@ -53,7 +53,6 @@ const ModalContainer = ({
       onClose={onClose}
       fullWidth={true}
       maxWidth={size || "lg"}
-      aria-labelledby="customized-dialog-title"
       open={open}
       fullScreen={fullScreen}
     >
@@ -66,9 +65,11 @@ const ModalContainer = ({
           }}
         >
           <Typography className={classes.modalTitle} variant="subtitle1">{title}</Typography>
-          <IconButton color="error" aria-label="close" onClick={onClose}>
-            <CloseIcon />
-          </IconButton>
+          <Tooltip title={translate("CLOSE")}>
+            <IconButton color="error" aria-label="close" onClick={onClose}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       </DialogTitle>
       {children && <DialogContent dividers>{children}</DialogContent>}

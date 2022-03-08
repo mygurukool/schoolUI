@@ -52,7 +52,7 @@ const useWhiteBoard = () => {
     React.useState(false);
   const intializeSocket = (data) => {
     socket = socketIOClient(SOCKETURL, {
-      query: { data },
+      query: { ...data },
       transports: ['websocket'],
       reconnection: false
     });

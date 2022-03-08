@@ -85,7 +85,7 @@ const StudentSelectorDrawer = ({
               checked={isAllSelected}
               onChange={() => setAllStudents()}
             />
-            <ListItemText primary="All Students" />
+            <ListItemText primary={translate("ALL_STUDENTS")} />
           </ListItem>
 
           {allStudents.map((s, si) => {

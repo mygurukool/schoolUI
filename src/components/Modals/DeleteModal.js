@@ -1,11 +1,6 @@
 import React, { useImperativeHandle } from "react";
-import { makeStyles } from "@mui/styles";
 import ModalContainer from "../ModalContainer";
 import useLanguages from "../../hooks/useLanguage";
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
 
 const DeleteModal = React.forwardRef(({ getTitle, onSubmit }, ref) => {
   const [data, setData] = React.useState(undefined);
@@ -32,7 +27,9 @@ const DeleteModal = React.forwardRef(({ getTitle, onSubmit }, ref) => {
   return (
     <ModalContainer
       open={Boolean(data)}
-      title={`${translate("SURE_WANT_TO_DELETE")} ${getTitle(data)}`}
+      title={<>
+        {translate("SURE_WANT_TO_DELETE")} - <strong>{getTitle(data)}</strong>
+      </>}
       onClose={() => handleClose()}
       size="xs"
       onSubmit={() => handleSubmit()}

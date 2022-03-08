@@ -291,7 +291,7 @@ const AssignmentListItem = ({
             alignItems="center"
           >
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-              <Tooltip title={"Edit Assignment"}>
+              <Tooltip title={translate("EDIT_ASSIGNMENT")}>
                 <IconButton
                   color="primary"
                   // disabled={!isMyGuruKool}
@@ -305,7 +305,7 @@ const AssignmentListItem = ({
               </Tooltip>
             </PermissionsGate>
             <PermissionsGate scopes={[SCOPES.CAN_DELETE_ASSIGNMENT]}>
-              <Tooltip title={"Delete Assignment"}>
+              <Tooltip title={translate("DELETE_ASSIGNMENT")}>
                 <IconButton
                   color="error"
                   // disabled={!isMyGuruKool}

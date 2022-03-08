@@ -197,6 +197,7 @@ const SelectGroup = () => {
             fullWidth
             variant="outlined"
             size="small"
+            dense
             label={translate("GROUP")}
             value={selectedGroup}
             onChange={({ target: { value } }) => {
@@ -217,7 +218,7 @@ const SelectGroup = () => {
             {filteredGroups &&
               filteredGroups.map((g, i) => {
                 return (
-                  <MenuItem key={i} value={g}>
+                  <MenuItem key={i} value={g} dense>
                     {g}
                   </MenuItem>
                 );
