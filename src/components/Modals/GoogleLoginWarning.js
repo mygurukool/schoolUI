@@ -45,7 +45,7 @@ const GoogleLoginWarning = () => {
     <ModalContainer
       open={open}
       onClose={handleClose}
-      title={translate("DESCLAIMER")}
+      title={translate("DISCLAIMER")}
       size="md"
       submitTitle="Continue"
     >
