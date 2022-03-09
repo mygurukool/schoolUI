@@ -40,7 +40,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
     })
       .then((res) => {
         if (res.data.error) {
-          dispatch(showSnackBar("An Error Occcured", "error"));
+          dispatch(translate("AN_ERROR_OCCURED"), "error");
           // setMetaData({
           //   ogUrl: value,
           //   ogTitle: value,

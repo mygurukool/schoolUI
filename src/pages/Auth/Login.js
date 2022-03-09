@@ -18,7 +18,6 @@ import * as _gconsts from "../../constants/gConsts";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 import useModal from "../../hooks/useModal";
-import GoogleLoginWarning from "../../components/Modals/GoogleLoginWarning";
 import useLanguages from "../../hooks/useLanguage";
 const Login = (props) => {
   const classes = useStyles();
@@ -27,7 +26,6 @@ const Login = (props) => {
   const { isLogged } = useSelector((state) => state.user);
   const translate = useLanguages()
 
-  const { open, openModal: openWarningModal, closeModal } = useModal();
 
   React.useEffect(() => {
     if (isLogged) {
@@ -56,11 +54,22 @@ const Login = (props) => {
   const handleLogin = (data, loginType) => {
     dispatch(
       loginUser({ ...data, loginType: loginType }, () => {
+        if (loginType === 'google') {
+          const hasGoogleLoggedIn = localStorage.getItem("googleLoginCount")
+          console.log('hasGoogleLoggedIn', hasGoogleLoggedIn, loginType);
+          if (!hasGoogleLoggedIn) {
+            localStorage.setItem("googleLoginCount", JSON.stringify(true))
+            dispatch(openModal("googlewarning"));
+          } else {
+            dispatch(openModal("welcome"));
+          }
+        } else {
+          dispatch(openModal("welcome"));
+        }
         // const hasLogged = localStorage.getItem("haslogged");
         // if (hasLogged) {
         //   return;
         // } else {
-        dispatch(openModal("welcome"));
         // localStorage.setItem("haslogged", JSON.stringify(true));
         // }
       })
@@ -68,8 +77,7 @@ const Login = (props) => {
   };
 
   const handleGoogleLogin = async () => {
-    // signIn();
-    openWarningModal();
+    signIn();
   };
 
   const formData = [
@@ -92,19 +100,10 @@ const Login = (props) => {
   ];
 
   const handleMicrosoftLogin = () => { };
-  const handleRegister = () => { };
   const theme = useTheme();
   return (
     <div className={classes.root}>
-      <GoogleLoginWarning
-        open={open}
-        onClose={closeModal}
-        onSubmit={() => {
-          closeModal();
 
-          signIn();
-        }}
-      />
       <Card elevation={0} className={classes.card}>
         <CardContent>
           <Typography variant="h4" mb={2} color="inherit">
@@ -196,7 +195,6 @@ const Login = (props) => {
             {translate("CREATE_OWN")}{" "}
             <Link
               className={classes.link}
-              onClick={handleRegister}
               onClick={() => history.push("/register")}
               color="inherit"
             >

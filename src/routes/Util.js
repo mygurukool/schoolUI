@@ -10,6 +10,7 @@ import FileViewModal from "../components/Modals/FileViewModal";
 import Submission from "../components/Modals/Submissions";
 import CalendarModal from "../components/Modals/CalendarModal";
 import WelcomeModal from "../components/Modals/Welcome";
+import GoogleLoginWarning from "../components/Modals/GoogleLoginWarning";
 
 const Util = () => {
   return (
@@ -24,6 +25,7 @@ const Util = () => {
       <Submission />
       <CalendarModal />
       <WelcomeModal />
+      <GoogleLoginWarning />
     </div>
   );
 };

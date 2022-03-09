@@ -290,10 +290,11 @@ const Section = ({
 const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const translate = useLanguages()
   const [inviteList, setInviteList] = React.useState([]);
   const handleCopy = () => {
     navigator.clipboard.writeText(data.inviteLink);
-    dispatch(showSnackBar("Link copied to your clipboard"));
+    dispatch(showSnackBar(translate("LINK_COPIED")));
   };
   const CloseAction = () => {
     return (
@@ -302,7 +303,6 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
       </IconButton>
     );
   };
-  const translate = useLanguages()
   return (
     <Card variant="outlined" className={classes.section}>
       <CardHeader subheader={title} action={<CloseAction />} />
