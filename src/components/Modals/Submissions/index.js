@@ -190,7 +190,7 @@ const Submissions = (props) => {
           ) : (
             <Grid container>
               <Grid item lg={9}>
-                <Card>
+                <Card variant="outlined">
                   <CardContent>
                     <Typography
                       sx={{ fontSize: 14 }}
@@ -206,7 +206,7 @@ const Submissions = (props) => {
                 </Card>
               </Grid>
               <Grid item lg={5} mt={5}>
-                <Card>
+                <Card variant="outlined">
                   <CardContent>
                     <Typography
                       sx={{ fontSize: 14 }}

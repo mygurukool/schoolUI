@@ -252,7 +252,7 @@ const Section = ({
           <>
             <CardContent>
               <InviteSection
-                title={`Invite ${inviteOpen?.title}`}
+                title={`${translate("INVITE")} ${translate(inviteOpen?.title.toUpperCase())}`}
                 onClose={onInviteClose}
                 onInvite={(data) => onInvite(data)}
                 data={inviteOpen}
@@ -303,7 +303,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
   };
   const CloseAction = () => {
     return (
-      <IconButton onClick={onClose}>
+      <IconButton onClick={onClose} color="error">
         <Close />
       </IconButton>
     );
@@ -330,7 +330,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           options={[]}
           freeSolo
           renderInput={(params) => (
-            <TextField {...params} label="Enter Email id" />
+            <TextField {...params} label={translate("EMAIL_ADDRESS_PLACEHOLDER")} />
           )}
         />
       </CardContent>
@@ -340,16 +340,16 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           <CardContent>
             <Stack direction="column" spacing={3}>
               <Stack>
-                <Typography variant="subtitle2">{translate("INVITE_LINK")}</Typography>
+                <Typography variant="body2">{translate("INVITE_LINK")}</Typography>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
                   alignItems="center"
                   className={classes.inviteLink}
                 >
-                  <Typography variant="subtitle1">{data.inviteLink}</Typography>
+                  <Typography variant="body1">{data.inviteLink}</Typography>
                   <IconButton
-                    color="secondary"
+                    color="info"
                     className={classes.IconButton}
                     onClick={() => handleCopy()}
                   >
@@ -368,7 +368,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           justifyContent="flex-end"
           onClick={() => onInvite(inviteList)}
         >
-          <Button variant="contained" color="primary">
+          <Button variant="contained" color="success">
             {isLoading && <CircularProgress />} {translate("INVITE")}
           </Button>
         </Stack>
