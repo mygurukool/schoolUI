@@ -4,8 +4,8 @@ import ModalContainer from "../ModalContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../redux/action/utilActions";
 import ClipBoardIcon from "@mui/icons-material/ContentPaste";
-import PersonAddAlt from "@mui/icons-material/PersonAddAlt";
-import Delete from "@mui/icons-material/Delete";
+import PersonAddAlt from "@mui/icons-material/PersonAddAltTwoTone";
+import Delete from "@mui/icons-material/DeleteTwoTone";
 import Close from "@mui/icons-material/HighlightOffTwoTone";
 import PermissionGate from "../PermissionGate";
 import {
@@ -27,6 +27,7 @@ import {
   CardActions,
   Button,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 
 import { showSnackBar } from "../../redux/action/snackActions";
@@ -95,7 +96,7 @@ const InvitePeople = () => {
     dispatch(
       invitePeople(
         {
-          groupId: currentGroup.id || currentGroup._id,
+          groupId: groupId,
           groupName: currentGroup.groupName,
           invitedBy: id,
           inviteeName: name || email,
@@ -119,7 +120,7 @@ const InvitePeople = () => {
 
   const onDeleteTeacher = (data) => {
     dispatch(
-      removeTeacher({ id: data, groupId: currentGroup.id }, () => {
+      removeTeacher({ id: data, groupId: groupId }, () => {
         getTeachers();
       })
     );
@@ -127,7 +128,7 @@ const InvitePeople = () => {
 
   const onDeleteStudent = (data) => {
     dispatch(
-      removeStudent({ id: data, groupId: currentGroup.id }, () => {
+      removeStudent({ id: data, groupId: groupId }, () => {
         getStudents();
       })
     );
@@ -160,7 +161,7 @@ const InvitePeople = () => {
         email="email"
         avatarProp="name"
         onDelete={(data) => onDeleteTeacher(data)}
-        title="Teachers"
+        title={translate("TEACHERS")}
         type="teacher"
         onAdd={() => {
           onAdd({
@@ -184,7 +185,7 @@ const InvitePeople = () => {
         avatarProp="name"
         onDelete={(data) => onDeleteStudent(data)}
         type="student"
-        title="Students"
+        title={translate("STUDENTS")}
         onAdd={() => {
           onAdd({
             title: "Students",
@@ -223,7 +224,7 @@ const Section = ({
   const AddAction = () => {
     return (
       <PermissionGate scopes={[addPermission]}>
-        <IconButton onClick={onAdd}>
+        <IconButton onClick={onAdd} color="success">
           <PersonAddAlt />
         </IconButton>
       </PermissionGate>
@@ -233,17 +234,19 @@ const Section = ({
   const DeleteAction = ({ data }) => {
     return (
       <PermissionGate scopes={[deletePermission]}>
-        <IconButton onClick={() => onDelete(data.id || data._id)}>
+        <IconButton onClick={() => onDelete(data.id || data._id)} color="error">
           <Delete />
         </IconButton>
       </PermissionGate>
     );
   };
-
+  const translate = useLanguages()
   return (
     <PermissionGate scopes={[viewPermission]}>
       <Card variant="outlined" className={classes.section}>
-        <CardHeader subheader={title} action={enableAdd && <AddAction />} />
+        <CardHeader title={title} titleTypographyProps={{
+          variant: 'subtitle2'
+        }} action={enableAdd && <AddAction />} />
         <Divider />
         {inviteOpen?.type === type && (
           <>
@@ -259,7 +262,7 @@ const Section = ({
           </>
         )}
         <CardContent>
-          <List
+          {data && data.length > 0 ? <List
             dense
             sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
           >
@@ -273,17 +276,19 @@ const Section = ({
                 >
                   <ListItemButton>
                     <ListItemAvatar>
-                      <Avatar alt={d[avatarProp]} src={d[avatarProp]} />
+                      <Avatar sx={{ bgcolor: "primary.main", }} alt={d[avatarProp]} src={d[avatarProp]} />
                     </ListItemAvatar>
                     <ListItemText primary={d[name]} secondary={d[email]} />
                   </ListItemButton>
                 </ListItem>
               );
             })}
-          </List>
+          </List> :
+            <Alert variant="filled" severity="warning">{type === 'student' ? translate("NO_STUDENTS_INVITED") : translate("NO_TEACHERS_INVITED")}</Alert>
+          }
         </CardContent>
       </Card>
-    </PermissionGate>
+    </PermissionGate >
   );
 };
 

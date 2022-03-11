@@ -112,8 +112,7 @@ const useConference = () => {
             api.executeCommand("displayName", userName);
           });
           api.addEventListener("videoConferenceLeft", (data) => {
-            setConferenceData();
-            setIsConferenceOpen(false);
+            handleLeaveConference()
           });
         }, 1000);
 

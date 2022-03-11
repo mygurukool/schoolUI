@@ -79,18 +79,18 @@ const Chat = ({ assignmentId }) => {
   };
   const onOpenAddUsersToChat = (id) => {
     let data = [];
-    if (isTeacher) {
-      courseTeachers
-        .filter((t) => t.teacherId !== id || t.id !== id || t._id !== id)
-        .forEach((t) => {
-          data.push({
-            role: "Teachers",
-            name: t.name,
-            profileImage: undefined,
-            id: t.teacherId || t.id || t._id,
-          });
+    // if (isTeacher) {
+    courseTeachers
+      .filter((t) => t.teacherId !== id || t.id !== id || t._id !== id)
+      .forEach((t) => {
+        data.push({
+          role: "Teachers",
+          name: t.name,
+          profileImage: undefined,
+          id: t.teacherId || t.id || t._id,
         });
-    }
+      });
+    // }
     students
       .filter((t) => t.studentId !== id || t.id !== id || t._id !== id)
       .forEach((t) => {

@@ -122,12 +122,14 @@ const Uploadexercise = ({ ...props }) => {
         <AccordionSummary
           className={classes.AccordionSummary}
           expandIcon={
-            files && files.length > 0 ? <ExpandMoreIcon /> : undefined
+            files && files.length > 0 ? <ExpandMoreIcon /> : <div style={{ width: '1em', height: '1em', fontSize: '1.5rem' }} />
           }
           aria-label="Expand"
           aria-controls="additional-actions1-content"
           id="additional-actions1-header"
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() =>
+            files && files.length > 0 &&
+            setIsExpanded(!isExpanded)}
         >
           <div
             className="fileCard"
@@ -146,7 +148,7 @@ const Uploadexercise = ({ ...props }) => {
                 const value = e.target.files[0];
                 handleUpload(value);
               }}
-              // {...register("file")}
+            // {...register("file")}
             />
             <Typography variant="subtitle2">{title}</Typography>
             <div>
@@ -185,7 +187,6 @@ const Uploadexercise = ({ ...props }) => {
             </div>
           </div>
         </AccordionSummary>
-        {console.log("AccordionSummary", files)}
         {files && files.length > 0 && (
           <AccordionDetails style={{ padding: 0, margin: 0 }}>
             <div style={{ width: "100%" }}>
@@ -215,7 +216,7 @@ const Uploadexercise = ({ ...props }) => {
                           />
                         ) : (
                           <IconButton
-                            color="primary"
+                            color="error"
                             onClick={(e) =>
                               handleDelete(e, f.id || f._id, fileId)
                             }

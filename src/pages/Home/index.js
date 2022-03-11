@@ -337,7 +337,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
-
+    zIndex: -1,
     position: "absolute",
     bottom: 30,
     left: 30,

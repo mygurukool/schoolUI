@@ -68,7 +68,7 @@ const CreateCourse = () => {
       size: 12,
       hasOptions: true,
       optionLabelProp: "groupName",
-      optionValueProp: "id",
+      optionValueProp: "_id",
     },
   ];
   return (

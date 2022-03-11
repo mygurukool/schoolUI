@@ -72,8 +72,8 @@ const MultiSelect = React.forwardRef((props) => {
                   Array.isArray(field.value)
                     ? field.value
                     : field.value === "" || typeof field.value === "string"
-                    ? [field.value]
-                    : []
+                      ? [field.value]
+                      : []
                 }
                 multiple
                 fullWidth
@@ -106,7 +106,7 @@ const MultiSelect = React.forwardRef((props) => {
                         const found = options.find(
                           (o) => o[optionValueProp] === si
                         );
-
+                        console.log('found', found, si, options, optionValueProp);
                         return (
                           <Chip key={vi} label={`${found[optionLabelProp]}`} />
                         );
@@ -121,7 +121,7 @@ const MultiSelect = React.forwardRef((props) => {
                         field?.value?.length ===
                         options.filter((i) => i.type !== "label")?.length
                       }
-                    />{" "}
+                    />
                     All {label}
                   </MenuItem>
                 )}

@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
   Typography,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
@@ -24,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     height: 220,
     backgroundImage: "url(images/welcome.jpg)",
     backgroundSize: "100% 100%",
+    [theme.breakpoints.up('xs')]: {
+      height: 130,
+    },
+    [theme.breakpoints.up('sm')]: {
+      height: 220,
+    },
   },
 }));
 
@@ -95,22 +102,21 @@ const WelcomeModal = () => {
               {translate("WELCOME_MESSAGE")}
             </Typography>
           </DialogContentText>
+          <Grid container spacing={1} mt={2}>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+              <Button fullWidth onClick={onLearning} variant="contained">
+                {translate("START_LEARNING")}
+              </Button>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={6}>
+
+              <Button fullWidth onClick={onStartTour} color="secondary" variant="contained">
+                {translate("START_GUIDE")}
+              </Button>
+            </Grid>
+          </Grid>
         </DialogContent>
-        <DialogActions
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            mb: 2,
-          }}
-        >
-          <Button onClick={onLearning} variant="contained">
-            {translate("START_LEARNING")}
-          </Button>
-          <Button onClick={onStartTour} color="secondary" variant="contained">
-            {translate("START_GUIDE")}
-          </Button>
-        </DialogActions>
+
       </Dialog>
     </>
   );

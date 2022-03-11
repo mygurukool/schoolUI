@@ -194,6 +194,9 @@ const AssignmentModal = () => {
   const onSubmit = (data) => {
     if (!data.students) {
       data.students = students.map((s) => s._id || s.id);
+    } else if (data.students.length === 0) {
+      alert(translate("ADD_STUDENTS_WARNING"))
+      return
     }
 
     // if (data?.students.length === 0) {

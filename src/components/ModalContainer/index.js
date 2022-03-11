@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, styled } from "@mui/styles";
+import { makeStyles } from "@mui/styles";
 import {
   Dialog,
   IconButton,
@@ -21,11 +21,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     background: theme.palette.white,
     borderBottom: `1px solid ${theme.palette.gray[700]}`,
-    color: theme.palette.text.primary,
-  },
-  modalTitle: {
-    fontWeight: theme.palette.fontWeights.bold,
-    fontSize: theme.palette.fontSizes.md,
     color: theme.palette.text.primary,
   },
   fullScreen: {
@@ -64,7 +59,7 @@ const ModalContainer = ({
             alignItems: "center",
           }}
         >
-          <Typography className={classes.modalTitle} variant="subtitle1">{title}</Typography>
+          <Typography variant="subtitle1">{title}</Typography>
           <Tooltip title={translate("CLOSE")}>
             <IconButton color="error" aria-label="close" onClick={onClose}>
               <CloseIcon />
