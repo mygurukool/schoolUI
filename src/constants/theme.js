@@ -30,6 +30,7 @@ let theme = createTheme({
       800: "#C2C3CC",
       900: "#bdbdbd",
       1000: "#ababab",
+      1100: "#9e9e9e",
       1200: "#919191",
     },
     textField: {
@@ -46,7 +47,7 @@ let theme = createTheme({
     // },
     primary: {
       main: "#EBA049",
-      light: "#e8e6f2",
+      light: "#FFFBF6",
       contrastText: "#fff",
     },
     secondary: {

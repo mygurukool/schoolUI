@@ -496,9 +496,10 @@ const AssignmentModal = () => {
                   control={control}
                   render={({ field }) => (
                     <>
-                      <InputLabel>{translate("STUDENTS")}</InputLabel>
+                      {/* <InputLabel>{translate("STUDENTS")}</InputLabel> */}
                       <TextField
                         readOnly
+                        label={translate("STUDENTS")}
                         onClick={() => openStudentSidebar()}
                         value={
                           field.value

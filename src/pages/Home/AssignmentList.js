@@ -18,6 +18,7 @@ import {
 import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 import { FactCheckTwoTone as FactCheck } from "@mui/icons-material";
 import clsx from "clsx";
 import Videocard from "./VideoCard";
@@ -216,12 +217,12 @@ const AssignmentListItem = ({
       <AppButton
         variant="contained"
         onClick={() => setEnableChat(!enableChat)}
-        color="warning"
-        startIcon={<ChatIcon />}
+        color={!enableChat ? 'warning' : 'error'}
+        startIcon={!enableChat ? <ChatIcon /> : <CloseIcon />}
         size="small"
         className="chatBtn"
       >
-        {translate("FEEL_FREE_TO_ASK")}
+        {!enableChat ? translate("FEEL_FREE_TO_ASK") : translate("CLOSE")}
       </AppButton>
     );
   };
@@ -411,7 +412,7 @@ const AssignmentListItem = ({
                 </Grid>
                 {enableChat && (
                   <Grid item lg={6}>
-                    <Chat assignmentId={id} />
+                    <Chat assignmentId={id || _id} />
                   </Grid>
                 )}
               </Grid>

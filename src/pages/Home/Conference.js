@@ -11,7 +11,9 @@ import { useSelector } from "react-redux";
 import useLanguages from "../../hooks/useLanguage";
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    borderRadius: theme.spacing(0.5)
+  },
 }));
 
 const Conference = ({
@@ -22,10 +24,10 @@ const Conference = ({
 }) => {
   const translate = useLanguages();
   const { currentCourse } = useSelector(state => state.common)
-
+  const classes = useStyles()
   return (
     <Grid item lg={isSectionMaximized ? 12 : 6} md={isSectionMaximized ? 12 : 6} sm={12} xs={12} sx={{ ...(!isSectionMaximized && { pl: { xs: 0, sm: 2 } }), mb: 1 }}>
-      <Stack spacing={1} flexDirection="row" justifyContent="space-between" alignItems="center" mb={0.5}>
+      <Stack flexDirection="row" justifyContent="space-between" alignItems="center" mb={0.5}>
         <Typography variant="h6">{translate("CONFERENCE")} {currentCourse && `(${currentCourse.courseName})`}</Typography>
         <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
           <IconButton color="primary" onClick={() => toggleConferenceMinMax()}>

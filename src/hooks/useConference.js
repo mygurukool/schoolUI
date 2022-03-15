@@ -30,7 +30,7 @@ const useConference = () => {
   const [conferenceData, setConferenceData] = React.useState();
 
   const intializeSocket = (data) => {
-    socket = socketIOClient(SOCKETURL, {
+    socket = socketIOClient(`${SOCKETURL}/conference`, {
       query: { ...data },
       transports: ["websocket"],
       reconnection: false,
@@ -112,7 +112,8 @@ const useConference = () => {
             api.executeCommand("displayName", userName);
           });
           api.addEventListener("videoConferenceLeft", (data) => {
-            handleLeaveConference()
+            setConferenceData();
+            setIsConferenceOpen(false);
           });
         }, 1000);
 

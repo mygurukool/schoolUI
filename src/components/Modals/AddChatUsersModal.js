@@ -24,7 +24,7 @@ const AddChatUsersModal = ({ open, onClose, options, onSubmit }) => {
   return (
     <ModalContainer
       open={open}
-      title="Select Users"
+      title={translate("SELECT_USERS")}
       onClose={() => {
         setSelected([]);
 
@@ -39,7 +39,6 @@ const AddChatUsersModal = ({ open, onClose, options, onSubmit }) => {
         options={options}
         groupBy={(option) => option.role}
         getOptionLabel={(option) => option.name}
-        sx={{ width: 300 }}
         onChange={(e, val) => {
           setSelected(val);
         }}

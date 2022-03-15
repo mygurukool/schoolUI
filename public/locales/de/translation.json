@@ -153,5 +153,13 @@
   "GROUP_CHANGED": "Gruppe geändert auf",
   "ADD_STUDENTS_WARNING": "Bitte fügen Sie der Aufgabe Schüler hinzu",
   "NO_STUDENTS_INVITED": "keine Studenten eingeladen",
-  "NO_TEACHERS_INVITED": "keine Lehrer eingeladen"
+  "NO_TEACHERS_INVITED": "keine Lehrer eingeladen",
+  "REPLY": "Antwort",
+  "FORWARD": "nach vorne",
+  "FORWARDED": "Weitergeleitet",
+  "ADD_USER": "Benutzer hinzufügen",
+  "VIEW_OLDER_MESSAGE": "Ältere Nachrichten anzeigen",
+  "SELECT_USERS": "Wählen Sie Benutzer aus",
+  "ACTIVE_CHATS": "Aktive Chats",
+  "FORWARD_MESSAGE": "Nachricht weiterleiten"
 }

@@ -153,5 +153,13 @@
   "GROUP_CHANGED": "Group changed to",
   "ADD_STUDENTS_WARNING": "Please add students to the assignment",
   "NO_STUDENTS_INVITED": "No students invited",
-  "NO_TEACHERS_INVITED": "No teachers invited"
+  "NO_TEACHERS_INVITED": "No teachers invited",
+  "REPLY": "Reply",
+  "FORWARD": "Forward",
+  "FORWARDED": "Forwarded",
+  "ADD_USER": "Add User",
+  "VIEW_OLDER_MESSAGE": "View Older Messages",
+  "SELECT_USERS": "Select Users",
+  "ACTIVE_CHATS": "Active Chats",
+  "FORWARD_MESSAGE": "Forward Message"
 }

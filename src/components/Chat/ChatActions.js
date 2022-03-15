@@ -74,10 +74,10 @@ const TextInput = ({
           className={classes.replyMessageContainer}
         >
           <div>
-            <Typography variant="body2">{reply.message.senderName}</Typography>
+            <Typography variant="body1"><strong>{reply.message.senderName}</strong></Typography>
             <Typography variant="caption">{reply.message.text}</Typography>
           </div>
-          <IconButton onClick={removeReply}>
+          <IconButton color="error" onClick={removeReply}>
             <CloseIcon />
           </IconButton>
         </Stack>

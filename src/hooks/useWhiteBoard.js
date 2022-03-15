@@ -51,10 +51,10 @@ const useWhiteBoard = () => {
   const [isWhiteboardMaximized, setIsWhiteboardMaximized] =
     React.useState(false);
   const intializeSocket = (data) => {
-    socket = socketIOClient(SOCKETURL, {
+    socket = socketIOClient(`${SOCKETURL}/whiteboard`, {
       query: { ...data },
-      transports: ['websocket'],
-      reconnection: false
+      transports: ["websocket"],
+      reconnection: false,
     });
 
     socket.on("connect", async () => {
