@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.palette.radius.base,
     borderLeft: `4px solid ${theme.palette.secondary.main}`,
   },
+  myText: {
+    color: theme.palette.gray[900],
+  },
 }));
 
 const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
@@ -83,7 +86,9 @@ const MessageDisplay = ({ isSentByMe, message, onMenuClick, reply }) => {
               <Typography variant="caption">{reply.message.text}</Typography>
             </div>
           )}
-          <Typography variant="body2" color="white">{message.text}</Typography>
+          <Typography variant="body2" color={!isSentByMe ? "black" : "white"}>
+            {message.text}
+          </Typography>
         </div>
       </div>
     </div>
@@ -149,7 +154,15 @@ const MessageList = ({
           </MenuItem>
         </Menu>
         <Stack direction="row" justifyContent="center">
-          <Button color="inherit" size="small" variant="outlined" sx={{ mt: 1.5, mb: 1.5 }} onClick={() => incrementPage()}>View Older Messages</Button>
+          <Button
+            color="inherit"
+            size="small"
+            variant="outlined"
+            sx={{ mt: 1.5, mb: 1.5 }}
+            onClick={() => incrementPage()}
+          >
+            View Older Messages
+          </Button>
         </Stack>
         {messages.map((m, i) => {
           const isSentByMe = m.message.senderId === userId;

@@ -28,6 +28,27 @@ import ForwardMessageModal from "../Modals/ForwardMessageModal";
 const Chat = ({ assignmentId }) => {
   const classes = useStyles();
 
+  const { id, _id, name, isTeacher, loginType } = useSelector(
+    (state) => state.user
+  );
+  const { teachers, students } = useSelector((state) => state.common);
+  const userId = id || _id;
+  const {
+    groups,
+    sendMessage,
+    removeReplyMessage,
+    replyMessage,
+    forwardMessage,
+    reply,
+    addUsersToCurrentGroup,
+    incrementPage,
+    messages,
+    changeGroup,
+  } = useChat({
+    assignmentId: assignmentId,
+    userId: id,
+    userName: name,
+  });
   const {
     open: addChatUsersPromt,
     modalData: chatUsersAddList,
@@ -44,55 +65,36 @@ const Chat = ({ assignmentId }) => {
 
   const [value, setValue] = React.useState(0);
 
-  const { id, name, isTeacher, loginType } = useSelector((state) => state.user);
-  const { teachers, messages, students } = useSelector((state) => state.common);
-
   // console.log("teachers", "students", students, teachers);
 
   const courseTeachers =
     loginType === "google"
       ? teachers.filter((t) => t.teacherId !== id)
       : teachers;
-  const {
-    groups,
-    connectionStatus,
-    sendMessage,
-    removeReplyMessage,
-    replyMessage,
-    forwardMessage,
-    reply,
-    connectWithTeacher,
-    addUsersToCurrentGroup,
-    incrementPage,
-  } = useChat({
-    assignmentId: assignmentId,
-    userId: id,
-    userName: name,
-  });
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    changeGroup(groups[newValue]);
   };
 
-  const handleConnectTeacher = (currentTeacher) => {
-    connectWithTeacher(currentTeacher);
-  };
   const onOpenAddUsersToChat = (id) => {
     let data = [];
-    if (isTeacher) {
-      courseTeachers
-        .filter((t) => t.teacherId !== id || t.id !== id || t._id !== id)
-        .forEach((t) => {
-          data.push({
-            role: "Teachers",
-            name: t.name,
-            profileImage: undefined,
-            id: t.teacherId || t.id || t._id,
-          });
+    courseTeachers
+      .filter(
+        (t) => t.teacherId !== userId || t.id !== userId || t._id !== userId
+      )
+      .forEach((t) => {
+        data.push({
+          role: "Teachers",
+          name: t.name,
+          profileImage: undefined,
+          id: t.teacherId || t.id || t._id,
         });
-    }
+      });
     students
-      .filter((t) => t.studentId !== id || t.id !== id || t._id !== id)
+      .filter(
+        (t) => t.studentId !== userId || t.id !== userId || t._id !== userId
+      )
       .forEach((t) => {
         data.push({
           role: "Students",
@@ -155,23 +157,18 @@ const Chat = ({ assignmentId }) => {
           allowScrollButtonsMobile
           aria-label="scrollable force tabs example"
         >
-          {groups.length === 0 &&
-            (courseTeachers.length > 0 || students?.length > 0) && (
-              <Card>
-                <CardContent>
-                  <Button onClick={onOpenAddUsersToChat}>
-                    <ADDICON />
-                    Add users
-                  </Button>
-                </CardContent>
-              </Card>
-            )}
-
           {groups.map((g, i) => {
             const recepiants = g.users.filter((u) => u.id !== id);
+            console.log("group users", g.users, recepiants, id);
+
             const sliceAt = 5;
 
-            const label = recepiants.length > 2 ? "Group" : recepiants[0].name;
+            const label =
+              recepiants?.length > 0
+                ? recepiants.length > 2
+                  ? "Group"
+                  : recepiants[0].name
+                : [];
             return (
               <Tab
                 icon={
@@ -186,6 +183,16 @@ const Chat = ({ assignmentId }) => {
               />
             );
           })}
+          {(courseTeachers.length > 0 || students?.length > 0) && (
+            <Card>
+              <CardContent>
+                <Button onClick={onOpenAddUsersToChat}>
+                  <ADDICON />
+                  Add users
+                </Button>
+              </CardContent>
+            </Card>
+          )}
         </Tabs>
         <Divider />
 

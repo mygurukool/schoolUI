@@ -21,7 +21,7 @@ import useLanguages from "../../hooks/useLanguage";
 const useStyles = makeStyles((theme) => ({
   bg: {
     width: "100%",
-    height: 170,
+    height: 220,
     backgroundImage: "url(images/welcome.jpg)",
     backgroundSize: "100% 100%",
   },
@@ -72,13 +72,13 @@ const WelcomeModal = () => {
       <Dialog
         open={open}
         onClose={handleClose}
-        title="Add Website Link"
-        maxWidth="xs"
+        maxWidth="sm"
+        fullWidth
       >
         <div className={classes.bg} />
 
         <DialogTitle>
-          <Typography sx={{ textAlign: "center" }} variant="h5">
+          <Typography sx={{ textAlign: "center" }} variant="h6">
             {translate("WELCOME_TO_MOUGLI_SCHOOL")}
           </Typography>
         </DialogTitle>

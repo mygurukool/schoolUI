@@ -66,7 +66,7 @@ const SelectGroup = () => {
     dispatch(removeCurrentCourse());
     console.log("handleChange", value);
     setSelectedGroup(value?.groupName);
-    dispatch(showSnackBar(`Group changed to ${value.groupName}`));
+    dispatch(showSnackBar(`${translate("GROUP_CHANGED")} ${value.groupName}`));
     dispatch(getAllCourses({ groupId: value?._id || value?.id }));
     dispatch(
       getAllStudents({
@@ -197,6 +197,7 @@ const SelectGroup = () => {
             fullWidth
             variant="outlined"
             size="small"
+            dense
             label={translate("GROUP")}
             value={selectedGroup}
             onChange={({ target: { value } }) => {
@@ -217,7 +218,7 @@ const SelectGroup = () => {
             {filteredGroups &&
               filteredGroups.map((g, i) => {
                 return (
-                  <MenuItem key={i} value={g}>
+                  <MenuItem key={i} value={g} dense>
                     {g}
                   </MenuItem>
                 );

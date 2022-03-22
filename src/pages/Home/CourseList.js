@@ -328,7 +328,9 @@ const CoursesList = () => {
         {filteredCourses &&
           filteredCourses.length > 0 &&
           filteredCourses.map((c, index) => {
-            const isActive = c._id === currentCourse?._id;
+            const courseId = c?.id || c._id;
+            const currentCourseId = currentCourse?._id || currentCourse?.id;
+            const isActive = courseId === currentCourseId;
 
             return (
               <div

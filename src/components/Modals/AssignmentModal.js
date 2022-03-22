@@ -43,7 +43,7 @@ import { Controller, useForm } from "react-hook-form";
 import {
   AddLink,
   Close,
-  Delete,
+  DeleteTwoTone as Delete,
   FiberDvr,
   FileDownload,
   Link,
@@ -196,11 +196,6 @@ const AssignmentModal = () => {
       data.students = students.map((s) => s._id || s.id);
     }
 
-    // if (data?.students.length === 0) {
-    //   alert("Please select students");
-    // } else {
-    //   data.students = students;
-    // }
     const rawContentState = convertToRaw(editorState.getCurrentContent());
 
     const markup = draftToHtml(rawContentState);
@@ -238,8 +233,8 @@ const AssignmentModal = () => {
             courseId: currentCourse?._id || currentCourse?.id,
 
             audioVideo: explanationFiles,
-            uploadExercises: uploadedFiles.filter((f) => {
-              if (f?.metaData.id || f.id) {
+            uploadExercises: uploadedFiles?.filter((f) => {
+              if (f?.metaData?.id || f?.id) {
                 return false;
               }
               return true;
@@ -305,7 +300,6 @@ const AssignmentModal = () => {
   return (
     <Dialog
       open={open}
-      title={modalData ? "Edit Assginment" : "Create Assignment"}
       size="lg"
       fullScreen
       onClose={() => handleClose()}
@@ -329,9 +323,11 @@ const AssignmentModal = () => {
               ? translate("EDIT_ASSIGNMENT")
               : translate("CREATE_ASSIGNMENT")}
           </Typography>
-          <IconButton color="error" aria-label="close" onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
+          <Tooltip title={translate("CLOSE")}>
+            <IconButton color="error" aria-label="close" onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
         </Box>
       </DialogTitle>
       <DialogContent dividers>
@@ -363,7 +359,7 @@ const AssignmentModal = () => {
                   render={({ field }) => (
                     <TextField
                       fullWidth
-                      label="Title"
+                      label={translate("TITLE")}
                       variant="outlined"
                       {...field}
                       error={errors["assignmentTitle"]}
@@ -376,7 +372,7 @@ const AssignmentModal = () => {
                   rules={{
                     required: {
                       value: true,
-                      message: "Title is required",
+                      message: translate("TITLE_REQUIRED"),
                     },
                   }}
                 />
@@ -418,7 +414,7 @@ const AssignmentModal = () => {
 
                   <Stack direction="row" spacing={2} mt={2}>
                     <ToolTipIconButton
-                      title="Add  Youtube Link"
+                      title={translate("ADD_YOUTUBE_VIDEO_LINK")}
                       icon={<YouTube />}
                       onClick={() => openYoutubeModal()}
                     />
@@ -434,7 +430,7 @@ const AssignmentModal = () => {
                 <Stack>
                   <InputLabel>{translate("UPLOAD_EXERCISE")}</InputLabel>
 
-                  <Stack direction="row" mt={2} spacing={2}>
+                  <Stack direction="row" mt={2}>
                     <input
                       ref={uploadInputRef}
                       hidden
@@ -483,7 +479,7 @@ const AssignmentModal = () => {
               <Stack direction="column" spacing={3}>
                 <TextField
                   variant="outlined"
-                  label="For"
+                  label={translate("FOR")}
                   value={currentCourse?.courseName}
                   disabled
                 />
@@ -498,8 +494,8 @@ const AssignmentModal = () => {
                         onClick={() => openStudentSidebar()}
                         value={
                           field.value
-                            ? `${field.value?.length} student`
-                            : `${students.length} student`
+                            ? `${field.value?.length} ${translate("STUDENT")}`
+                            : `${students.length} ${translate("STUDENT")}`
                         }
                       />
                       <StudentSelectorDrawer
@@ -623,6 +619,7 @@ const ToolTipIconButton = ({ icon, title, onClick, value, onDelete }) => {
 
 const ItemList = ({ data, onDelete }) => {
   const classes = useStyles();
+  const translate = useLanguages();
   return (
     <List>
       {data.map((d, di) => {
@@ -632,9 +629,11 @@ const ItemList = ({ data, onDelete }) => {
             <ListItemIcon>{getIcon(d.type)}</ListItemIcon>
             <ListItemText primary={title} />
             <ListItemSecondaryAction>
-              <IconButton onClick={() => onDelete(d)}>
-                <Delete />
-              </IconButton>
+              <Tooltip title={translate("DELETE")}>
+                <IconButton color="error" onClick={() => onDelete(d)}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
             </ListItemSecondaryAction>
           </ListItem>
         );
@@ -647,11 +646,9 @@ const getIcon = (type) => {
   switch (type) {
     case "youtube":
       return <YouTube />;
-      break;
 
     default:
       return <UploadFile />;
-      break;
   }
 };
 
@@ -680,6 +677,8 @@ const useStyles = makeStyles((theme) => ({
     border: `1px solid ${theme.palette.primary.main}`,
     // padding: theme.spacing(0.5),
     borderRadius: 50,
+    marginRight: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   sideGrid: {
     // marginLeft: theme.spacing(2),
@@ -697,47 +696,3 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #f5f5f5",
   },
 }));
-
-const formData = [
-  {
-    type: "text",
-    name: "assignmentTitle",
-    label: "Title",
-    placeholder: "Assignment Title",
-    required: true,
-    size: 8,
-  },
-
-  {
-    type: "dateTime",
-    name: "dueDate",
-    label: "Due",
-    placeholder: "Assignment Due Date",
-    required: true,
-    size: 4,
-  },
-
-  // {
-  //   type: "autocomplete",
-  //   name: "students",
-  //   label: "Students",
-  //   placeholder: "Assignment Students",
-  //   required: false,
-  //   multiple: true,
-
-  //   size: 6,
-
-  //   hasOptions: true,
-  //   optionLabelProp: (e) => e.name,
-  //   optionValueProp: (e) => e.studentId,
-  // },
-
-  {
-    type: "richText",
-    name: "instructions",
-    label: "Instructions",
-    placeholder: "Assignment Students",
-    required: false,
-    size: 12,
-  },
-];

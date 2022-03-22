@@ -248,10 +248,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-            border: `1px solid ${theme.palette.gray[600]}`,
-            background: theme.palette.secondary.light,
-            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-          }
+              border: `1px solid ${theme.palette.gray[600]}`,
+              background: theme.palette.secondary.light,
+              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            }
           : undefined
       }
       elevation={0}
@@ -291,7 +291,7 @@ const AssignmentListItem = ({
             alignItems="center"
           >
             <PermissionsGate scopes={[SCOPES.CAN_EDIT_ASSIGNMENT]}>
-              <Tooltip title={"Edit Assignment"}>
+              <Tooltip title={translate("EDIT_ASSIGNMENT")}>
                 <IconButton
                   color="primary"
                   // disabled={!isMyGuruKool}
@@ -305,7 +305,7 @@ const AssignmentListItem = ({
               </Tooltip>
             </PermissionsGate>
             <PermissionsGate scopes={[SCOPES.CAN_DELETE_ASSIGNMENT]}>
-              <Tooltip title={"Delete Assignment"}>
+              <Tooltip title={translate("DELETE_ASSIGNMENT")}>
                 <IconButton
                   color="error"
                   // disabled={!isMyGuruKool}
@@ -411,7 +411,7 @@ const AssignmentListItem = ({
                 </Grid>
                 {enableChat && (
                   <Grid item lg={6}>
-                    <Chat assignmentId={id} />
+                    <Chat assignmentId={id || _id} />
                   </Grid>
                 )}
               </Grid>

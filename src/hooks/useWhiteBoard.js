@@ -51,10 +51,10 @@ const useWhiteBoard = () => {
   const [isWhiteboardMaximized, setIsWhiteboardMaximized] =
     React.useState(false);
   const intializeSocket = (data) => {
-    socket = socketIOClient(SOCKETURL, {
-      query: { data },
-      transports: ['websocket'],
-      reconnection: false
+    socket = socketIOClient(`${SOCKETURL}/whiteboard`, {
+      query: { ...data },
+      transports: ["websocket"],
+      reconnection: false,
     });
 
     socket.on("connect", async () => {
@@ -76,8 +76,9 @@ const useWhiteBoard = () => {
   const initializeWhiteBoard = () => {
     if (canCreateWhiteboard) {
       const orgName = generateOrgName();
-      const url = `https://wbo.ophir.dev/boards/${orgName}${currentGroup?.groupName
-        }${moment().format(`DDMMYYYY`)}`;
+      const url = `https://wbo.ophir.dev/boards/${orgName}${
+        currentGroup?.groupName
+      }${moment().format(`DDMMYYYY`)}`;
       if (isTeacher) {
         socket.emit("CREATE_WHITEBOARD", {
           courseId,

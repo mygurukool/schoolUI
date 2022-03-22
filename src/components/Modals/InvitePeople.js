@@ -42,6 +42,8 @@ import {
 import { ROLES, SCOPES } from "../../constants";
 import { usePermissions } from "../PermissionGate";
 import useLanguages from "../../hooks/useLanguage";
+import { emailRegex } from "../../helpers/regex";
+import validateEmail from "../../helpers/validateEmail";
 
 const InvitePeople = () => {
   const classes = useStyles();
@@ -54,7 +56,7 @@ const InvitePeople = () => {
     (state) => state.common
   );
 
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   const groupId = currentGroup?.id || currentGroup?._id;
 
@@ -65,6 +67,7 @@ const InvitePeople = () => {
   const [inviteOpen, setInviteOpen] = React.useState();
 
   const handleClose = () => {
+    setInviteOpen();
     dispatch(closeModal());
   };
 
@@ -119,17 +122,23 @@ const InvitePeople = () => {
 
   const onDeleteTeacher = (data) => {
     dispatch(
-      removeTeacher({ id: data, groupId: currentGroup.id }, () => {
-        getTeachers();
-      })
+      removeTeacher(
+        { id: data, groupId: currentGroup.id || currentGroup._id },
+        () => {
+          getTeachers();
+        }
+      )
     );
   };
 
   const onDeleteStudent = (data) => {
     dispatch(
-      removeStudent({ id: data, groupId: currentGroup.id }, () => {
-        getStudents();
-      })
+      removeStudent(
+        { id: data, groupId: currentGroup.id || currentGroup._id },
+        () => {
+          getStudents();
+        }
+      )
     );
   };
 
@@ -290,11 +299,27 @@ const Section = ({
 const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const translate = useLanguages();
   const [inviteList, setInviteList] = React.useState([]);
+  const [singleEmail, setSingleEmail] = React.useState();
+
   const handleCopy = () => {
     navigator.clipboard.writeText(data.inviteLink);
-    dispatch(showSnackBar("Link copied to your clipboard"));
+    dispatch(showSnackBar(translate("LINK_COPIED")));
   };
+
+  const handleInvite = () => {
+    if (inviteList.length === 0 && !singleEmail) {
+      alert("Please enter an email id");
+    } else if (inviteList.length === 0 && !validateEmail(singleEmail)) {
+      alert("Invalid Email");
+    } else if (inviteList.length === 0 && singleEmail) {
+      onInvite([singleEmail]);
+    } else {
+      onInvite(inviteList);
+    }
+  };
+
   const CloseAction = () => {
     return (
       <IconButton onClick={onClose}>
@@ -302,7 +327,6 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
       </IconButton>
     );
   };
-  const translate = useLanguages()
   return (
     <Card variant="outlined" className={classes.section}>
       <CardHeader subheader={title} action={<CloseAction />} />
@@ -312,6 +336,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           multiple
           value={inviteList}
           onChange={(event, newValue) => {
+            console.log("onChange", newValue);
             if (typeof newValue === "string") {
               setInviteList(newValue);
             } else if (newValue && newValue.inputValue) {
@@ -321,11 +346,21 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
               setInviteList(newValue);
             }
           }}
+          onInputChange={(event, newInputValue) => {
+            if (inviteList.length === 0) {
+              setSingleEmail(newInputValue);
+            }
+          }}
+          placeholder="Press enter after adding an email"
           handleHomeEndKeys
           options={[]}
           freeSolo
           renderInput={(params) => (
-            <TextField {...params} label="Enter Email id" />
+            <TextField
+              {...params}
+              label="Enter Email id"
+              placeholder="Press enter after adding an email address"
+            />
           )}
         />
       </CardContent>
@@ -335,7 +370,9 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
           <CardContent>
             <Stack direction="column" spacing={3}>
               <Stack>
-                <Typography variant="subtitle2">{translate("INVITE_LINK")}</Typography>
+                <Typography variant="subtitle2">
+                  {translate("INVITE_LINK")}
+                </Typography>
                 <Stack
                   direction="row"
                   justifyContent="space-between"
@@ -361,7 +398,7 @@ const InviteSection = ({ title, onClose, onInvite, data, isLoading }) => {
         <Stack
           direction="row"
           justifyContent="flex-end"
-          onClick={() => onInvite(inviteList)}
+          onClick={() => handleInvite()}
         >
           <Button variant="contained" color="primary">
             {isLoading && <CircularProgress />} {translate("INVITE")}

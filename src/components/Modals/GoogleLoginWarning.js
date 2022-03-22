@@ -1,50 +1,60 @@
 import { Warning } from "@mui/icons-material";
 import { Alert, Link, Stack, Typography } from "@mui/material";
 import React from "react";
+import useLanguages from "../../hooks/useLanguage";
 import ModalContainer from "../ModalContainer";
-
-const sections = [
-  {
-    title: "List of Data to be stored and how it will be used",
-    list: [
-      "Your Email id, google id will be stored for login again and auto login functionaliy.",
-    ],
-  },
-  {
-    title: "Data Privacy",
-    list: [
-      "The data will not be shared with any 3rd party, but for mougl.school usage only.",
-      "Your Data will be deleted after inactiviy of your account after 2 years.",
-    ],
-  },
-
-  {
-    title: "Privacy policy",
-    description: "Please read our privacy policy for more information",
-
-    link: {
-      title: "Privacy Policy",
-      path: "privacy",
+import {
+  openModal,
+} from "../../redux/action/utilActions";
+import { useDispatch, useSelector } from "react-redux";
+const GoogleLoginWarning = () => {
+  const dispatch = useDispatch()
+  const handleClose = () => {
+    dispatch(openModal("welcome"))
+  }
+  const translate = useLanguages()
+  const { modalOpen } = useSelector((state) => state.util);
+  const open = modalOpen === "googlewarning";
+  const sections = [
+    {
+      title: translate("LIST_OF_DATA_TO_BE_STORED_AND_HOW_IT_WILL_BE_USED"),
+      list: [
+        translate("YOUR_IDS_WILL_BE_STORED"),
+      ],
     },
-  },
-];
+    {
+      title: translate("DATA_PRIVACY"),
+      list: [
+        translate("DATA_WILL_NOT_BE_SHARED"),
+        translate("DATA_WILL_BE_DELETED"),
+      ],
+    },
+    {
+      title: translate("PRIVACY_POLICY"),
+      description: translate("READ_PRIVACY_POLICY"),
 
-const GoogleLoginWarning = ({ open, onClose, onSubmit }) => {
+      link: {
+        title: translate("PRIVACY_POLICY"),
+        path: translate("PRIVACY"),
+      },
+    },
+  ];
+
+
   return (
     <ModalContainer
       open={open}
-      onClose={onClose}
-      onSubmit={() => onSubmit()}
-      title="Desclaimer"
+      onClose={handleClose}
+      title={translate("DISCLAIMER")}
       size="md"
       submitTitle="Continue"
     >
       <Stack direction="column" spacing={2}>
-        <Stack direction="row" alignItems="center" justifyContent={"center"}>
+        {/* <Stack direction="row" alignItems="center" justifyContent={"center"}>
           <Alert variant="filled" severity="warning">
-            You are about to login with google
+            {translate("YOU_ARE_ABOUT_TO_LOGIN_WITH_GOOGLE")}
           </Alert>
-        </Stack>
+        </Stack> */}
         {sections.map((s, si) => {
           return <ContentSection {...s} key={si} />;
         })}
@@ -58,7 +68,7 @@ export default GoogleLoginWarning;
 const ContentSection = ({ title, description, list, link }) => {
   return (
     <Stack direaction="column" spacing={1}>
-      <Typography variant="h6">{title}</Typography>
+      <Typography variant="subtitle1">{title}</Typography>
 
       {description && <Typography variant="body2">{description}</Typography>}
       {list && (

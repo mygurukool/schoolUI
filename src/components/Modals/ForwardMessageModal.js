@@ -18,15 +18,59 @@ import useLanguages from "../../hooks/useLanguage";
 const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
   const [selected, setSelected] = React.useState([]);
 
-  const handleSubmit = () => {
-    if (selected.length > 0) {
-      onSubmit(selected);
-    } else {
-      onClose();
-      setSelected([]);
-    }
+  // const handleSubmit = () => {
+  //   if (selected.length > 0) {
+  //     onSubmit(selected);
+  //   } else {
+  //     onClose();
+  //     setSelected([]);
+  //   }
+  // };
+
+  const filterStudentFromExistingGroups = () => {
+    const twoUsergroups = options?.groups.filter((g) => g.users.length === 2);
+    const filteredStudents = options?.students.filter((s) => {
+      const findGroup = twoUsergroups.find((g) => {
+        const foundUser = g.users.find((u) => {
+          return u.id === s.id || u.id === s._id;
+        });
+        if (foundUser) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (findGroup) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return filteredStudents || [];
   };
-  const translate = useLanguages()
+
+  const filterTeachersFromExistingGroups = () => {
+    const twoUsergroups = options?.groups.filter((g) => g.users.length === 2);
+    const filteredStudents = options?.teachers.filter((s) => {
+      const findGroup = twoUsergroups.find((g) => {
+        const foundUser = g.users.find((u) => {
+          return u.id === s.id || u.id === s._id;
+        });
+        if (foundUser) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (findGroup) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return filteredStudents || [];
+  };
+  const translate = useLanguages();
   return (
     <ModalContainer
       open={open}
@@ -41,30 +85,29 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
       <List
         subheader={
           <ListSubheader component="div" id="nested-list-subheader">
-            Groups
+            Active Chats
           </ListSubheader>
         }
       >
         {options?.groups?.map((g, i) => {
           const label = g.users.length > 2 ? "Group" : g.users[0].name;
-          if (g.users.length > 2)
-            return (
-              <ListItem>
-                <ListItemButton
-                  onClick={() => {
-                    onSubmit({
-                      type: "group",
-                      data: g,
-                    });
-                  }}
-                >
-                  <ListItemIcon>
-                    <RenderAvatar recepiants={g.users} sliceAt={4} />
-                  </ListItemIcon>
-                  <ListItemText primary={`${label}`} />
-                </ListItemButton>
-              </ListItem>
-            );
+          return (
+            <ListItem>
+              <ListItemButton
+                onClick={() => {
+                  onSubmit({
+                    type: "group",
+                    data: g,
+                  });
+                }}
+              >
+                <ListItemIcon>
+                  <RenderAvatar recepiants={g.users} sliceAt={4} />
+                </ListItemIcon>
+                <ListItemText primary={`${label}`} />
+              </ListItemButton>
+            </ListItem>
+          );
         })}
       </List>
 
@@ -75,7 +118,7 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
           </ListSubheader>
         }
       >
-        {options?.students?.map((g, i) => {
+        {filterStudentFromExistingGroups().map((g, i) => {
           const label = g.name;
 
           return (
@@ -104,7 +147,7 @@ const ForwardMessageModal = ({ open, onClose, options, onSubmit }) => {
           </ListSubheader>
         }
       >
-        {options?.teachers?.map((g, i) => {
+        {filterTeachersFromExistingGroups().map((g, i) => {
           const label = g.name;
 
           return (

@@ -86,6 +86,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
+  const { currentGroup } = useSelector(state => state.common)
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -282,7 +283,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
 
             {!(isGoogleLogin || isMircrosoftLogin) && (
               <Typography variant="h6" className={classes.appName}>
-                {user?.organization?.organizationName || "My Gurukool (BETA)"}
+                {currentGroup?.organizationName || user?.organization?.organizationName || "My Gurukool (BETA)"}
               </Typography>
             )}
           </Box>
