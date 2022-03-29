@@ -12,11 +12,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import React from "react";
 import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
-import ExpandLess from "@mui/icons-material/ExpandMore";
-import ExpandMore from "@mui/icons-material/KeyboardArrowRight";
-import { studentRoutes, teacherRoutes } from "../../routes/LeftSideBarRoutes";
 import { useDispatch } from "react-redux";
-import { openModal } from "../../redux/action/utilActions";
 
 const drawerWidth = 260;
 const useStyles = makeStyles((theme) => ({
@@ -70,20 +66,7 @@ const Index = ({ open, onClose, children }) => {
       [index]: !expanded[index],
     });
   };
-  const checkRoles = (role) => {
-    switch (role) {
-      case "student":
-        return studentRoutes;
-      case "teacher":
-        return teacherRoutes;
-      default:
-        break;
-    }
-  };
 
-  const handleOpenModal = (modalName) => {
-    dispatch(openModal(modalName));
-  };
   return (
     <Drawer
       className={classes.drawer}

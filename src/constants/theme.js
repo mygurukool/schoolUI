@@ -60,6 +60,10 @@ let theme = createTheme({
       light: "#fce9b3",
       contrastText: "#fff",
     },
+    black: {
+      main: "#212121",
+      contrastText: "#fff",
+    },
     blue: {
       main: "#2c8bc7",
     },
