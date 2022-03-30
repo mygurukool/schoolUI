@@ -64,7 +64,6 @@ const SelectGroup = () => {
   const handleChange = (value) => {
     dispatch(removeAssignmentData());
     dispatch(removeCurrentCourse());
-    console.log("handleChange", value);
     setSelectedGroup(value?.groupName);
     dispatch(showSnackBar(`${translate("GROUP_CHANGED")} ${value.groupName}`));
     dispatch(getAllCourses({ groupId: value?._id || value?.id }));
@@ -80,22 +79,11 @@ const SelectGroup = () => {
         role: ROLES["teacher"],
       })
     );
-    if (loginType === "google") {
-      dispatch(removeUserAsTeacher());
-    }
   };
 
-  // const handleEdit = (data) => {
-  //   dispatch(openModal("group", data));
-  //   handleCloseMenu();
-  // };
-  // const handleInvite = (data) => {
-  //   handleCloseMenu();
-  //   dispatch(openModal("invitepeople"));
   // };
 
   const handleDelete = (data) => {
-    // dispatch(openModal("group", data));
     dispatch(
       deleteGroup(data, () => {
         dispatch(getAllGroups());
@@ -103,75 +91,11 @@ const SelectGroup = () => {
     );
   };
 
-  // const handleOpenMenu = (event) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-
-  // const handleCloseMenu = (event) => {
-  //   setAnchorEl(null);
-  // };
-
-  // const onDelete = () => {
-  //   if (currentGroup === "all") {
-  //     alert("Please Select a group");
-  //     return;
-  //   }
-  //   deleteRef.current.open(currentGroup);
-  //   handleCloseMenu();
-  // };
-
   React.useEffect(() => {
     if (currentGroup) {
       handleChange(currentGroup);
     }
   }, [currentGroup]);
-
-  // const GroupMenu = () => {
-  //   return (
-  //     <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu} >
-  //       <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
-  //         <MenuItem onClick={() => handleEdit()}>
-  //           <ListItemIcon>
-  //             <ADDICON fontSize="small" />
-  //           </ListItemIcon>
-  //           <ListItemText>Add group</ListItemText>
-  //         </MenuItem>
-  //       </PermissionsGate>
-
-  //       {currentGroup && (
-  //         <>
-  //           <PermissionsGate scopes={[SCOPES.CAN_EDIT_GROUP]}>
-  //             <MenuItem onClick={() => handleEdit(currentGroup)}>
-  //               <ListItemIcon>
-  //                 <EDITICON fontSize="small" />
-  //               </ListItemIcon>
-  //               <ListItemText>Edit {currentGroup?.groupName}</ListItemText>
-  //             </MenuItem>
-  //           </PermissionsGate>
-  //           <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
-  //             <MenuItem onClick={() => onDelete()}>
-  //               <ListItemIcon>
-  //                 <DELETEICON fontSize="small" />
-  //               </ListItemIcon>
-  //               <ListItemText>Delete {currentGroup?.groupName}</ListItemText>
-  //             </MenuItem>
-  //           </PermissionsGate>
-  //           <Divider />
-  //           <PermissionsGate
-  //             scopes={[SCOPES.CAN_INVITE_TEACHER, SCOPES.CAN_INVITE_STUDENT]}
-  //           >
-  //             <MenuItem onClick={() => handleInvite()}>
-  //               <ListItemIcon>
-  //                 <INVITEICON fontSize="small" />
-  //               </ListItemIcon>
-  //               <ListItemText>Invite People</ListItemText>
-  //             </MenuItem>
-  //           </PermissionsGate>
-  //         </>
-  //       )}
-  //     </StyledMenu>
-  //   );
-  // };
 
   return (
     <>
@@ -205,10 +129,6 @@ const SelectGroup = () => {
               dispatch(setCurrentGroup(foundGroup));
             }}
           >
-            {/* <PermissionGate scopes={[SCOPES.canCreate]}> */}
-
-            {/* </PermissionGate> */}
-
             {filteredGroups.length === 0 && (
               <MenuItem value="" disabled selected dense>
                 {translate("NO_GROUP_AVAILABLE")}
@@ -225,21 +145,6 @@ const SelectGroup = () => {
               })}
           </Select>
         </FormControl>
-
-        {/* <PermissionsGate
-          scopes={[
-            SCOPES.CAN_CREATE_GROUP,
-            SCOPES.CAN_EDIT_GROUP,
-            SCOPES.CAN_DELETE_GROUP,
-            SCOPES.CAN_INVITE_STUDENT,
-            SCOPES.CAN_INVITE_TEACHER,
-          ]}
-        >
-          <IconButton onClick={handleOpenMenu}>
-            <MENUICON />
-          </IconButton>
-          <GroupMenu />
-        </PermissionsGate> */}
       </Grid>
     </>
   );

@@ -16,6 +16,7 @@ const initialstate = {
   assignments: [],
   teachers: [],
   students: [],
+  permissions: [],
 
   messages: [],
 
@@ -173,10 +174,12 @@ const sizeReducer = (state = initialstate, action) => {
     //group
 
     case groupTypes.GET_GROUP_SUCCESS:
-      const firstGroup = getData()[0];
+      const firstGroup = getData()?.groups[0];
       return {
         ...state,
-        groups: getData(),
+        groups: getData()?.groups || [],
+        permissions: firstGroup?.permissions || [],
+
         currentGroup: firstGroup,
       };
 
@@ -184,6 +187,7 @@ const sizeReducer = (state = initialstate, action) => {
       return {
         ...state,
         currentGroup: action.payload,
+        permissions: action.payload.permissions,
       };
 
     case commonTypes.REMOVE_CURRENT_GROUP:

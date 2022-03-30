@@ -5,18 +5,17 @@ import { Button, DialogActions } from "@mui/material";
 import useModal from "../../hooks/useModal";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserAsTeacher } from "../../redux/action/userActions";
-import checkIfUserIsTeacher from "../../helpers/checkIfUserIsTeacher";
 import useLanguages from "../../hooks/useLanguage";
+import { usePermissions } from "../PermissionGate";
+import { SCOPES } from "../../constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
 
 const TeacherAccept = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
-  const id = useSelector((state) => state.user.id);
   const teachers = useSelector((state) => state.common.teachers);
 
   const {
@@ -30,10 +29,12 @@ const TeacherAccept = () => {
 
     dispatch(setUserAsTeacher());
   };
-  const translate = useLanguages()
+  const translate = useLanguages();
+  const hasPermissions = usePermissions({
+    scopes: [SCOPES.CAN_CHECK_SUBMISSIONS],
+  });
   React.useEffect(() => {
-    const founData = checkIfUserIsTeacher(id, teachers);
-    if (founData) {
+    if (hasPermissions) {
       openTeacherPrompt();
     }
   }, [teachers]);

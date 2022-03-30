@@ -23,7 +23,7 @@ const CustomLoading = (props) => {
   const classes = useStyles();
   const { currentGroup } = useSelector((state) => state.common);
   const getLoaderGif = () => {
-    switch (currentGroup.ageGroupId) {
+    switch (currentGroup?.ageGroupId) {
       case "1":
         return "preteen.gif";
 

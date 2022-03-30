@@ -22,10 +22,7 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
 
   return (
     <Stack direction="row" space="2">
-      <PermissionsGate
-        scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
-        exceptionLogin={"google"}
-      >
+      <PermissionsGate scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}>
         {/* <Button
             color="primary"
             variant="contained"
@@ -58,10 +55,7 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           {translate("WHITE_BOARD")}
         </AppButton>
       </PermissionsGate>
-      <PermissionsGate
-        scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
-        exceptionLogin={"google"}
-      >
+      <PermissionsGate scopes={[SCOPES.CAN_VIEW_CONFERENCE]}>
         <AppButton
           color="secondary"
           variant="contained"
@@ -74,45 +68,6 @@ const TopSectionButtons = ({ initializeWhiteBoard, initializeConference }) => {
           {translate("CONFERENCE")}
         </AppButton>
       </PermissionsGate>
-
-      {/* 
-
-      <Box
-        sx={{
-          display: {
-            xs: 'block', sm: 'none'
-          }
-        }}
-      >
-        <PermissionsGate
-          scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
-          exceptionLogin={"google"}
-        >
-          <IconButton
-            color="primary"
-            variant="contained"
-            // startIcon={<ConferenceIcon />}
-            onClick={() => {
-              initializeWhiteBoard();
-            }}
-
-          >
-            <Whiteboard />
-          </IconButton>
-        </PermissionsGate>
-        <PermissionsGate
-          scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
-          exceptionLogin={"google"}
-        >
-          <IconButton
-            color="secondary"
-            onClick={() => initializeConference()}
-
-          >
-            <ConferenceIcon />
-          </IconButton>
-        </PermissionsGate>
-      </Box> */}
     </Stack>
   );
 };

@@ -18,7 +18,6 @@ const useConference = () => {
   } = useSelector((state) => state.user);
   const canCreateConference = usePermissions({
     scopes: [SCOPES.CAN_CREATE_CONFERENCE],
-    exceptionLogin: "google",
   });
 
   const courseId = currentCourse?._id || currentCourse?.id;
@@ -30,8 +29,8 @@ const useConference = () => {
   const [conferenceData, setConferenceData] = React.useState();
 
   const intializeSocket = (data) => {
-    socket = socketIOClient(`${SOCKETURL}/conference`, {
-      query: { ...data },
+    socket = socketIOClient(`${SOCKETURL}`, {
+      query: { ...data, path: "conference" },
     });
   };
 
@@ -151,7 +150,6 @@ export default useConference;
 //   } = useSelector((state) => state.user);
 //   const canCreateConference = usePermissions({
 //     scopes: [SCOPES.CAN_CREATE_CONFERENCE],
-//     exceptionLogin: "google",
 //   });
 //   const courseId = currentCourse?._id || currentCourse?.id;
 

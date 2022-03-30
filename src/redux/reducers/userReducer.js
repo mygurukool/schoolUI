@@ -35,7 +35,7 @@ const sizeReducer = (state = initialstate, action) => {
       };
 
     case authTypes.LOGIN_USER_SUCCESS:
-      setToken(getData().token, getData().loginType);
+      setToken(getData().token, getData().loginType, getData()?.user?.id);
       return {
         ...state,
         isLoading: false,

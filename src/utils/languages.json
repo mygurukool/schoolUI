@@ -6,5 +6,9 @@
   {
     "name": "Deutsch",
     "code": "de"
+  },
+  {
+    "name": "French",
+    "code": "fr"
   }
 ]

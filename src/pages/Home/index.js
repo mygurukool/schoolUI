@@ -74,11 +74,8 @@ const Home = (props) => {
 
   React.useEffect(() => {
     dispatch(getAllGroups());
-    if (loginType !== "mygurukool") {
-      dispatch(getAllCourses());
-    }
   }, []);
-  const translate = useLanguages()
+  const translate = useLanguages();
   const shouldDivideSection = whiteBoardUrl || isConfrenceOpen;
 
   const isSectionMaximized = isWhiteboardMaximized || isConferenceMaximized;
@@ -111,8 +108,6 @@ const Home = (props) => {
     );
   };
 
-
-
   const handleEdit = (data) => {
     dispatch(openModal("group", data));
     handleCloseMenu();
@@ -121,7 +116,7 @@ const Home = (props) => {
     handleCloseMenu();
     dispatch(openModal("invitepeople"));
   };
-  const { isDesktop, isTablet } = useResposive()
+  const { isDesktop, isTablet } = useResposive();
   const GroupMenu = () => {
     return (
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
@@ -141,7 +136,9 @@ const Home = (props) => {
                 <ListItemIcon>
                   <EDITICON fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>{translate("EDIT")} {currentGroup?.groupName}</ListItemText>
+                <ListItemText>
+                  {translate("EDIT")} {currentGroup?.groupName}
+                </ListItemText>
               </MenuItem>
             </PermissionsGate>
             <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
@@ -149,7 +146,9 @@ const Home = (props) => {
                 <ListItemIcon>
                   <DELETEICON fontSize="small" />
                 </ListItemIcon>
-                <ListItemText>{translate("DELETE")} {currentGroup?.groupName}</ListItemText>
+                <ListItemText>
+                  {translate("DELETE")} {currentGroup?.groupName}
+                </ListItemText>
               </MenuItem>
             </PermissionsGate>
             <Divider />
@@ -169,11 +168,8 @@ const Home = (props) => {
     );
   };
 
-
-
   return (
     <>
-
       <TeacherAcceptModal />
       <PermissionsGate scopes={[SCOPES.CAN_DELETE_GROUP]}>
         <DeleteModal
@@ -187,13 +183,13 @@ const Home = (props) => {
           <Container maxWidth={shouldDivideSection ? "xl" : "md"}>
             {/* top section */}
             <div className={classes.container}>
-              <Stack flexDirection="row" alignItems="center" justifyContent="space-between" mb={2}>
-                <PermissionsGate
-                  scopes={[SCOPES.CAN_VIEW_GROUP]}
-                  exceptionLogin={"google"}
-                >
-                  <SelectGroup />
-                </PermissionsGate>
+              <Stack
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+                mb={2}
+              >
+                <SelectGroup />
                 <Stack
                   flexDirection="row"
                   spacing={"1"}
@@ -215,7 +211,11 @@ const Home = (props) => {
                       SCOPES.CAN_INVITE_TEACHER,
                     ]}
                   >
-                    <IconButton className="groupMenu" onClick={handleOpenMenu} variant="inherit">
+                    <IconButton
+                      className="groupMenu"
+                      onClick={handleOpenMenu}
+                      variant="inherit"
+                    >
                       <MENUICON />
                     </IconButton>
 
@@ -223,10 +223,7 @@ const Home = (props) => {
                   </PermissionsGate>
                 </Stack>
               </Stack>
-              <PermissionsGate
-                scopes={[SCOPES.CAN_VIEW_COURSE]}
-                exceptionLogin={"google"}
-              >
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_COURSE]}>
                 {!isSectionMaximized && (
                   <LoadingContainer isLoading={isCourseLoading}>
                     <CoursesList />
@@ -238,15 +235,25 @@ const Home = (props) => {
             {/* middle section */}
             <Grid
               container
-              direction={!isDesktop ? 'column-reverse' : 'row'}
+              direction={!isDesktop ? "column-reverse" : "row"}
               className={clsx(classes.container, classes.middleContainer)}
             >
-              <PermissionsGate
-                scopes={[SCOPES.CAN_VIEW_ASSIGNMENT]}
-                exceptionLogin={"google"}
-              >
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_ASSIGNMENT]}>
                 {!isSectionMaximized && (
-                  <Grid sx={{ ...((whiteBoardUrl || isConfrenceOpen) && { borderRight: '1px solid', borderColor: { md: 'gray.600', xs: 'transparent' }, pr: { md: 1.5, xs: 0 } }) }} item lg={shouldDivideSection ? 6 : 12} md={shouldDivideSection ? 6 : 12} sm={12} xs={12}>
+                  <Grid
+                    sx={{
+                      ...((whiteBoardUrl || isConfrenceOpen) && {
+                        borderRight: "1px solid",
+                        borderColor: { md: "gray.600", xs: "transparent" },
+                        pr: { md: 1.5, xs: 0 },
+                      }),
+                    }}
+                    item
+                    lg={shouldDivideSection ? 6 : 12}
+                    md={shouldDivideSection ? 6 : 12}
+                    sm={12}
+                    xs={12}
+                  >
                     <LoadingContainer isLoading={isAssignmentLoading}>
                       <AssignmentList />
                     </LoadingContainer>
@@ -254,10 +261,7 @@ const Home = (props) => {
                 )}
               </PermissionsGate>
 
-              <PermissionsGate
-                scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}
-                exceptionLogin={"google"}
-              >
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_WHITEBOARD]}>
                 {!isConfrenceOpen && whiteBoardUrl && (
                   <WhiteBoard
                     isSectionMaximized={isSectionMaximized}
@@ -268,10 +272,7 @@ const Home = (props) => {
                   />
                 )}
               </PermissionsGate>
-              <PermissionsGate
-                scopes={[SCOPES.CAN_VIEW_CONFERENCE]}
-                exceptionLogin={"google"}
-              >
+              <PermissionsGate scopes={[SCOPES.CAN_VIEW_CONFERENCE]}>
                 {isConfrenceOpen && (
                   <Conference
                     isSectionMaximized={isSectionMaximized}
@@ -285,9 +286,13 @@ const Home = (props) => {
           </Container>
         </div>
         <div className={classes.platformName}>
-          <Typography>Mougli.school</Typography>
+          <img
+            src="logo.png"
+            alt="mougli.school logo"
+            className={classes.platformLogo}
+          />
         </div>
-      </div >
+      </div>
     </>
   );
 };
@@ -342,6 +347,11 @@ const useStyles = makeStyles((theme) => ({
     bottom: 30,
     left: 30,
   },
+  platformLogo: {
+    height: 100,
+    width: 100,
+    objectFit: "contain",
+  },
   container: {
     width: "100%",
     height: "auto",
@@ -350,10 +360,10 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0px 0px 15px -10px rgba(0, 0, 0, 0.2)",
     // boxShadow: "0px 2px 5px -1px rgba(0,0,0,0.2)",
     padding: theme.spacing(3, 2.5, 2.5, 2.5),
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up("xs")]: {
       padding: theme.spacing(2, 1.5, 0, 1.5),
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       padding: theme.spacing(2.5, 2, 0.5, 2),
     },
     marginBottom: theme.spacing(1),
@@ -378,10 +388,10 @@ const useStyles = makeStyles((theme) => ({
   },
   middleContainer: {
     padding: theme.spacing(2, 1.5),
-    [theme.breakpoints.up('xs')]: {
+    [theme.breakpoints.up("xs")]: {
       padding: theme.spacing(1.5),
     },
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       padding: theme.spacing(2.5),
     },
   },

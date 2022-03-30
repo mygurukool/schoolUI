@@ -33,11 +33,7 @@
   "CLOSE": "Schliessen",
   "SUBMIT": "Absenden",
   "SAVE": "Speichern",
-<<<<<<< HEAD
-  "INVITE_PEOPLE": "Personen einladen",
-=======
   "INVITE_PEOPLE": "Personen hinzufügen",
->>>>>>> b584d9729b2c0226d438eac4f84707b085d9648e
   "NO_GROUP_AVAILABLE": "Keine Gruppen vorhanden",
   "ADD_NEW_COURSE": "Neuen Subjekt hinzufügen",
   "CREATE_COURSE_ALERT": "Bitte erstellen Sie eine Gruppe, um Subjekte hinzuzufügen",
@@ -61,11 +57,7 @@
   "CHECK_SUBMISSIONS": "Einreichungen Prüfen",
   "UPLOAD_ANY_FILE": "Beliebige Datei hochladen",
   "ADD_ANY_WEBSITE_LINK": "Website-Link hinzufügen",
-<<<<<<< HEAD
-  "STUDENTS": "Studierende",
-=======
   "STUDENTS": "Studente",
->>>>>>> b584d9729b2c0226d438eac4f84707b085d9648e
   "TEACHERS": "Lehrpersonen",
   "PEOPLE": "Personen",
   "POINTS": "Punkte",
