@@ -19,7 +19,6 @@ const useWhiteBoard = () => {
 
   const {
     id: userId,
-    isTeacher,
     name: userName,
     loginType,
     organization,
@@ -71,19 +70,18 @@ const useWhiteBoard = () => {
   };
 
   const initializeWhiteBoard = () => {
+    console.log("initializeWhiteBoard", canCreateWhiteboard);
+    const orgName = generateOrgName();
+    const url = `https://wbo.ophir.dev/boards/${orgName}${
+      currentGroup?.groupName
+    }${moment().format(`DDMMYYYY`)}`;
     if (canCreateWhiteboard) {
-      const orgName = generateOrgName();
-      const url = `https://wbo.ophir.dev/boards/${orgName}${
-        currentGroup?.groupName
-      }${moment().format(`DDMMYYYY`)}`;
-      if (isTeacher) {
-        socket.emit("CREATE_WHITEBOARD", {
-          courseId,
-          whiteBoardUrl: url,
-        });
-      } else {
-        setWhiteBoardUrl(url);
-      }
+      socket.emit("CREATE_WHITEBOARD", {
+        courseId,
+        whiteBoardUrl: url,
+      });
+    } else {
+      setWhiteBoardUrl(url);
     }
   };
 
@@ -93,6 +91,7 @@ const useWhiteBoard = () => {
       if (socket) {
         socket.on("SET_WHITEBOARD_URL", (data) => {
           console.log("SET_WHITEBOARD_URL", data);
+
           setWhiteBoardUrl(data);
         });
       }

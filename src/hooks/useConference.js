@@ -36,13 +36,14 @@ const useConference = () => {
 
   //methos
   const handleUpComingConference = async (data) => {
+    console.log("handleUpComingConference", data);
     setIsConferenceOpen(true);
     setTimeout(() => {
       const domain = "meet.jit.si";
       const options = {
         roomName: data.roomName,
         height: 580,
-        id: data.id,
+        // id: data.id,
         parentNode: document.getElementById("conference"),
         interfaceConfigOverwrite: {
           filmStripOnly: false,
@@ -58,8 +59,7 @@ const useConference = () => {
         api.executeCommand("displayName", userName);
       });
       api.addEventListener("videoConferenceLeft", (data) => {
-        setConferenceData();
-        setIsConferenceOpen(false);
+        handleLeaveConference();
       });
     }, 1000);
   };
@@ -81,7 +81,7 @@ const useConference = () => {
         setTimeout(() => {
           const domain = "meet.jit.si";
           const options = {
-            roomName: "GuruKoolSchoolVideoConference",
+            roomName: `${courseId}`,
             height: 580,
             parentNode: document.getElementById("conference"),
             interfaceConfigOverwrite: {

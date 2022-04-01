@@ -18,7 +18,7 @@ import {
 import CheckIcon from "@mui/icons-material/CheckTwoTone";
 import RightIcon from "@mui/icons-material/ExpandMore";
 import ChatIcon from "@mui/icons-material/TextsmsTwoTone";
-import CloseIcon from "@mui/icons-material/HighlightOffTwoTone"
+import CloseIcon from "@mui/icons-material/HighlightOffTwoTone";
 import { FactCheckTwoTone as FactCheck } from "@mui/icons-material";
 import clsx from "clsx";
 import Videocard from "./VideoCard";
@@ -29,7 +29,9 @@ import moment from "moment";
 import { DUEDATETIMEFORMAT, SCOPES } from "../../constants";
 import Chat from "../../components/Chat";
 import { useSelector, useDispatch } from "react-redux";
-import PermissionsGate from "../../components/PermissionGate";
+import PermissionsGate, {
+  usePermissions,
+} from "../../components/PermissionGate";
 import Add from "@mui/icons-material/Add";
 import { openModal, openSubmissionModal } from "../../redux/action/utilActions";
 import Edit from "@mui/icons-material/EditTwoTone";
@@ -212,6 +214,7 @@ const AssignmentListItem = ({
   const hasDocuments = materials.filter((d) => d.driveFile);
   const isMyGuruKool = loginType === "mygurukool";
   const translate = useLanguages();
+  const hasPermission = usePermissions({ scopes: [SCOPES.CAN_CREATE_STUDENT] });
   const ChatBtn = () => {
     return (
       <AppButton
@@ -222,7 +225,11 @@ const AssignmentListItem = ({
         size="small"
         className="chatBtn"
       >
-        {enableChat ? translate("CLOSE") : translate("FEEL_FREE_TO_ASK")}
+        {enableChat
+          ? translate("CLOSE")
+          : hasPermission
+          ? translate("MESSAGE_STUDENTS")
+          : translate("FEEL_FREE_TO_ASK")}
       </AppButton>
     );
   };
@@ -249,10 +256,10 @@ const AssignmentListItem = ({
       style={
         expanded
           ? {
-            border: `1px solid ${theme.palette.gray[600]}`,
-            background: theme.palette.secondary.light,
-            // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
-          }
+              border: `1px solid ${theme.palette.gray[600]}`,
+              background: theme.palette.secondary.light,
+              // boxShadow: "0px 10px 10px -5px rgba(0, 0, 0, 0.15)",
+            }
           : undefined
       }
       elevation={0}
