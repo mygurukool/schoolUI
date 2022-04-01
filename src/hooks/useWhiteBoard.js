@@ -41,7 +41,6 @@ const useWhiteBoard = () => {
 
   const canCreateWhiteboard = usePermissions({
     scopes: [SCOPES.CAN_CREATE_WHITEBOARD],
-    exceptionLogin: "google",
   });
 
   const courseId = currentCourse?._id || currentCourse?.id;
@@ -51,10 +50,8 @@ const useWhiteBoard = () => {
   const [isWhiteboardMaximized, setIsWhiteboardMaximized] =
     React.useState(false);
   const intializeSocket = (data) => {
-    socket = socketIOClient(`${SOCKETURL}/whiteboard`, {
-      query: { ...data },
-      transports: ["websocket"],
-      reconnection: false,
+    socket = socketIOClient(`${SOCKETURL}`, {
+      query: { ...data, path: "whiteboard" },
     });
 
     socket.on("connect", async () => {
@@ -94,7 +91,10 @@ const useWhiteBoard = () => {
     if (courseId) {
       intializeSocket({ courseId, userId });
       if (socket) {
-        socket.on("SET_WHITEBOARD_URL", (data) => setWhiteBoardUrl(data));
+        socket.on("SET_WHITEBOARD_URL", (data) => {
+          console.log("SET_WHITEBOARD_URL", data);
+          setWhiteBoardUrl(data);
+        });
       }
     }
   }, [courseId]);

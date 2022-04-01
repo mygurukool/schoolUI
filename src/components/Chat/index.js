@@ -68,9 +68,7 @@ const Chat = ({ assignmentId }) => {
   // console.log("teachers", "students", students, teachers);
 
   const courseTeachers =
-    loginType === "google"
-      ? teachers.filter((t) => t.teacherId !== id)
-      : teachers;
+    loginType === "google" ? teachers.filter((t) => t.id !== id) : teachers;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -79,30 +77,22 @@ const Chat = ({ assignmentId }) => {
 
   const onOpenAddUsersToChat = (id) => {
     let data = [];
-    courseTeachers
-      .filter(
-        (t) => t.teacherId !== userId || t.id !== userId || t._id !== userId
-      )
-      .forEach((t) => {
-        data.push({
-          role: "Teachers",
-          name: t.name,
-          profileImage: undefined,
-          id: t.teacherId || t.id || t._id,
-        });
+    courseTeachers.forEach((t) => {
+      data.push({
+        role: "Teachers",
+        name: t.name,
+        profileImage: undefined,
+        id: t.id || t._id,
       });
-    students
-      .filter(
-        (t) => t.studentId !== userId || t.id !== userId || t._id !== userId
-      )
-      .forEach((t) => {
-        data.push({
-          role: "Students",
-          name: t.name,
-          profileImage: undefined,
-          id: t.studentId || t.id || t._id,
-        });
+    });
+    students.forEach((t) => {
+      data.push({
+        role: "Students",
+        name: t.name,
+        profileImage: undefined,
+        id: t.id || t._id,
       });
+    });
     openaddChatUsersPromt({
       assignmentId: id,
       options: data,
