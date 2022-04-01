@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 import useModal from "../../hooks/useModal";
 import useLanguages from "../../hooks/useLanguage";
+import ComingSoonModal from "../../components/Modals/CommingSoon";
 const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -99,11 +100,13 @@ const Login = (props) => {
     },
   ];
 
-  const handleMicrosoftLogin = () => { };
+  const handleMicrosoftLogin = () => {
+    dispatch(openModal("msLogin"));
+  };
   const theme = useTheme();
   return (
     <div className={classes.root}>
-
+      <ComingSoonModal />
       <Card elevation={0} className={classes.card}>
         <CardContent>
           <Typography variant="h4" mb={2} color="inherit">
@@ -169,7 +172,7 @@ const Login = (props) => {
             formData={formData}
             submitText="Login"
             data={{
-              email: "harsh@gmail.com",
+              email: "demoteacher@mougli.school",
               password: "12345678",
             }}
           />

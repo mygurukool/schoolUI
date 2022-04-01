@@ -170,9 +170,6 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
       {languages.map((lang, index) => {
         return (
           <MenuItem onClick={() => i18n.changeLanguage(lang.code)}>
-            {/* <ListItemIcon>
-                    <PersonIcon fontSize="small" />
-                </ListItemIcon> */}
             <Typography className={classes.menuTitle}>{lang.name}</Typography>
           </MenuItem>
         );

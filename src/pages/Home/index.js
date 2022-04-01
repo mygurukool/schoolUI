@@ -285,7 +285,7 @@ const Home = (props) => {
           </Container>
         </div>
         <div className={classes.platformName}>
-          <Typography>Mougli.school</Typography>
+          <img src="/images/logo.png" />
         </div>
       </div >
     </>
@@ -337,7 +337,9 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       display: "none",
     },
-
+    '& img': {
+      width: 100,
+    },
     position: "absolute",
     bottom: 30,
     left: 30,
