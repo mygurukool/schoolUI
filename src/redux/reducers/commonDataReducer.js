@@ -25,6 +25,8 @@ const initialstate = {
   isCourseLoading: false,
 
   isGroupsLoading: false,
+  isGroupsLoaded: false,
+
   isAssignmentLoading: false,
 
   currentGroup: undefined,
@@ -181,6 +183,7 @@ const sizeReducer = (state = initialstate, action) => {
         permissions: firstGroup?.permissions || [],
 
         currentGroup: firstGroup,
+        isGroupsLoaded:true
       };
 
     case commonTypes.SET_CURRENT_GROUP:

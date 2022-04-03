@@ -35,20 +35,16 @@ const sizeReducer = (state = initialstate, action) => {
       };
 
     case authTypes.LOGIN_USER_SUCCESS:
-      setToken(getData().token, getData().loginType, getData()?.user?.id);
+      setToken(getData().user?.tokens, getData().user?.id);
       return {
         ...state,
         isLoading: false,
         isLogged: true,
         role: getData().user.role,
         name: getData().user.name,
-        token: getData().token,
-        isTeacher: checkIfTeacher(getData().user.role),
 
         ...getData().user,
-        organization: getData().organization,
-        isGoogleLogin: getData().loginType === "google",
-        isMicroSoftLogin: getData().loginType === "microsoft",
+        organizations: getData().organizations,
       };
 
     case authTypes.LOGIN_USER_FAIL:

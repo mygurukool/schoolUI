@@ -1,10 +1,9 @@
-const getToken = (token) => {
-  const tkn = localStorage.getItem(token || "token");
-  const login = localStorage.getItem("loginType");
-  const userId = localStorage.getItem("userId");
+const getToken = () => {
+  const tkn = localStorage.getItem("tokens");
+  const myUserId = localStorage.getItem("userId");
 
-  // console.log("loginType hello", login);
+  // const login = localStorage.getItem("loginTypes");
 
-  return { token: tkn, loginType: login, userId };
+  return { tokens: tkn, userId: myUserId };
 };
 export default getToken;

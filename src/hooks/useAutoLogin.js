@@ -6,31 +6,26 @@ import { getUserDetails, setLocalLogin } from "../redux/action/userActions";
 const useAutoLogin = () => {
   const [ready, setReady] = React.useState(false);
   const dispatch = useDispatch();
-  const { token, loginType } = getToken();
+  const { tokens, userId } = getToken();
 
   // console.log("loginType", loginType);
 
   React.useEffect(() => {
-    if (loginType === "google") {
-      dispatch(setLocalLogin({ loginType }));
-      dispatch(getUserDetails({ loginType: loginType }));
-      setReady(true);
-      return;
-    } else if (token) {
+    if (tokens) {
       // console.log("token");
       // dispatch(setLocalLogin({ loginType }));
-      dispatch(getUserDetails({ loginType: loginType }));
+      dispatch(getUserDetails());
 
       setReady(true);
       return;
     } else {
       setReady(true);
     }
-  }, [token]);
+  }, [tokens]);
   return {
     ready,
-    token,
-    loginType,
+    // token,
+    // loginType,
   };
 };
 

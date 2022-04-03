@@ -24,8 +24,7 @@ const Login = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { isLogged } = useSelector((state) => state.user);
-  const translate = useLanguages()
-
+  const translate = useLanguages();
 
   React.useEffect(() => {
     if (isLogged) {
@@ -54,11 +53,11 @@ const Login = (props) => {
   const handleLogin = (data, loginType) => {
     dispatch(
       loginUser({ ...data, loginType: loginType }, () => {
-        if (loginType === 'google') {
-          const hasGoogleLoggedIn = localStorage.getItem("googleLoginCount")
-          console.log('hasGoogleLoggedIn', hasGoogleLoggedIn, loginType);
+        if (loginType === "google") {
+          const hasGoogleLoggedIn = localStorage.getItem("googleLoginCount");
+          console.log("hasGoogleLoggedIn", hasGoogleLoggedIn, loginType);
           if (!hasGoogleLoggedIn) {
-            localStorage.setItem("googleLoginCount", JSON.stringify(true))
+            localStorage.setItem("googleLoginCount", JSON.stringify(true));
             dispatch(openModal("googlewarning"));
           } else {
             dispatch(openModal("welcome"));
@@ -99,11 +98,10 @@ const Login = (props) => {
     },
   ];
 
-  const handleMicrosoftLogin = () => { };
+  const handleMicrosoftLogin = () => {};
   const theme = useTheme();
   return (
     <div className={classes.root}>
-
       <Card elevation={0} className={classes.card}>
         <CardContent>
           <Typography variant="h4" mb={2} color="inherit">
@@ -169,7 +167,7 @@ const Login = (props) => {
             formData={formData}
             submitText="Login"
             data={{
-              email: "harsh@gmail.com",
+              email: "harshmewada056@gmail.com",
               password: "12345678",
             }}
           />

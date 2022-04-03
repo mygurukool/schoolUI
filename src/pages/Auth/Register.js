@@ -10,6 +10,7 @@ import { PERMISSIONS, ROLES } from "../../constants";
 import { loginUser, logoutUser } from "../../redux/action/userActions";
 import { openModal } from "../../redux/action/utilActions";
 import useLanguages from "../../hooks/useLanguage";
+import setFirstSessionOfOrganization from "../../helpers/setFirstSessionOfOrganization";
 
 const RegisterForm = () => {
   const classes = useStyles();
@@ -64,21 +65,21 @@ const RegisterForm = () => {
         {
           ...data,
           role: ROLES.organizationOwner,
-          permissions: PERMISSIONS[ROLES.organizationOwner],
         },
         () => {
-          // history.push("/login");
-
           dispatch(
-            loginUser({ ...data, loginType: "mygurukool" }, () => {
-              dispatch(openModal("welcome"));
+            loginUser({ ...data }, () => {
+              dispatch(openModal("group"));
+              setFirstSessionOfOrganization();
+
+              // dispatch(openModal("welcome"));
             })
           );
         }
       )
     );
   };
-  const translate = useLanguages()
+  const translate = useLanguages();
 
   const formData = [
     {
@@ -170,7 +171,9 @@ const RegisterForm = () => {
       <div className={classes.container}>
         <Card elevation={0} className={classes.card}>
           <CardContent>
-            <Typography variant="h4" mb={2}>{translate("REGISTER_NOW")}</Typography>
+            <Typography variant="h4" mb={2}>
+              {translate("REGISTER_NOW")}
+            </Typography>
             <Typography variant="body2" mb={2}>
               {translate("PLEASE_FILL_THE_DETAILS")}
             </Typography>
@@ -190,9 +193,6 @@ const RegisterForm = () => {
   );
 };
 export default RegisterForm;
-
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -287,4 +287,3 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
 }));
-

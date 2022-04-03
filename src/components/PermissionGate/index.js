@@ -13,7 +13,9 @@ const hasPermission = ({ permissions, scopes }) => {
 
 export const usePermissions = ({ scopes, exceptionLogin }) => {
   const loginType = useSelector((state) => state.user.loginType);
-  const permissions = useSelector((state) => state.common.permissions);
+  const permissions = useSelector(
+    (state) => state?.common?.currentGroup?.permissions
+  );
   if (exceptionLogin) {
     if (exceptionLogin === loginType) {
       return true;
@@ -21,7 +23,10 @@ export const usePermissions = ({ scopes, exceptionLogin }) => {
   }
 
   // const permissions = role ? PERMISSIONS[role.toUpperCase()] : [];
-  const permissionGranted = hasPermission({ permissions, scopes });
+  const permissionGranted = hasPermission({
+    permissions: permissions || [],
+    scopes,
+  });
   return permissionGranted;
 };
 

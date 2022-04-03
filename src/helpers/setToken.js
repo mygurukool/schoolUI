@@ -1,9 +1,9 @@
-const setToken = (token, loginType, uId) => {
-  console.log(`saving token ${token}`);
-  const tkn = localStorage.setItem("token", token);
-  const login = localStorage.setItem("loginType", loginType);
-  const userId = localStorage.setItem("userId", uId);
+const setToken = (tokens, userId) => {
+  const tkn = localStorage.setItem("tokens", JSON.stringify(tokens));
+  const myuserId = localStorage.setItem("userId", userId);
 
-  return { token: tkn, loginType: login, userId };
+  // const login = localStorage.setItem("loginTypes", JSON.stringify(loginTypes));
+
+  return { token: tkn, userId: myuserId };
 };
 export default setToken;

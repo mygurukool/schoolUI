@@ -98,11 +98,10 @@ client.interceptors.request.use(async (config) => {
   //   config.baseURL = domain;
   // }
 
-  let { token, loginType, userId } = getToken();
+  let { tokens, userId } = getToken();
 
-  if (token) {
-    config.headers["Authorization"] = `${token}`;
-    config.headers["LoginType"] = `${loginType}`;
+  if (tokens) {
+    config.headers["Authorization"] = `${tokens}`;
     config.headers["userId"] = `${userId}`;
 
     // config.headers['Content-Type'] = `application/json`;
