@@ -3,13 +3,15 @@ import courseApi from "../api/courseApi";
 
 export const getAllCourses = (data) => {
   const groupId = data?.groupId;
+  const groupName = data?.groupName;
+
   return {
     type: courseTypes.GET_COURSE,
     payload: {
       request: {
         url: courseApi.GET_COURSES,
         method: "get",
-        params: { groupId: groupId },
+        params: { groupId: groupId, groupName: groupName },
       },
     },
   };

@@ -66,19 +66,24 @@ const SelectGroup = () => {
     dispatch(removeCurrentCourse());
     setSelectedGroup(value?.groupName);
     dispatch(showSnackBar(`${translate("GROUP_CHANGED")} ${value.groupName}`));
-    dispatch(getAllCourses({ groupId: value?._id || value?.id }));
     dispatch(
-      getAllStudents({
+      getAllCourses({
         groupId: value?._id || value?.id,
-        role: ROLES["student"],
+        groupName: value?.groupName,
       })
     );
-    dispatch(
-      getAllTeachers({
-        groupId: value?._id || value?.id,
-        role: ROLES["teacher"],
-      })
-    );
+    // dispatch(
+    //   getAllStudents({
+    //     groupId: value?._id || value?.id,
+    //     role: ROLES["student"],
+    //   })
+    // );
+    // dispatch(
+    //   getAllTeachers({
+    //     groupId: value?._id || value?.id,
+    //     role: ROLES["teacher"],
+    //   })
+    // );
   };
 
   // };
