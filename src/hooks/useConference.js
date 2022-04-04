@@ -37,31 +37,33 @@ const useConference = () => {
   //methos
   const handleUpComingConference = async (data) => {
     console.log("handleUpComingConference", data);
-    setIsConferenceOpen(true);
-    setTimeout(() => {
-      const domain = "meet.jit.si";
-      const options = {
-        roomName: data.roomName,
-        height: 580,
-        // id: data.id,
-        parentNode: document.getElementById("conference"),
-        interfaceConfigOverwrite: {
-          filmStripOnly: false,
-          SHOW_JITSI_WATERMARK: false,
-        },
-        configOverwrite: {
-          disableSimulcast: false,
-        },
-      };
+    if (!isConfrenceOpen) {
+      setIsConferenceOpen(true);
+      setTimeout(() => {
+        const domain = "meet.jit.si";
+        const options = {
+          roomName: data.roomName,
+          height: 580,
+          // id: data.id,
+          parentNode: document.getElementById("conference"),
+          interfaceConfigOverwrite: {
+            filmStripOnly: false,
+            SHOW_JITSI_WATERMARK: false,
+          },
+          configOverwrite: {
+            disableSimulcast: false,
+          },
+        };
 
-      const api = new JitsiMeetExternalAPI(domain, options);
-      api.addEventListener("videoConferenceJoined", (data) => {
-        api.executeCommand("displayName", userName);
-      });
-      api.addEventListener("videoConferenceLeft", (data) => {
-        handleLeaveConference();
-      });
-    }, 1000);
+        const api = new JitsiMeetExternalAPI(domain, options);
+        api.addEventListener("videoConferenceJoined", (data) => {
+          api.executeCommand("displayName", userName);
+        });
+        api.addEventListener("videoConferenceLeft", (data) => {
+          handleLeaveConference();
+        });
+      }, 1000);
+    }
   };
 
   const toggleConferenceMinMax = () => {
