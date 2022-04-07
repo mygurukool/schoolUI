@@ -154,7 +154,7 @@ const Login = (props) => {
           <div className={classes.centerLogo}>
             <div className={classes.hrLine} />
             <div className={classes.centerLogoImgCont}>
-              <img src="images/mygurukool.svg" />
+              <img src="images/logo.png" />
             </div>
             <div className={classes.hrLine} />
           </div>
@@ -346,8 +346,9 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "2px 2px 10px #ddd",
     borderRadius: theme.palette.radius.bigger,
     "& img": {
-      width: theme.spacing(4.5),
-      height: theme.spacing(4.5),
+      width: theme.spacing(5.5),
+      height: theme.spacing(5.5),
+      objectFit: "contain"
     },
   },
 }));
