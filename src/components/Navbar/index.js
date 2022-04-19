@@ -18,73 +18,72 @@ import {
 } from "@mui/material";
 
 import { makeStyles, styled } from "@mui/styles";
-import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import languages from "../../utils/languages.json";
-import useLanguage from "../../hooks/useLanguage";
-import { useTranslation } from "react-i18next";
+// import languages from "../../utils/languages.json";
+// import useLanguage from "../../hooks/useLanguage";
+// import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "../Drawer";
 import {
-  ArrowBack,
+  InfoTwoTone as AboutIcon,
+  ContactSupportTwoTone as ContactIcon,
   Event,
   HomeTwoTone,
 } from "@mui/icons-material";
-import AppButton from "../AppButton";
+import clsx from "clsx";
 
-export default function HomeNavbar({ showBg, position, showBack, ...props }) {
+export default function Navbar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
 
-  const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [notiOpen, setNotiOpen] = React.useState(false);
-  const { i18n } = useTranslation();
+  // const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
+  // const [open, setOpen] = React.useState(false);
+  // const [notiOpen, setNotiOpen] = React.useState(false);
+  // const { i18n } = useTranslation();
   const history = useHistory();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const translate = useLanguage()
+  // const translate = useLanguage()
 
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
   };
-  const handleLanguageClick = (event) => {
-    setNotiAnchorEl(event.currentTarget);
-    setNotiOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-    setNotiOpen(false);
-    setNotiAnchorEl(null);
-  };
-  const dispatch = useDispatch();
+  // const handleLanguageClick = (event) => {
+  //   setNotiAnchorEl(event.currentTarget);
+  //   setNotiOpen(true);
+  // };
+  // const handleClose = () => {
+  //   setOpen(false);
+  //   setNotiOpen(false);
+  //   setNotiAnchorEl(null);
+  // };
 
 
 
-  const languageMenu = (
-    <StyledMenu
-      anchorEl={notiAnchorEl}
-      open={notiOpen}
-      onClose={handleClose}
-      onClick={handleClose}
-      classes={{ paper: classes.menuPaper }}
-      PaperProps={{
-        elevation: 0,
-      }}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      getContentAnchorEl={null}
-    >
-      {languages.map((lang, index) => {
-        return (
-          <MenuItem onClick={() => i18n.changeLanguage(lang.code)}>
-            {/* <ListItemIcon>
-                    <PersonIcon fontSize="small" />
-                </ListItemIcon> */}
-            <Typography className={classes.menuTitle}>{lang.name}</Typography>
-          </MenuItem>
-        );
-      })}
-    </StyledMenu>
-  );
+  // const languageMenu = (
+  //   <StyledMenu
+  //     anchorEl={notiAnchorEl}
+  //     open={notiOpen}
+  //     onClose={handleClose}
+  //     onClick={handleClose}
+  //     classes={{ paper: classes.menuPaper }}
+  //     PaperProps={{
+  //       elevation: 0,
+  //     }}
+  //     transformOrigin={{ horizontal: "right", vertical: "top" }}
+  //     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+  //     getContentAnchorEl={null}
+  //   >
+  //     {languages.map((lang, index) => {
+  //       return (
+  //         <MenuItem onClick={() => i18n.changeLanguage(lang.code)}>
+  //           {/* <ListItemIcon>
+  //                   <PersonIcon fontSize="small" />
+  //               </ListItemIcon> */}
+  //           <Typography className={classes.menuTitle}>{lang.name}</Typography>
+  //         </MenuItem>
+  //       );
+  //     })}
+  //   </StyledMenu>
+  // );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -109,11 +108,6 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
           {/* <IconButton onClick={handleDrawerOpen} edge="start" size="small">
             <MenuIcon />
           </IconButton> */}
-          {showBack && (
-            <IconButton onClick={() => history.goBack()}>
-              <ArrowBack />
-            </IconButton>
-          )}
 
           <IconButton
             color="inherit"
@@ -160,6 +154,7 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
               <ListItem
                 button
                 className={classes.listItem}
+                onClick={() => { history.push('/'); handleDrawerToggle() }}
               >
                 <ListItemIcon>
                   <HomeTwoTone />
@@ -171,9 +166,10 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
               <ListItem
                 button
                 className={classes.listItem}
+                onClick={() => { history.push('/about'); handleDrawerToggle() }}
               >
                 <ListItemIcon>
-                  <Event />
+                  <AboutIcon />
                 </ListItemIcon>
 
                 <ListItemText primary="About" />
@@ -181,10 +177,12 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
               <Divider />
               <ListItem
                 button
+                // onClick={() => history.push('/contact')}
+                onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
                 className={classes.listItem}
               >
                 <ListItemIcon>
-                  <Event />
+                  <ContactIcon />
                 </ListItemIcon>
 
                 <ListItemText primary="Contact" />
@@ -200,8 +198,8 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
                 <Button
                   color="inherit"
                   variant="text"
-                  onClick={() => { }}
-                  className={classes.navLink}
+                  onClick={() => history.push('/')}
+                  className={clsx(classes.navLink, classes.active)}
                 >
                   Home
                 </Button>
@@ -211,7 +209,7 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
               <Button
                 color="inherit"
                 variant="text"
-                onClick={() => { }}
+                onClick={() => history.push('/about')}
                 className={classes.navLink}
               >
                 About
@@ -221,13 +219,15 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
               <Button
                 color="inherit"
                 variant="text"
-                onClick={() => { }}
+                // onClick={() => history.push('/contact')}
+                onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
+
                 className={classes.navLink}
               >
                 Contact
               </Button>
             </li>
-            <li>
+            {/* <li>
               <AppButton
                 variant="text"
                 color="inherit"
@@ -238,13 +238,13 @@ export default function HomeNavbar({ showBg, position, showBack, ...props }) {
             </li>
             <li>
               <AppButton
-                variant="outlined"
-                color="secondary"
+                variant="contained"
+                color="black"
               >
                 Login
               </AppButton>
-            </li>
-            {languageMenu}
+            </li> */}
+            {/* {languageMenu} */}
             {/* {notificationMenu} */}
           </ul>
         </Toolbar>
@@ -294,8 +294,19 @@ const useStyles = makeStyles((theme) => ({
   AppBar: {
     width: "100%",
     background: "transparent",
-    padding: theme.spacing(2, 7, 0, 7),
 
+    [theme.breakpoints.up("xs")]: {
+      padding: theme.spacing(2, 0.5, 0, 0.5),
+    },
+    [theme.breakpoints.up("sm")]: {
+      padding: theme.spacing(3, 2, 0, 2),
+    },
+    [theme.breakpoints.up("md")]: {
+      padding: theme.spacing(3, 4, 0, 4),
+    },
+    [theme.breakpoints.up("lg")]: {
+      padding: theme.spacing(3, 7, 0, 7),
+    },
   },
   listItem: {
     // padding: theme.spacing(1.5, 2.5, 1.5, 5),

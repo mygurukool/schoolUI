@@ -31,7 +31,7 @@ let theme = createTheme({
       900: "#bdbdbd",
       1000: "#ababab",
       1100: "#9e9e9e",
-      1200: "#919191",
+      1200: "#717171",
     },
     textField: {
       main: "#E7EBFD",
@@ -311,9 +311,9 @@ theme = createTheme(theme, {
       },
       styleOverrides: {
         root: {
-          borderRadius: theme.palette.radius.small,
-          borderTopLeftRadius: theme.palette.radius.small,
-          borderTopRightRadius: theme.palette.radius.small,
+          borderRadius: theme.palette.radius.medium,
+          borderTopLeftRadius: theme.palette.radius.medium,
+          borderTopRightRadius: theme.palette.radius.medium,
           // "&.Mui-focused": {
           //   borderColor: theme.palette.success.main,
           // },
