@@ -134,8 +134,9 @@ const AssignmentModal = () => {
   // const courseId = currentCourse?.id || currentCourse?._id;
   // const groupId = currentGroup?.id || currentGroup?._id;
   const [isLoading, setIsLoading] = React.useState(false);
+  const isEditMode = modalData && modalData.action !== "new";
 
-  const mode = modalData ? "edit" : "add";
+  const mode = isEditMode ? "edit" : "add";
 
   const open = modalOpen === "assignment";
   const handleClose = () => {
@@ -203,7 +204,7 @@ const AssignmentModal = () => {
     // console.log("uploaded", uploadedFiles);
 
     setIsLoading(true);
-    if (mode === "add") {
+    if (!isEditMode) {
       dispatch(
         createAssignmet(
           {
@@ -319,7 +320,7 @@ const AssignmentModal = () => {
           }}
         >
           <Typography variant="subtitle1">
-            {modalData
+            {isEditMode
               ? translate("EDIT_ASSIGNMENT")
               : translate("CREATE_ASSIGNMENT")}
           </Typography>

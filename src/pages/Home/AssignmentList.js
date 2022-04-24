@@ -25,7 +25,7 @@ import VideoModal from "./VideoModal";
 import FileCard from "./FileCard";
 import DueDateTime from "./DueDateTime";
 import moment from "moment";
-import { DUEDATETIMEFORMAT, SCOPES } from "../../constants";
+import { DUEDATETIMEFORMAT, SCOPES, platforms } from "../../constants";
 import Chat from "../../components/Chat";
 import { useSelector, useDispatch } from "react-redux";
 import PermissionsGate from "../../components/PermissionGate";
@@ -66,11 +66,19 @@ const AssignmentList = () => {
   };
 
   const onEdit = (data) => {
-    dispatch(openModal("assignment", data));
+    if (data.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      dispatch(openModal("assignment", data));
+    }
   };
 
   const onDelete = (data) => {
-    deleteRef.current.open(data);
+    if (data.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      deleteRef.current.open(data);
+    }
   };
 
   const handleDelete = (data) => {
@@ -153,10 +161,18 @@ const AssignmentList = () => {
 export default AssignmentList;
 
 const ActionBar = () => {
+  const { groups, courses, currentCourse, currentGroup } = useSelector(
+    (state) => state.common
+  );
+
   const dispatch = useDispatch();
   const translate = useLanguages();
   const onAddAssignment = () => {
-    dispatch(openModal("assignment"));
+    if (currentGroup.organizationId) {
+      dispatch(openModal("assignment"));
+    } else {
+      dispatch(openModal("desclaimer", { type: "assignment" }));
+    }
   };
   return (
     <Button

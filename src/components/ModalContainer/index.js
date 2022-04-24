@@ -43,11 +43,12 @@ const ModalContainer = ({
   onSubmit,
   size,
   submitTitle,
+  cancelText,
   fullScreen,
   hideButtons,
 }) => {
   const classes = useStyles();
-  const translate = useLanguages()
+  const translate = useLanguages();
   return (
     <Dialog
       onClose={onClose}
@@ -64,7 +65,9 @@ const ModalContainer = ({
             alignItems: "center",
           }}
         >
-          <Typography className={classes.modalTitle} variant="subtitle1">{title}</Typography>
+          <Typography className={classes.modalTitle} variant="subtitle1">
+            {title}
+          </Typography>
           <Tooltip title={translate("CLOSE")}>
             <IconButton color="error" aria-label="close" onClick={onClose}>
               <CloseIcon />
@@ -85,7 +88,7 @@ const ModalContainer = ({
                 onClick={onClose}
                 color="secondary"
               >
-                {translate("CANCEL")}
+                {cancelText || translate("CANCEL")}
               </Button>
             )}
             {onSubmit && (

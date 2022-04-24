@@ -11,11 +11,18 @@ import Submission from "../components/Modals/Submissions";
 import CalendarModal from "../components/Modals/CalendarModal";
 import WelcomeModal from "../components/Modals/Welcome";
 import GoogleLoginWarning from "../components/Modals/GoogleLoginWarning";
+import CreateOrganization from "../components/Modals/CreateOrganizationModal";
+import DesclaimerModal from "../components/Modals/DesclamerModal";
+import GoogleDesclaimerModal from "../components/Modals/GoogleDesclaimerModal";
 
 const Util = () => {
   return (
     <div>
       <Snack />
+      <DesclaimerModal />
+      <GoogleDesclaimerModal />
+
+      <CreateOrganization />
       <CourseModal />
       <GroupModal />
       <AssignmentModal />

@@ -34,7 +34,7 @@ import TopSectionButtons from "./TopSectionButtons";
 import WhiteBoard from "./WhiteBoard";
 import Conference from "./Conference";
 import PermissionsGate from "../../components/PermissionGate";
-import { SCOPES } from "../../constants";
+import { platforms, SCOPES } from "../../constants";
 import MENUICON from "@mui/icons-material/MoreVert";
 import { openModal } from "../../redux/action/utilActions";
 import ADDICON from "@mui/icons-material/AddTwoTone";
@@ -96,7 +96,11 @@ const Home = (props) => {
       alert("Please Select a group");
       return;
     }
-    deleteRef.current.open(currentGroup);
+    if (currentGroup.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      deleteRef.current.open(currentGroup);
+    }
     handleCloseMenu();
   };
   const handleDelete = (data) => {
@@ -107,9 +111,19 @@ const Home = (props) => {
       })
     );
   };
-
+  const handleAdd = (data) => {
+    if (currentGroup.organizationId) {
+      dispatch(openModal("group"));
+    } else {
+      dispatch(openModal("desclaimer", { type: "group" }));
+    }
+  };
   const handleEdit = (data) => {
-    dispatch(openModal("group", data));
+    if (data.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      dispatch(openModal("group", data));
+    }
     handleCloseMenu();
   };
   const handleInvite = (data) => {
@@ -121,7 +135,7 @@ const Home = (props) => {
     return (
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleCloseMenu}>
         <PermissionsGate scopes={[SCOPES.CAN_CREATE_GROUP]}>
-          <MenuItem className="addGroup" onClick={() => handleEdit()}>
+          <MenuItem className="addGroup" onClick={() => handleAdd()}>
             <ListItemIcon>
               <ADDICON fontSize="small" />
             </ListItemIcon>

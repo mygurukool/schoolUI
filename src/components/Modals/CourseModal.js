@@ -24,8 +24,9 @@ const CreateCourse = () => {
   const { id } = useSelector((state) => state.user);
   const { currentGroup } = useSelector((state) => state.common);
   const groupId = currentGroup?.id || currentGroup?._id;
+  const isEditMode = modalData && !modalData.organizationId;
 
-  const mode = modalData ? "edit" : "add";
+  const mode = isEditMode ? "edit" : "add";
   const open = modalOpen === "course";
 
   const groups = useSelector((state) => state.common.groups);
@@ -41,7 +42,7 @@ const CreateCourse = () => {
   const handleSubmit = (data) => {
     if (mode === "add")
       dispatch(
-        createCourse({ ...data, userId: id }, () => {
+        createCourse({ ...data, userId: id, currentGroup }, () => {
           dispatch(getAllCourses({ groupId }));
           handleClose();
         })
@@ -80,13 +81,13 @@ const CreateCourse = () => {
   return (
     <ModalContainer
       open={open}
-      title={modalData ? "Edit Course" : "Create Course"}
+      title={isEditMode ? "Edit Course" : "Create Course"}
       onClose={() => handleClose()}
       size="xs"
       hideButtons
     >
       <FormCreator
-        mode={modalData ? "edit" : "add"}
+        mode={isEditMode ? "edit" : "add"}
         onSubmit={(e) => handleSubmit(e)}
         onCancel={handleClose}
         formData={createformData}

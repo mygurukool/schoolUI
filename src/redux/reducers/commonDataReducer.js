@@ -40,9 +40,13 @@ const getFilteredAssignments = (arr, data) => {
     (a) => a.id === data.assignmentId || a._id === data.assignmentId
   );
 
+  console.log("getFilteredAssignments", findIndex, arr, data.assignmentId);
+
   const findFile = arr[findIndex].uploadExercises.findIndex(
     (a) => a.id === data.fileId
   );
+  console.log("getFilteredAssignments findFile", findFile);
+
   arr[findIndex].uploadExercises[findFile].files.push(data);
   return arr;
 };
@@ -104,6 +108,7 @@ const sizeReducer = (state = initialstate, action) => {
       return {
         ...state,
         isCourseLoading: true,
+        courses: [],
       };
 
     case courseTypes.GET_COURSE_SUCCESS:
@@ -183,7 +188,7 @@ const sizeReducer = (state = initialstate, action) => {
         permissions: firstGroup?.permissions || [],
 
         currentGroup: firstGroup,
-        isGroupsLoaded:true
+        isGroupsLoaded: true,
       };
 
     case commonTypes.SET_CURRENT_GROUP:

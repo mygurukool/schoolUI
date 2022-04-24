@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Uploadexercise = ({ ...props }) => {
+  console.log("Uploadexercise", props);
   const classes = useStyles();
   const dispatch = useDispatch();
   const title = getTitle(props) || "No exercise material available";

@@ -70,6 +70,26 @@ export const getInvitationDetails = (data, cb, errorCb) => {
   };
 };
 
+export const checkIfInvited = (data, cb, errorCb) => {
+  return {
+    type: commonTypes.CHECK_IF_INVITED,
+    payload: {
+      request: {
+        url: inviteApi.CHECK_IF_INVITED,
+        method: "get",
+        params: {
+          invitationId: data.id,
+          email: data.email,
+        },
+      },
+
+      enableMessage: false,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
 export const acceptInvitation = (data, cb, errorCb) => {
   return {
     type: commonTypes.ACCEPT_INVITATION,

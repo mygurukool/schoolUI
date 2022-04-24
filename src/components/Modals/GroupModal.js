@@ -21,7 +21,10 @@ const GroupModal = () => {
   const translate = useLanguages();
   const dispatch = useDispatch();
   const { modalOpen, modalData } = useSelector((state) => state.util);
-  const { organizationId, id } = useSelector((state) => state.user);
+  const { currentGroup } = useSelector((state) => state.common);
+  const organizationId = currentGroup?.organizationId;
+
+  const { id } = useSelector((state) => state.user);
   const mode = modalData ? "edit" : "add";
   const open = modalOpen === "group";
   const handleClose = () => {
@@ -69,8 +72,8 @@ const GroupModal = () => {
       label: translate("AGE_GROUP"),
       options: ageGroups,
       placeholder: translate("AGE_GROUP"),
-      optionLabelProp: 'text',
-      optionValueProp: 'id',
+      optionLabelProp: "text",
+      optionValueProp: "id",
       required: true,
       size: 12,
     },
@@ -96,4 +99,3 @@ const GroupModal = () => {
 };
 
 export default GroupModal;
-

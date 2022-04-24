@@ -52,7 +52,7 @@ const SelectGroup = () => {
 
   const groupNames = groups.map((g) => g.groupName);
 
-  const filteredGroups = [...new Set(groupNames)];
+  const filteredGroups = groupNames;
   const translate = useLanguages();
 
   // const [anchorEl, setAnchorEl] = React.useState(null);

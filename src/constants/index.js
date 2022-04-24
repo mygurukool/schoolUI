@@ -244,3 +244,9 @@ export const PERMISSIONS = {
 
   [ROLES.organizationOwner]: [...teacherScopes],
 };
+
+export const platforms = {
+  MOUGLI: "MOUGLI",
+  GOOGLE: "GOOGLE",
+  MICROSOFT: "MICROSOFT",
+};

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import clsx from "clsx";
 import PermissionGate from "../../components/PermissionGate";
-import { SCOPES } from "../../constants";
+import { SCOPES, platforms } from "../../constants";
 
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
@@ -180,12 +180,19 @@ const CoursesList = () => {
   const deleteRef = React.useRef();
 
   const onOpenModal = (data) => {
-    dispatch(openModal("course", data));
+    if (currentGroup.organizationId) {
+      dispatch(openModal("course", data));
+    } else {
+      dispatch(openModal("desclaimer", { type: "course" }));
+    }
   };
 
   const handleEdit = (data) => {
-    console.log("menuData");
-    dispatch(openModal("course", menuData));
+    if (menuData.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      dispatch(openModal("course", menuData));
+    }
     handleCloseMenu();
   };
 
@@ -201,7 +208,6 @@ const CoursesList = () => {
   const handleOpenMenu = (event, data) => {
     setMenuData(data);
 
-    console.log("handleOpenMenu", event.currentTarget);
     setAnchorEl(event.currentTarget);
   };
 
@@ -210,7 +216,11 @@ const CoursesList = () => {
   };
 
   const onDelete = () => {
-    deleteRef.current.open(menuData);
+    if (menuData.platformName === platforms.GOOGLE) {
+      dispatch(openModal("googledesclaimer"));
+    } else {
+      deleteRef.current.open(menuData);
+    }
     handleCloseMenu();
   };
 
