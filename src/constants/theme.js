@@ -122,6 +122,7 @@ let theme = createTheme({
       base: "8px",
       small: "5px",
       medium: "12px",
+      large: "16px",
       big: "20px",
       bigger: "50px",
     },
@@ -267,6 +268,7 @@ theme = createTheme(theme, {
           fontWeight: theme.palette.fontWeights.medium,
           textTransform: "capitalize",
           transition: "all 0.3s ease 0s",
+          borderRadius: theme.palette.radius.bigger,
           "&:hover": {
             // boxShadow: "0px 8px 15px rgba(0, 0, 0, 0.2)",
             transform: "translateY(-3px)",

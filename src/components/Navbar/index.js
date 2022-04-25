@@ -130,7 +130,8 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
             <Typography variant="h6" className={classes.appName}>
               <img
                 src="images/logo.png"
-                style={{ width: 80, height: 'auto' }}
+                style={{ width: 80, height: 'auto', cursor: 'pointer' }}
+                onClick={() => history.push('/')}
               />
             </Typography>
 
@@ -177,8 +178,8 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
               <Divider />
               <ListItem
                 button
-                // onClick={() => history.push('/contact')}
-                onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
+                onClick={() => history.push('/contact')}
+                // onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
                 className={classes.listItem}
               >
                 <ListItemIcon>
@@ -219,8 +220,8 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
               <Button
                 color="inherit"
                 variant="text"
-                // onClick={() => history.push('/contact')}
-                onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
+                onClick={() => history.push('/contact')}
+                // onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
 
                 className={classes.navLink}
               >

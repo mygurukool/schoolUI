@@ -18,7 +18,8 @@ const FormCreator = ({
 
   data,
   mode,
-
+  submitBtnText,
+  btnIcon,
   formData,
   size,
   optionsData,
@@ -54,13 +55,17 @@ const FormCreator = ({
     });
   };
   const handleFileFieldChange = (name, file) => {
-    console.log("upcomin", file);
     setFileFields({
       [name]: file,
     });
   };
-  const localSubmit = (values) => {
+  const localSubmit = (values, e) => {
     onSubmit({ ...data, ...values, ...fileFields, ...otherFields });
+    let formFields = {}
+    formData.map(({ name, ...item }, index) => {
+      formFields = { ...formFields, [name]: '' }
+    })
+    reset(formFields);
   };
 
   const handleClose = () => {
@@ -96,7 +101,6 @@ const FormCreator = ({
     setFormErrors(formState.errors);
   }, [formState]);
   const translate = useLanguages()
-  // console.log("formState", formState);
 
   return (
     <FormProvider {...methods}>
@@ -107,7 +111,7 @@ const FormCreator = ({
               const MyInput = Inputs[item.type];
 
               return (
-                mode !== item?.hideAt &&
+
                 !item.hidden && (
                   <MyInput
                     {...item}
@@ -155,22 +159,26 @@ const FormCreator = ({
               alignItems="center"
             >
               <div>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="success"
-                  disabled={isLoading}
-                  sx={{ mr: 1 }}
-                >
-                  {isLoading && <CircularProgress color="secondary" />}
-                  {translate("SUBMIT")}
-                </Button>
+                {onSubmit &&
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                    disabled={isLoading}
+                    sx={{ mr: 1 }}
+                    startIcon={btnIcon}
+                    size="large"
+                  >
+                    {isLoading && <CircularProgress color="secondary" />}
+                    {submitBtnText || translate("SUBMIT")}
+                  </Button>}
                 {onCancel && (
                   <Button
                     variant="text"
                     color="error"
                     disabled={isLoading}
                     onClick={() => handleClose()}
+                    size="large"
                   >
                     {translate("CANCEL")}
                   </Button>

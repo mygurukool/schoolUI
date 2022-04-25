@@ -11,13 +11,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const TextBox = React.forwardRef((props, ref) => {
-  const classes = useStyles();
-  const { label, control, placeholder, type, size, error, rules, required } =
+  const { name, label, control, placeholder, type, size, error, rules, required } =
     props;
   return (
     <InputContainer size={size}>
       <Controller
-        name="name"
+        name={name}
         control={control}
         {...props}
         render={({ field }) => (

@@ -11,16 +11,16 @@ const useStyles = makeStyles((theme) => ({
 }))
 const MyTextField = React.forwardRef((props, ref) => {
   const classes = useStyles()
-  const { label, control, placeholder, multiline, rows, error, size, rules, required } = props;
+  const { name, label, control, placeholder, multiline, rows, error, size, rules, required } = props;
   return (
     <InputContainer size={size}>
       <Controller
-        name="name"
+        name={name}
         control={control}
         {...props}
-        render={(props) => (
+        render={({ field }) => (
           <TextField
-            {...props}
+            {...field}
             fullWidth
             variant="outlined"
             error={error}

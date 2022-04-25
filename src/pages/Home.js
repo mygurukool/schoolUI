@@ -4,9 +4,14 @@ import { Button, Grid, Typography, Stack, Divider, Link } from "@mui/material";
 import clsx from "clsx";
 import useResponsive from "../hooks/useResponsive";
 import PlayIcon from '@mui/icons-material/PlayArrow';
+import { useDispatch } from "react-redux";
+import { pricingSelection, subjectSelection } from "../redux/action/utilActions";
+import { useHistory } from "react-router-dom";
 const Home = (props) => {
     const classes = useStyles();
     const { isMobile, isDesktop, isTablet } = useResponsive()
+    const dispatch = useDispatch()
+    const history = useHistory()
     return (
         <div>
             {/* <div className={classes.bg}>
@@ -113,7 +118,7 @@ const Home = (props) => {
                                     <img src="/images/icons/educator.png" />
                                 </div>
                                 <Typography variant="h6">Educator</Typography>
-                                <Typography variant="subtitle2">Utilizing the freely available high-quality content offered by content providers, educators will be able to educate the students. <br /><br />E.g. The French-speaking educators in the locality, local schools, or even volunteers sitting across the globe will be able to teach French-speaking students using our platform.</Typography>
+                                <Typography variant="subtitle2">Utilizing the freely available high-quality content offered by content providers, educators will be able to educate the students. <br /><br />E.g. The French-speaking educators in the locality, local schools of Africa, or even volunteers sitting across the globe will be able to teach French-speaking students using our platform.</Typography>
                             </div>
                         </Grid>
                         <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -219,7 +224,7 @@ const Home = (props) => {
                                     </div>
                                 </div>
                             </Grid>
-                            <Grid item lg={7} md={7} sm={7} className={classes.uspContent}>
+                            <Grid item lg={7} md={7} sm={7} className={classes.targetContent}>
                                 <div className={classes.innerTargetContent}>
                                     <Typography variant="h3">Target group</Typography>
                                     <Typography variant="subtitle1" className={classes.educationSubTitle}>Users who can benefit and take advantage of our eLearning platform</Typography>
@@ -242,15 +247,39 @@ const Home = (props) => {
                 </div>
                 <div className={classes.container}>
                     <div className={classes.commuContainer}>
-                        <div className={classes.commuContent}>
-                            <Typography variant="h3" >Community</Typography>
-                            <Typography variant="subtitle1" >We strongly believe in the concept of community, so we decided to create an open-source application. The goal was to give the community free access to the application while encouraging them to contribute to its future development and enhance the components serving different cultural aspects, which we alone can't achieve.</Typography>
-                            <Typography variant="subtitle1" >We invite you to join our community of contributors, users, and promoters of the application. Join and become part of our vision and mission of providing free education to the world and taking constructive steps towards our collective mission.</Typography>
-                            <Button variant="contained" size="large" color="black">Join our community</Button>
+                        <div className={classes.commuInnerContainer}>
+                            <div className={classes.commuContent}>
+                                <Typography variant="h3" >Community</Typography>
+                                <Typography variant="subtitle1" >We strongly believe in the concept of community, so we decided to create an open-source application. The goal was to give the community free access to the application while encouraging them to contribute to its future development and enhance the components serving different cultural aspects, which we alone can't achieve.</Typography>
+                                <Typography variant="subtitle1" >We invite you to join our community of contributors, users, and promoters of the application. Join and become part of our vision and mission of providing free education to the world and taking constructive steps towards our collective mission.</Typography>
+                                <Button variant="contained" size="large" color="black" onClick={() => {
+                                    dispatch(subjectSelection(4))
+                                    history.push('/contact')
+                                }}>Join our community</Button>
+                            </div>
+                            <div className={classes.commuImgContainer}>
+                                <img src="/images/child3.png" />
+                            </div>
                         </div>
-                        <div className={classes.commuImgContainer}>
-                            <img src="/images/child3.png" />
+                        <div className={classes.commuOuterContainer}>
+                            <Grid container spacing={5}>
+                                <Grid item lg={6}>
+                                    <div className={classes.nominateContainer}>
+                                        <Typography variant="h5" color="secondary">Nominate a school</Typography>
+                                        <Typography variant="subtitle1" >We need your active support to achieve our collective vision of free Education to World. Be the torch tell us about the schools and the students who can benefit from Mougli School by Nominating the school. We will contact the school!</Typography>
+                                        <Button variant="contained" size="large" color="secondary">Nominate a school</Button>
+                                    </div>
+                                </Grid>
+                                <Grid item lg={6}>
+                                    <div className={classes.nominateContainer}>
+                                        <Typography variant="h5" color="secondary">Sponsor</Typography>
+                                        <Typography variant="subtitle1" >Be the change you want to see! You can also sponsor free education to the world by offering donation, every little counts.</Typography>
+                                        <Button variant="contained" size="large" color="secondary">Yes, I want to Sponsor</Button>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </div>
+
                     </div>
                 </div>
                 <div className={classes.container}>
@@ -283,7 +312,7 @@ const Home = (props) => {
                                             <Typography variant="subtitle2">Customization</Typography>
                                         </li>
                                     </ul>
-                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.location.href = "mailto:contact@mougli.school" }}>Start Learning</Button>
+                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.open("https://learn.mougli.school") }}>Start Learning</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
@@ -305,7 +334,11 @@ const Home = (props) => {
                                             <Typography variant="subtitle2">Customization</Typography>
                                         </li>
                                     </ul>
-                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.location.href = "mailto:contact@mougli.school" }}>Contact for Pricing</Button>
+                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
+                                        dispatch(pricingSelection("Private tutors"))
+                                        history.push('/contact')
+                                    }
+                                    }>Contact for Pricing</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
@@ -334,7 +367,10 @@ const Home = (props) => {
                                             <Typography variant="subtitle2">10% of your payment will be used to sponsor free education</Typography>
                                         </li>
                                     </ul>
-                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.location.href = "mailto:contact@mougli.school" }}>Contact for Pricing</Button>
+                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
+                                        dispatch(pricingSelection("Mid-sized institutions"))
+                                        history.push('/contact')
+                                    }}>Contact for Pricing</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
@@ -362,7 +398,10 @@ const Home = (props) => {
                                             <Typography variant="subtitle2">10% of your payment will be used to sponsor free education</Typography>
                                         </li>
                                     </ul>
-                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.location.href = "mailto:contact@mougli.school" }}>Contact for Pricing</Button>
+                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
+                                        dispatch(pricingSelection("Big Institutions"))
+                                        history.push('/contact')
+                                    }}>Contact for Pricing</Button>
                                 </div>
                             </Grid>
                         </Grid>
@@ -647,20 +686,19 @@ const useStyles = makeStyles((theme) => ({
             background: '#1CB0F1',
             color: "white",
             transform: "translateY(-10px)",
-            '& h6:last-child': {
+            '& h6': {
                 color: "white",
             },
             '& $cardIcon': {
                 background: '#F4D669',
+                borderColor: '#fff',
             }
         },
-        '& h6:last-child': {
+        '& h6': {
             color: theme.palette.gray[1200],
             marginTop: theme.spacing(2),
         },
-        '&:last-child': {
-            border: 'none'
-        }
+
     },
     cardIcon: {
         width: 65,
@@ -693,8 +731,12 @@ const useStyles = makeStyles((theme) => ({
     },
     uspContent: {
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center'
+    },
+    targetContent: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     innerUspContent: {
         [theme.breakpoints.up("xs")]: {
@@ -1023,6 +1065,12 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     commuContainer: {
+        border: '1px solid #FFE2D1',
+        borderRadius: theme.spacing(2),
+    },
+    commuInnerContainer: {
+        borderRadius: theme.spacing(2, 2, 0, 0),
+
         [theme.breakpoints.up("xs")]: {
             padding: theme.spacing(3),
 
@@ -1043,10 +1091,41 @@ const useStyles = makeStyles((theme) => ({
             padding: theme.spacing(7),
 
         },
-        borderRadius: theme.spacing(2),
         backgroundImage: 'url(background/community.png)',
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
+    },
+    commuOuterContainer: {
+        [theme.breakpoints.up("xs")]: {
+            padding: theme.spacing(3),
+
+        },
+        [theme.breakpoints.up("sm")]: {
+            padding: theme.spacing(4),
+
+        },
+        [theme.breakpoints.up("md")]: {
+            padding: theme.spacing(5),
+
+        },
+        [theme.breakpoints.up("lg")]: {
+            padding: theme.spacing(7),
+
+        },
+        [theme.breakpoints.up("xl")]: {
+            padding: theme.spacing(7),
+
+        },
+    },
+    nominateContainer: {
+        '& h5': {
+            paddingBottom: theme.spacing(2)
+        },
+        '& h6': {
+            color: '#515151',
+            textAlign: 'justify',
+            paddingBottom: theme.spacing(3)
+        },
     },
     commuImgContainer: {
         position: 'relative',
@@ -1089,6 +1168,7 @@ const useStyles = makeStyles((theme) => ({
         },
         '& h6': {
             color: '#515151',
+            textAlign: 'justify',
             paddingBottom: theme.spacing(3)
         },
     },

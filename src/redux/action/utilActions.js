@@ -1,14 +1,4 @@
-import utilApi from "../api/utilApi";
 import { utilTypes } from "../types";
-
-export const setLoginType = (data) => {
-  return {
-    type: utilTypes.LOGIN_TYPE,
-    payload: {
-      data: data,
-    },
-  };
-};
 
 export const openModal = (value, data) => {
   return {
@@ -25,49 +15,34 @@ export const closeModal = () => {
   };
 };
 
-export const openSubmissionModal = (value, data) => {
+export const pricingSelection = (data) => {
   return {
-    type: utilTypes.OPEN_SUBMISSION_MODAL,
-    payload: {
-      value: value,
-      data: data,
-    },
-  };
-};
-export const closeSubmissionModal = () => {
-  return {
-    type: utilTypes.CLOSE_SUBMISSION_MODAL,
-  };
-};
-export const toggleGuide = () => {
-  return {
-    type: utilTypes.TOGGLE_GUIDE,
-  };
-};
-
-export const toggleWelcomeGuide = () => {
-  return {
-    type: utilTypes.TOGGLE_WELCOME_GUIDE,
-  };
-};
-
-export const setNotificationMessage = (data) => {
-  return {
-    type: utilTypes.SET_NOTIFICATION_MESSAGE,
+    type: utilTypes.PRICING_SELECTION,
     payload: data,
   };
 };
-export const registerNotificationToken = (data) => {
+
+export const subjectSelection = (data) => {
   return {
-    type: utilTypes.REGISTER_NOTIFICATION_TOKEN,
+    type: utilTypes.SUBJECT_SELECTION,
+    payload: data,
+  };
+};
+
+export const submitContact = (data, cb, errorCb) => {
+  return {
+    type: utilTypes.SUBMIT_CONTACT,
     payload: {
       request: {
-        url: utilApi.REGISTER_TOKEN,
-        method: "POST",
-        data: {
-          token: data,
-        },
+        url: '/contact/submitdetails',
+        method: "post",
+        data: data,
       },
+      successMessage: "Details submitted successfully",
+      errorMessage: "Failed to submit details",
+      enableMessage: true,
+      cb: cb,
+      errorCb: errorCb,
     },
   };
 };

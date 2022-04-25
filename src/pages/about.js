@@ -124,7 +124,7 @@ const About = (props) => {
                         <Typography variant="subtitle1">Making education more accessible to all has been the mantra at Mougli School. You can also do your bit by purchasing a licensed product on our platform and becoming a sponsor!</Typography>
                     </li>
                     <li>
-                        <Typography variant="subtitle1">Sponsoring free education for the needy gets easier with Mougli. When you buy a licensed product, Mougli school will spend a % of the license fee you pay for the purchase on providing and promoting free education. Voila, this way you get to make a difference in someone's life.</Typography>
+                        <Typography variant="subtitle1">Sponsoring free education for the needy gets easier with Mougli School. When you buy a licensed product, Mougli school will spend a % of the license fee you pay for the purchase on providing and promoting free education. Voila, this way you get to make a difference in someone's life.</Typography>
                     </li>
                 </ul>
             </div>
