@@ -7,11 +7,16 @@ import PlayIcon from '@mui/icons-material/PlayArrow';
 import { useDispatch } from "react-redux";
 import { pricingSelection, subjectSelection } from "../redux/action/utilActions";
 import { useHistory } from "react-router-dom";
+import useLanguage from "../hooks/useLanguage";
+
+
+
 const Home = (props) => {
     const classes = useStyles();
     const { isMobile, isDesktop, isTablet } = useResponsive()
     const dispatch = useDispatch()
     const history = useHistory()
+    const translate = useLanguage()
     return (
         <div>
             {/* <div className={classes.bg}>
@@ -33,11 +38,11 @@ const Home = (props) => {
                     <Grid container>
                         <Grid item lg={6} sm={12} md={12} xs={12}>
                             <div className={classes.topContainer}>
-                                <Typography variant="h3" className={classes.topTitle}><span>Learning is</span> joy. <br /><span>Teaching is a </span> pleasure.</Typography>
-                                <Typography variant="subtitle1" className={classes.topSubTitle}>Digital Learning, a student dashboard with an intuitive and user-friendly UIUX, promoting focus, concentration, and fun-filled learning.</Typography>
+                                <Typography variant="h3" className={classes.topTitle}><span>{translate("LEARNING_IS")}</span> {translate("JOY")}. <br /><span>{translate("TEACHING_IS")} </span> {translate("PLEASURE")}.</Typography>
+                                <Typography variant="subtitle1" className={classes.topSubTitle}>{translate("HEADER_SUBTITTLE")}</Typography>
                                 <Stack flexDirection="row">
-                                    <Button onClick={() => window.open("https://learn.mougli.school", "_blank")} color="primary" size="large" variant="contained" sx={{ mr: 2 }}>Start Learning</Button>
-                                    <Button onClick={() => window.open("https://www.youtube.com/watch?v=dnh0x7cFR8c&ab_channel=MougliSchool", "_blank")} color="secondary" size="large" variant="outlined">Watch video</Button>
+                                    <Button onClick={() => window.open("https://learn.mougli.school", "_blank")} color="primary" size="large" variant="contained" sx={{ mr: 2 }}>{translate("START_LEARNING")}</Button>
+                                    <Button onClick={() => window.open("https://www.youtube.com/watch?v=dnh0x7cFR8c&ab_channel=MougliSchool", "_blank")} color="secondary" size="large" variant="outlined">{translate("WATCH_VIDEO")}</Button>
                                 </Stack>
                             </div>
                         </Grid>
@@ -71,8 +76,8 @@ const Home = (props) => {
                         </Grid>
                         <Grid item lg={7} md={7} sm={7}>
                             <div className={classes.educationContent}>
-                                <Typography variant="h3">Free education <span>to the world</span></Typography>
-                                <Typography variant="subtitle1">Education is a fundamental right of every world citizen, irrespective of their cultural, social, and economic background.</Typography>
+                                <Typography variant="h3">{translate("FREE_EDUCATION")} <span>{translate("TO_WORLD")}</span></Typography>
+                                <Typography variant="subtitle1">{translate("FREE_EDUCATION_SUBTITLE")}</Typography>
                             </div>
 
                         </Grid>
@@ -85,8 +90,8 @@ const Home = (props) => {
                     <div className={classes.workContainer}>
                         {/* <Grid container>
                             <Grid item lg={6}> */}
-                        <Typography variant="h3"><span>How</span> free education <span>works?</span></Typography>
-                        <Typography variant="subtitle1">Education reaches even the most remote villages on the planet.</Typography>
+                        <Typography variant="h3"><span>{translate("HOW")}</span> {translate("FREE_EDUCATION")} <span>{translate("WORKS")}</span></Typography>
+                        <Typography variant="subtitle1">{translate("HOW_FREE_EDUCATION_WORKS_SUBTITLE")}</Typography>
                         {/* <ul>
                             <li>
                                 <Typography variant="subtitle1">Reputed schools across the world can share their content with the world</Typography>
@@ -97,7 +102,7 @@ const Home = (props) => {
                         </ul> */}
                         {/* </Grid>
                             <Grid item lg={6} className={classes.workImgContainer}>
-                                <img src="images/work.png" />
+                                <img src="/images/work.png" />
                             </Grid>
                         </Grid> */}
                     </div>
@@ -108,8 +113,8 @@ const Home = (props) => {
                                 <div className={classes.cardIcon}>
                                     <img src="/images/icons/content.png" />
                                 </div>
-                                <Typography variant="h6">Content provider</Typography>
-                                <Typography variant="subtitle2">Reputed Schools and Institutions across the globe can share their high-quality academic content with the rest of the world, allowing the students on our platform to benefit.<br /><br /> E.g. French-speaking schools in France or Canada open up their academic content to be accessible to the community.</Typography>
+                                <Typography variant="h5">{translate("CONTENT_PROVIDER")}</Typography>
+                                <Typography variant="subtitle2">{translate("CONTENT_PROVIDER_SUBTITLE_ONE")}<br /><br /> {translate("CONTENT_PROVIDER_SUBTITLE_TWO")}</Typography>
                             </div>
                         </Grid>
                         <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -117,8 +122,8 @@ const Home = (props) => {
                                 <div className={classes.cardIcon}>
                                     <img src="/images/icons/educator.png" />
                                 </div>
-                                <Typography variant="h6">Educator</Typography>
-                                <Typography variant="subtitle2">Utilizing the freely available high-quality content offered by content providers, educators will be able to educate the students. <br /><br />E.g. The French-speaking educators in the locality, local schools of Africa, or even volunteers sitting across the globe will be able to teach French-speaking students using our platform.</Typography>
+                                <Typography variant="h5">Educator</Typography>
+                                <Typography variant="subtitle2">{translate("EDUCATOR_SUBTITLE_ONE")}<br /><br /> {translate("EDUCATOR_SUBTITLE_TWO")}</Typography>
                             </div>
                         </Grid>
                         <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -126,8 +131,8 @@ const Home = (props) => {
                                 <div className={classes.cardIcon}>
                                     <img src="/images/icons/student.png" />
                                 </div>
-                                <Typography variant="h6">Students</Typography>
-                                <Typography variant="subtitle2">With access to a laptop/ tablet, just one-click away from receiving the world's best education, being imparted by passionate educators who are the pioneers in their field.<br /><br />E.g., The French-speaking students in the most remote villages on the planet will receive education from the most passionate educators with high-quality content.</Typography>
+                                <Typography variant="h5">{translate("STUDENTS")}</Typography>
+                                <Typography variant="subtitle2">{translate("STUDENTS_SUBTIITLE_ONE")}<br /><br />{translate("STUDENTS_SUBTIITLE_TWO")}</Typography>
                             </div>
                         </Grid>
                     </Grid>
@@ -140,23 +145,25 @@ const Home = (props) => {
 
                             <Grid item lg={7} md={7} sm={7} className={classes.uspContent}>
                                 <div className={classes.innerUspContent}>
-                                    <Typography variant="h3" className={classes.uspTitle}><span>Our eLearning</span> USPs</Typography>
-                                    <Typography variant="subtitle1" className={classes.educationSubTitle}>An educational dashboard integrating different platforms </Typography>
+                                    <Typography variant="h3" className={classes.uspTitle}><span>{translate("OUR_LEARNING")}</span> {translate("USPS")}</Typography>
+                                    <Typography variant="subtitle1" className={classes.educationSubTitle}>{translate("OUR_LEARNING_SUBTITLE")}</Typography>
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle1">Intuitive, K12 friendly UI</Typography>
+                                            <Typography variant="subtitle1">{translate("OUR_LEARNING_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">One-page, one-click action </Typography>
+                                            <Typography variant="subtitle1">
+                                                {translate("OUR_LEARNING_POINT_TWO")}
+                                            </Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">Structured and categorized</Typography>
+                                            <Typography variant="subtitle1">{translate("OUR_LEARNING_POINT_THREE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">Children color Psychology</Typography>
+                                            <Typography variant="subtitle1">{translate("OUR_LEARNING_POINT_FOUR")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">Access to assignments while in Conference or Whiteboard</Typography>
+                                            <Typography variant="subtitle1">{translate("OUR_LEARNING_POINT_FIVE")}</Typography>
                                         </li>
                                     </ul>
                                 </div>
@@ -176,8 +183,8 @@ const Home = (props) => {
                         <Grid container className={classes.compGrid} spacing={5}>
                             <Grid item lg={4}>
                                 <div className={classes.compContent}>
-                                    <Typography variant="h3" ><span>Integration</span></Typography>
-                                    <Typography variant="subtitle1" >Our eLearning platform can swap and/or integrate the content of other apps. </Typography>
+                                    <Typography variant="h3" ><span>{translate("INTEGRATION")}</span></Typography>
+                                    <Typography variant="subtitle1" >{translate("INTEGRATION_SUBTITLE")}</Typography>
                                 </div>
                             </Grid>
                             <Grid item lg={8}>
@@ -185,27 +192,27 @@ const Home = (props) => {
                                     <Grid item lg={3} md={3} sm={3} sx={{ width: '100%', }}>
                                         <div className={classes.compBox}>
                                             <img src="/images/icons/gc.png" />
-                                            <Typography variant="subtitle1">Google Classroom</Typography>
+                                            <Typography variant="subtitle1">{translate("GC")}</Typography>
                                         </div>
                                     </Grid>
                                     <Grid item lg={3} md={3} sm={3} sx={{ width: '100%' }}>
                                         <div className={classes.compBox}>
                                             <img src="/images/icons/mt.png" />
-                                            <Typography variant="subtitle1">MIcrosoft Teams</Typography>
+                                            <Typography variant="subtitle1">{translate("MT")}</Typography>
 
                                         </div>
                                     </Grid>
                                     <Grid item lg={3} md={3} sm={3} sx={{ width: '100%' }}>
                                         <div className={classes.compBox}>
                                             <img src="/images/icons/conf.png" />
-                                            <Typography variant="subtitle1">Conference tools <br />(Skype/ Zoom etc.)</Typography>
+                                            <Typography variant="subtitle1">{translate("CONF_TOOLS")}<br />(Skype/ Zoom etc.)</Typography>
                                         </div>
 
                                     </Grid>
                                     <Grid item lg={3} md={3} sm={3} sx={{ width: '100%' }}>
                                         <div className={classes.compBox}>
                                             <img src="/images/icons/email.png" />
-                                            <Typography variant="subtitle1">Content Exchange tools <br />(emails/ WhatsApp/ Telegram)</Typography>
+                                            <Typography variant="subtitle1">{translate("CONTENT_TOOLS")} <br />(emails/ WhatsApp/ Telegram)</Typography>
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -226,17 +233,17 @@ const Home = (props) => {
                             </Grid>
                             <Grid item lg={7} md={7} sm={7} className={classes.targetContent}>
                                 <div className={classes.innerTargetContent}>
-                                    <Typography variant="h3">Target group</Typography>
-                                    <Typography variant="subtitle1" className={classes.educationSubTitle}>Users who can benefit and take advantage of our eLearning platform</Typography>
+                                    <Typography variant="h3">{translate("TARGET_GROUP")}</Typography>
+                                    <Typography variant="subtitle1" className={classes.educationSubTitle}>{translate("TARGET_GROUP_SUBTITLE")}</Typography>
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle1">Academic schools, Language schools, Corporate institutions</Typography>
+                                            <Typography variant="subtitle1">{translate("TARGET_GROUP_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">Private tutors, be it academic or extra-curricular like music</Typography>
+                                            <Typography variant="subtitle1">{translate("TARGET_GROUP_POINT_TWO")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle1">Students</Typography>
+                                            <Typography variant="subtitle1">{translate("TARGET_GROUP_POINT_THREE")}</Typography>
                                         </li>
                                     </ul>
                                 </div>
@@ -249,13 +256,13 @@ const Home = (props) => {
                     <div className={classes.commuContainer}>
                         <div className={classes.commuInnerContainer}>
                             <div className={classes.commuContent}>
-                                <Typography variant="h3" >Community</Typography>
-                                <Typography variant="subtitle1" >We strongly believe in the concept of community, so we decided to create an open-source application. The goal was to give the community free access to the application while encouraging them to contribute to its future development and enhance the components serving different cultural aspects, which we alone can't achieve.</Typography>
-                                <Typography variant="subtitle1" >We invite you to join our community of contributors, users, and promoters of the application. Join and become part of our vision and mission of providing free education to the world and taking constructive steps towards our collective mission.</Typography>
+                                <Typography variant="h3" >{translate("COMMUNITY")}</Typography>
+                                <Typography variant="subtitle1" >{translate("COMMUNITY_TEXT_ONE")}</Typography>
+                                <Typography variant="subtitle1" >{translate("COMMUNITY_TEXT_TWO")}</Typography>
                                 <Button variant="contained" size="large" color="black" onClick={() => {
                                     dispatch(subjectSelection(4))
                                     history.push('/contact')
-                                }}>Join our community</Button>
+                                }}>{translate("JOIN_OUR_COMMUNITY")}</Button>
                             </div>
                             <div className={classes.commuImgContainer}>
                                 <img src="/images/child3.png" />
@@ -265,16 +272,16 @@ const Home = (props) => {
                             <Grid container spacing={5}>
                                 <Grid item lg={6}>
                                     <div className={classes.nominateContainer}>
-                                        <Typography variant="h5" color="secondary">Nominate a school</Typography>
-                                        <Typography variant="subtitle1" >We need your active support to achieve our collective vision of free Education to World. Be the torch tell us about the schools and the students who can benefit from Mougli School by Nominating the school. We will contact the school!</Typography>
-                                        <Button variant="contained" size="large" color="secondary">Nominate a school</Button>
+                                        <Typography variant="h5" color="secondary">{translate("NOMINATE_SCHOOL")}</Typography>
+                                        <Typography variant="subtitle1" >{translate("NOMINATE_SCHOOL_TEXT")}</Typography>
+                                        <Button variant="contained" size="large" color="secondary">{translate("NOMINATE_SCHOOL_BTN")}</Button>
                                     </div>
                                 </Grid>
                                 <Grid item lg={6}>
                                     <div className={classes.nominateContainer}>
-                                        <Typography variant="h5" color="secondary">Sponsor</Typography>
-                                        <Typography variant="subtitle1" >Be the change you want to see! You can also sponsor free education to the world by offering donation, every little counts.</Typography>
-                                        <Button variant="contained" size="large" color="secondary">Yes, I want to Sponsor</Button>
+                                        <Typography variant="h5" color="secondary">{translate("SPONSOR")}</Typography>
+                                        <Typography variant="subtitle1" >{translate("SPONSOR_TEXT")}</Typography>
+                                        <Button variant="contained" size="large" color="secondary">{translate("SPONSOR_BTN")}</Button>
                                     </div>
                                 </Grid>
                             </Grid>
@@ -292,116 +299,116 @@ const Home = (props) => {
                         <Grid container spacing={3}>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
                                 <div className={classes.priceBox}>
-                                    <Typography variant="h6" className={classes.packageName}>Free for ever</Typography>
+                                    <Typography variant="h6" className={classes.packageName}>{translate("FREE_FOR_EVER")}</Typography>
                                     {/* <Typography variant="h3" >$0</Typography>
                                     <Typography variant="subtitle1" className={classes.perMonth}>Per month</Typography> */}
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle2">Self-hosting by institutions</Typography>
+                                            <Typography variant="subtitle2">{translate("FREE_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Underprivileged state-run schools</Typography>
+                                            <Typography variant="subtitle2">{translate("FREE_POINT_TWO")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Volunteering educators, giving free education to the needy will get a free-hosted instance</Typography>
+                                            <Typography variant="subtitle2">{translate("FREE_POINT_THREE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Private tutor with up to 5 students</Typography>
+                                            <Typography variant="subtitle2">{translate("FREE_POINT_FOUR")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Customization</Typography>
+                                            <Typography variant="subtitle2">{translate("FREE_POINT_FIVE")}</Typography>
                                         </li>
                                     </ul>
-                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.open("https://learn.mougli.school") }}>Start Learning</Button>
+                                    <Button fullWidth variant="contained" color="black" size="large" onClick={() => { window.open("https://learn.mougli.school") }}>{translate("START_LEARNING")}</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
                                 <div className={classes.priceBox}>
-                                    <Typography variant="h6" className={classes.packageName}>Private tutors</Typography>
+                                    <Typography variant="h6" className={classes.packageName}>{translate("PRIVATE_TUTORS")}</Typography>
                                     {/* <Typography variant="h3" >$0</Typography>
                                     <Typography variant="subtitle1" className={classes.perMonth}>Per month</Typography> */}
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle2">Individual tutors</Typography>
+                                            <Typography variant="subtitle2">{translate("PRIVATE_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">User size up to 25</Typography>
+                                            <Typography variant="subtitle2">{translate("PRIVATE_POINT_TWO")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Saas</Typography>
+                                            <Typography variant="subtitle2">{translate("PRIVATE_POINT_THREE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Customization</Typography>
+                                            <Typography variant="subtitle2">{translate("PRIVATE_POINT_FOUR")}</Typography>
                                         </li>
                                     </ul>
                                     <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
                                         dispatch(pricingSelection("Private tutors"))
                                         history.push('/contact')
                                     }
-                                    }>Contact for Pricing</Button>
+                                    }>{translate("CONTACT_FOR_PRICING")}</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
                                 <div className={clsx(classes.priceBox, classes.recommeded)}>
-                                    <div className={classes.recommededChip}><Typography variant="subtitle1">Recommended</Typography></div>
-                                    <Typography variant="h6" className={classes.packageName}>Mid-sized institutions</Typography>
+                                    <div className={classes.recommededChip}><Typography variant="subtitle1">{translate("RECOMMENDED")}</Typography></div>
+                                    <Typography variant="h6" className={classes.packageName}>{translate("MID-SIZED_INSTITUTIONS")}</Typography>
                                     {/* <Typography variant="h3" >$0</Typography>
                                     <Typography variant="subtitle1" className={classes.perMonth}>Per month</Typography> */}
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle2">Academic schools, Language schools, Corporate institutions</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">User size up to 500</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_TWO")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Select between self-hosting or Saas</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_THREE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Corporate branding</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_FOUR")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Priority customization</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_FIVE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">10% of your payment will be used to sponsor free education</Typography>
+                                            <Typography variant="subtitle2">{translate("MID-SIZED_POINT_SIX")}</Typography>
                                         </li>
                                     </ul>
                                     <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
                                         dispatch(pricingSelection("Mid-sized institutions"))
                                         history.push('/contact')
-                                    }}>Contact for Pricing</Button>
+                                    }}>{translate("CONTACT_FOR_PRICING")}</Button>
                                 </div>
                             </Grid>
                             <Grid item lg={3} md={6} sm={6} sx={{ width: '100%' }}>
                                 <div className={classes.priceBox}>
-                                    <Typography variant="h6" className={classes.packageName}>Big Institutions</Typography>
+                                    <Typography variant="h6" className={classes.packageName}>{translate("BIG_INSTITUTIONS")}</Typography>
                                     {/* <Typography variant="h3" >$0</Typography>
                                     <Typography variant="subtitle1" className={classes.perMonth}>Per month</Typography> */}
                                     <ul>
                                         <li>
-                                            <Typography variant="subtitle2">Academic schools, Language schools, Corporate institutions</Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_ONE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">User size 500+</Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_TWO")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Select between self-hosting or Saas</Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_THREE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">Corporate branding </Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_FOUR")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">High priority customization</Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_FIVE")}</Typography>
                                         </li>
                                         <li>
-                                            <Typography variant="subtitle2">10% of your payment will be used to sponsor free education</Typography>
+                                            <Typography variant="subtitle2">{translate("BIG_INST_POINT_SIX")}</Typography>
                                         </li>
                                     </ul>
                                     <Button fullWidth variant="contained" color="black" size="large" onClick={() => {
                                         dispatch(pricingSelection("Big Institutions"))
                                         history.push('/contact')
-                                    }}>Contact for Pricing</Button>
+                                    }}>{translate("CONTACT_FOR_PRICING")}</Button>
                                 </div>
                             </Grid>
                         </Grid>

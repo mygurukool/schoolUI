@@ -1,29 +1,29 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import { Button, Grid, Typography, Stack, Divider, Link, IconButton } from "@mui/material";
+import { Grid, Typography, Stack, IconButton } from "@mui/material";
 import clsx from "clsx";
 import { Twitter as TwitterIcon, LinkedIn as LinkedInIcon } from "@mui/icons-material";
-import useResponsive from "../hooks/useResponsive";
+import useLanguages from '../hooks/useLanguage'
 
 const About = (props) => {
     const classes = useStyles();
-    const { isMobile, isDesktop, isTablet } = useResponsive()
+    const translate = useLanguages()
     return (
         <div className={classes.root}>
             <div className={clsx(classes.aboutContainer, classes.container)}>
                 <img src="/background/about.png" className={classes.bgImg} />
-                <Typography variant="h3">About <span>Us</span> </Typography>
-                <Typography variant="subtitle1">Mougli School at its core believes in ‘<b>Learning is joy, Teaching is a pleasure.</b>’. Education is the foundation for a happier and healthier society and a basic right to which every individual is entitled.</Typography>
-                <Typography variant="subtitle1">At Mougli school we aim to provide you with a platform that promises to make studying a fun-filled activity with a buddy who speaks your language. This venture was started by Founder Naveen Bandhu in the year 2020, with <span className={classes.spanText}>the vision</span> to provide access to free education across the world. His goal is to make education an absolute necessity instead of a need, which is one of the primary reasons behind the start of Mougli School. <span className={classes.rightToEdu}>Right to Education!</span></Typography>
-                <Typography variant="subtitle1">Mougli School <span className={classes.spanText}>mission</span> is an open-source project, free community license for self-installation, and also encourages the community to contribute to its development in the future.</Typography>
+                <Typography variant="h3">{translate("ABOUT")} <span>{translate("US")}</span> </Typography>
+                <Typography variant="subtitle1">{translate("ABOUT_TEXT_ONE")}<b>{translate("ABOUT_TEXT_TWO")}</b> {translate("ABOUT_TEXT_THREE")}</Typography>
+                <Typography variant="subtitle1">{translate("ABOUT_TEXT_FOUR")}<span className={classes.spanText}>{translate("THE_VISION")} </span>{translate("ABOUT_TEXT_FIVE")}<span className={classes.rightToEdu}>{translate("RIGHT_TO_EDUCATION")}</span></Typography>
+                <Typography variant="subtitle1">{translate("MOUGLI_SCHOOL")} <span className={classes.spanText}>{translate("MISSION")}</span> {translate("ABOUT_TEXT_SIX")}</Typography>
                 <div className={classes.centerSection}>
 
-                    <Typography variant="subtitle1" className={classes.leftText}>The seed of this idea was sown when he saw his child struggle while using corporate communication tools as a schooling platform during the pandemic. The existing schooling platforms lack user-friendliness and have their own usage complications. This has led to de-motivation in kids about schooling and in turn, has affected their performance in examinations. </Typography>
+                    <Typography variant="subtitle1" className={classes.leftText}>{translate("ABOUT_TEXT_SEVEN")}</Typography>
                     <div className={classes.circleContainer}>
                         <img src="/images/about/circle.svg" className={classes.circle} />
                         <Typography variant="subtitle1">Kashvi Bandhu</Typography>
                     </div>
-                    <Typography variant="subtitle1" className={classes.rightText}>All these psychological impacts left on children by the corporate tools gave rise to the becoming of the Mougli School. <br />Why tear your hair out using these complicated corporate tools for your child’s learning, when we can make it way more simpler and fun for you here at Mougli?</Typography>
+                    <Typography variant="subtitle1" className={classes.rightText}>{translate("ABOUT_TEXT_EIGHT")} <br />{translate("ABOUT_TEXT_NINE")}</Typography>
                 </div>
 
             </div>
@@ -35,8 +35,8 @@ const About = (props) => {
                                 <img src="/images/about/circle.svg" />
                                 <Typography variant="subtitle1">Kashvi Bandhu</Typography>
                             </div>
-                            <Typography variant="h6">The Boss, problem owner</Typography>
-                            <Typography variant="body2">Class 5, when Covid’19 started</Typography>
+                            <Typography variant="h6">{translate("THE_BOSS")}</Typography>
+                            <Typography variant="body2">{translate("THE_BOSS_DESC")}</Typography>
                         </div>
                     </Grid>
                     <Grid item lg={6} md={6} sm={6} xs={6}>
@@ -45,8 +45,8 @@ const About = (props) => {
                                 <img src="/images/about/naveen.png" />
                                 <Typography variant="subtitle1">Naveen Bandhu</Typography>
                             </div>
-                            <Typography variant="h6">Just another father</Typography>
-                            <Typography variant="body2">The only aim is to see his kid smile</Typography>
+                            <Typography variant="h6">{translate("JUST_ANOTHER_FATHER")}</Typography>
+                            <Typography variant="body2">{translate("JUST_ANOTHER_FATHER_DESC")}</Typography>
                             <Stack flexDirection="row">
                                 <IconButton color="primary" onClick={() => window.open("https://twitter.com/MougliSchool/")}><TwitterIcon /></IconButton>
                                 <IconButton color="primary" onClick={() => window.open("https://www.linkedin.com/in/naveenbandhu/")}><LinkedInIcon /></IconButton>
@@ -59,8 +59,8 @@ const About = (props) => {
                                 <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" />
                                 <Typography variant="subtitle1">Stephane Peiry</Typography>
                             </div>
-                            <Typography variant="h6">First believer</Typography>
-                            <Typography variant="body2">Sleeved up, joined the mission!</Typography>
+                            <Typography variant="h6">{translate("FIRST_BELIEVER")}</Typography>
+                            <Typography variant="body2">{translate("FIRST_BELIEVER_DESC")}</Typography>
                             <Stack flexDirection="row">
                                 <IconButton color="primary"><TwitterIcon /></IconButton>
                                 <IconButton color="primary"><LinkedInIcon /></IconButton>
@@ -70,15 +70,15 @@ const About = (props) => {
                 </Grid>
             </div>
             <div className={clsx(classes.whyContainer, classes.container)}>
-                <Typography variant="h3"><span>Why</span> Choose <span>Us</span></Typography>
+                <Typography variant="h3"><span>{translate("WHY")}</span> {translate("CHOOSE")} <span>{translate("US")}</span></Typography>
                 <Grid container spacing={5}>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
                         <div className={classes.innerContainer}>
                             <div className={classes.imgContainer} style={{ background: '#4EC217' }}>
                                 <img src="/images/about/ui.png" />
                             </div>
-                            <Typography variant="h5">Child-Friendly User Interface</Typography>
-                            <Typography variant="subtitle1">At Mougli we have found an answer to your kid’s difficulties and monotonies while studying: an intuitive and interactive user interface that grows with your child. The User Interface keeps on changing in terms of its color, look, and feel as per the age of the child and level of education. We have also introduced a one-click action, structured display that does not steal the joy of learning.</Typography>
+                            <Typography variant="h5">{translate("WHY_CHOOSE_TITLE_ONE")}</Typography>
+                            <Typography variant="subtitle1">{translate("WHY_CHOOSE_SUBTITLE_ONE")}</Typography>
                         </div>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -86,8 +86,8 @@ const About = (props) => {
                             <div className={classes.imgContainer} style={{ background: '#1CB0F1' }}>
                                 <img src="/images/about/integration.png" />
                             </div>
-                            <Typography variant="h5">Integration</Typography>
-                            <Typography variant="subtitle1">There is no innovation without integration.  We at Mougli have tried to add a cherry on the cake by providing you with an improved and never before seen user interface and advanced structure, which will surely make your experience seamless. Our tool gives you the flexibility to access your data from Microsoft Teams and Google Classroom and represent them with a user interface that is surely going to keep your children hooked.</Typography>
+                            <Typography variant="h5">{translate("WHY_CHOOSE_TITLE_TWO")}</Typography>
+                            <Typography variant="subtitle1">{translate("WHY_CHOOSE_SUBTITLE_TWO")}</Typography>
                         </div>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -95,8 +95,8 @@ const About = (props) => {
                             <div className={classes.imgContainer} style={{ background: '#ff9e42' }}>
                                 <img src="/images/about/education.png" />
                             </div>
-                            <Typography variant="h5">Gurukul System of Education</Typography>
-                            <Typography variant="subtitle1">We are highly influenced by the Gurukul System of Education and have tried to take inspiration and create something along similar lines. Gurukul System identifies and hones the unique strengths of every individual student. And Mougli School is a dashboard where your child’s interests and uniqueness will find a home to nourish and excel. We try to promote an education system where academics and extra-curricular activities are at par.</Typography>
+                            <Typography variant="h5">{translate("WHY_CHOOSE_TITLE_THREE")}</Typography>
+                            <Typography variant="subtitle1">{translate("WHY_CHOOSE_SUBTITLE_THREE")}</Typography>
                         </div>
                     </Grid>
                     <Grid item lg={6} md={6} sm={12} xs={12}>
@@ -104,28 +104,29 @@ const About = (props) => {
                             <div className={classes.imgContainer} style={{ background: '#ecef21' }}>
                                 <img src="/images/about/flexible.png" />
                             </div>
-                            <Typography variant="h5">Flexibility</Typography>
-                            <Typography variant="subtitle1">No one understands the importance of customizing better than us. Hence you can trust us with your needs and preferences, we will address and implement them with customization specially meant for your institution. We take pride in providing a unique service that no other platform in the market can boast of. No institution is small for us to request customization, we believe in building relations, not empires.</Typography>
+                            <Typography variant="h5">{translate("WHY_CHOOSE_TITLE_FOUR")}</Typography>
+                            <Typography variant="subtitle1">{translate("WHY_CHOOSE_SUBTITLE_FOUR")}</Typography>
                         </div>
                     </Grid>
                 </Grid>
             </div>
             <div className={clsx(classes.backContainer, classes.container)}>
-                <Typography variant="h3">Giving Back <span>/ Free Education To The World</span></Typography>
-                <Typography variant="subtitle1">One of the primary mottos behind the inception of Mougli School was to facilitate free education to the world.</Typography>
+                <Typography variant="h3">{translate("GIVING_BACK")} <span>/ {translate("FREE_EDUCATION_TO_WORLD")}</span></Typography>
+                <Typography variant="subtitle1">{translate("GIVING_BACK_SUBTITLE")}</Typography>
                 <ul>
                     <li>
-                        <Typography variant="subtitle1">Right to Education for every citizen of the world is what we seek to promote through our application, Mougli School. We aim to reach the most remote of the villages and the underprivileged, who have been denied their right to education.</Typography>
+                        <Typography variant="subtitle1">{translate("GIVING_BACK_POINT_ONE")}</Typography>
                     </li>
                     <li>
-                        <Typography variant="subtitle1">Giving back to society is where our principle lies. We want to make a statement through our platform and extend our support to as many people as we can in their journey of learning.</Typography>
+                        <Typography variant="subtitle1">{translate("GIVING_BACK_POINT_TWO")}</Typography>
                     </li>
                     <li>
-                        <Typography variant="subtitle1">Making education more accessible to all has been the mantra at Mougli School. You can also do your bit by purchasing a licensed product on our platform and becoming a sponsor!</Typography>
+                        <Typography variant="subtitle1">{translate("GIVING_BACK_POINT_THREE")}</Typography>
                     </li>
                     <li>
-                        <Typography variant="subtitle1">Sponsoring free education for the needy gets easier with Mougli School. When you buy a licensed product, Mougli school will spend a % of the license fee you pay for the purchase on providing and promoting free education. Voila, this way you get to make a difference in someone's life.</Typography>
+                        <Typography variant="subtitle1">{translate("GIVING_BACK_POINT_FOUR")}</Typography>
                     </li>
+
                 </ul>
             </div>
         </div>

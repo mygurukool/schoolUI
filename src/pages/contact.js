@@ -7,11 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { pricingSelection, subjectSelection, submitContact } from "../redux/action/utilActions";
 import DiscordIcon from "../assets/icons/Discord";
 import SendIcon from '@mui/icons-material/Send';
+import useLanguages from "../hooks/useLanguage";
 
 const Contact = (props) => {
     const classes = useStyles();
     const [subjectSelect, setSubjectSelect] = useState()
     const dispatch = useDispatch()
+    const translate = useLanguages()
     const subjects = [
         {
             label: "General",
@@ -35,40 +37,40 @@ const Contact = (props) => {
         {
             type: "text",
             name: "schoolName",
-            label: "School Name",
-            placeholder: "Enter school name",
+            label: translate("SCHOOL_NAME"),
+            placeholder: translate("SCHOOL_NAME_PLACEHOLDER"),
             required: true,
             size: 12,
         },
         {
             type: "text",
             name: "contactPerson",
-            label: "Contact person name",
-            placeholder: "Enter contact person name",
+            label: translate("CONTACT_PERSON"),
+            placeholder: translate("CONTACT_PERSON_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "email",
             name: "schoolEmail",
-            label: "School Email",
-            placeholder: "Enter school email",
+            label: translate("SCHOOL_EMAIL"),
+            placeholder: translate("SCHOOL_EMAIL_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "mobile",
             name: "schoolMobile",
-            label: "School Phone Number",
-            placeholder: "Enter school phone number",
+            label: translate("SCHOOL_MOBILE"),
+            placeholder: translate("SCHOOL_MOBILE_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "url",
             name: "schoolWebsite",
-            label: "School Website",
-            placeholder: "Enter school website",
+            label: translate("SCHOOL_WEBSITE"),
+            placeholder: translate("SCHOOL_WEBSITE_PLACEHOLDER"),
             required: true,
             size: 6,
         },
@@ -76,8 +78,8 @@ const Contact = (props) => {
         {
             type: "textarea",
             name: "schoolAddress",
-            label: 'School Address',
-            placeholder: 'Enter address',
+            label: translate("SCHOOL_ADDRESS"),
+            placeholder: translate("SCHOOL_ADDRESS_PLACEHOLDER"),
             size: 12,
             rows: 2
         },
@@ -102,71 +104,23 @@ const Contact = (props) => {
         {
             type: "select",
             name: "productType",
-            label: 'Product Type',
+            label: translate("PRODUCT_TYPE"),
             options: productTypes,
-            placeholder: 'Product Type',
+            placeholder: translate("PRODUCT_TYPE"),
             optionLabelProp: 'label',
             optionValueProp: 'label',
             size: 12,
         },
-        {
-            type: "text",
-            name: "schoolName",
-            label: "School Name",
-            placeholder: "Enter school name",
-            required: true,
-            size: 12,
-        },
-        {
-            type: "text",
-            name: "contactPerson",
-            label: "Contact person name",
-            placeholder: "Enter contact person name",
-            required: true,
-            size: 6,
-        },
-        {
-            type: "email",
-            name: "schoolEmail",
-            label: "School Email",
-            placeholder: "Enter school email",
-            required: true,
-            size: 6,
-        },
-        {
-            type: "mobile",
-            name: "schoolMobile",
-            label: "School Phone Number",
-            placeholder: "Enter school phone number",
-            required: true,
-            size: 6,
-        },
-        {
-            type: "url",
-            name: "schoolWebsite",
-            label: "School Website",
-            placeholder: "Enter school website",
-            required: true,
-            size: 6,
-        },
-
-        {
-            type: "textarea",
-            name: "schoolAddress",
-            label: 'School Address',
-            placeholder: 'Enter address',
-            size: 12,
-            rows: 2
-        },
+        ...nominateFields
     ]
 
     const subjectFormData = [
         {
             type: "select",
             name: "subject",
-            label: 'Subject',
+            label: translate("SUBJECT"),
             options: subjects,
-            placeholder: 'Subject',
+            placeholder: translate("SUBJECT"),
             optionLabelProp: 'label',
             optionValueProp: 'value',
             onSelect: (data) => { dispatch(pricingSelection()); dispatch(subjectSelection()); setSubjectSelect(data) },
@@ -179,32 +133,32 @@ const Contact = (props) => {
         {
             type: "text",
             name: "name",
-            label: "Name",
-            placeholder: "Enter Name",
+            label: translate("NAME"),
+            placeholder: translate("NAME_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "email",
             name: "email",
-            label: "Email address",
-            placeholder: "Enter email address",
+            label: translate("EMAIL_ADDRESS"),
+            placeholder: translate("EMAIL_ADDRESS_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "mobile",
             name: "mobile",
-            label: "Phone Number",
-            placeholder: "Enter phone number",
+            label: translate("MOBILE_ADDRESS"),
+            placeholder: translate("MOBILE_ADDRESS_PLACEHOLDER"),
             required: true,
             size: 6,
         },
         {
             type: "url",
             name: "website",
-            label: "Website",
-            placeholder: "Enter website",
+            label: translate("WEBSITE"),
+            placeholder: translate("WEBSITE_PLACEHOLDER"),
             required: true,
             size: 6,
         },
@@ -215,8 +169,8 @@ const Contact = (props) => {
         {
             type: "textarea",
             name: "message",
-            label: 'Message',
-            placeholder: 'Type a message',
+            label: translate("MESSAGE"),
+            placeholder: translate("MESSAGE"),
             size: 12,
             rows: 5
         },
@@ -240,7 +194,7 @@ const Contact = (props) => {
                             <div className={classes.circle1}></div>
                             <div className={classes.circle2}></div>
                             <div className={classes.curveLines}></div>
-                            <Typography variant="h3">Let's get social</Typography>
+                            <Typography variant="h3">{translate("LETS_GET_SOCIAL")}</Typography>
                             <Grid container spacing={2} className={classes.socialIconContainer}>
                                 <Grid item lg={3} xs={4} md={4} sm={3}>
                                     <div className={classes.socialIcon} onClick={() => window.open("https://twitter.com/MougliSchool")}>
@@ -262,8 +216,8 @@ const Contact = (props) => {
                     </Grid>
                     <Grid item lg={6} xs={12} sm={12} md={6}>
                         <div className={classes.formContainer}>
-                            <Typography variant="h3">Get in touch</Typography>
-                            {(subSelection || subjectSelect) === 4 ? <Typography variant="subtitle1">Join the community by connecting via <b>Let's get social</b>. <br />We understand if you want to talk to us, Please fill in the form to contact us.</Typography> : <Typography variant="subtitle1"> Please fill in the form to contact us.</Typography>}
+                            <Typography variant="h3">{translate("GET_IN_TOUCH")}</Typography>
+                            {(subSelection || subjectSelect) === 4 ? <Typography variant="subtitle1">{translate("JOIN_COMMUNITY_VIA")} <b>{translate("LETS_GET_SOCIAL")}</b>. <br />{translate("WE_UNDERSTAND")} {translate("PLEASE_FILL_CONTACT_DETAILS")}</Typography> : <Typography variant="subtitle1"> {translate("PLEASE_FILL_CONTACT_DETAILS")}</Typography>}
 
                             <FormCreator
                                 watchFields={['subject']}
@@ -273,7 +227,7 @@ const Contact = (props) => {
                             />
                             <FormCreator
                                 onSubmit={(e) => handleSubmit(e)}
-                                submitBtnText="Send Message"
+                                submitBtnText={translate("SEND_MESSAGE")}
                                 btnIcon={<SendIcon />}
                                 // watchFields={['subject']}
                                 // onWatchChange={(data) => { setSubjectSelect(data[0]) }}
@@ -368,7 +322,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         bottom: 0,
         right: 0,
-        backgroundImage: 'url(images/circle1.png)',
+        backgroundImage: 'url(/images/circle1.png)',
         backgroundSize: 'cover',
         backgroundRepeat: "no-repeat",
         borderBottomRightRadius: theme.spacing(2),
@@ -401,7 +355,7 @@ const useStyles = makeStyles((theme) => ({
 
         position: 'absolute',
 
-        backgroundImage: 'url(images/circle2.png)',
+        backgroundImage: 'url(/images/circle2.png)',
         backgroundSize: 'cover',
         backgroundRepeat: "no-repeat",
         zIndex: 10,
@@ -423,7 +377,7 @@ const useStyles = makeStyles((theme) => ({
         position: 'absolute',
         bottom: 20,
         right: 0,
-        backgroundImage: 'url(images/curvelines.png)',
+        backgroundImage: 'url(/images/curvelines.png)',
         backgroundSize: 'cover',
         backgroundRepeat: "no-repeat",
         zIndex: 10,

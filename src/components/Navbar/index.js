@@ -19,71 +19,78 @@ import {
 
 import { makeStyles, styled } from "@mui/styles";
 import { useHistory } from "react-router-dom";
-// import languages from "../../utils/languages.json";
-// import useLanguage from "../../hooks/useLanguage";
-// import { useTranslation } from "react-i18next";
+import languages from "../../utils/languages.json";
+import useLanguage from "../../hooks/useLanguage";
+import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "../Drawer";
 import {
   InfoTwoTone as AboutIcon,
   ContactSupportTwoTone as ContactIcon,
-  Event,
   HomeTwoTone,
 } from "@mui/icons-material";
 import clsx from "clsx";
+import AppButton from '../AppButton'
+
 
 export default function Navbar({ showBg, position, showBack, ...props }) {
   const classes = useStyles();
 
-  // const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
-  // const [open, setOpen] = React.useState(false);
-  // const [notiOpen, setNotiOpen] = React.useState(false);
-  // const { i18n } = useTranslation();
+  const [notiAnchorEl, setNotiAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [notiOpen, setNotiOpen] = React.useState(false);
+  const { i18n } = useTranslation();
   const history = useHistory();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  // const translate = useLanguage()
+  const translate = useLanguage()
 
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
   };
-  // const handleLanguageClick = (event) => {
-  //   setNotiAnchorEl(event.currentTarget);
-  //   setNotiOpen(true);
-  // };
-  // const handleClose = () => {
-  //   setOpen(false);
-  //   setNotiOpen(false);
-  //   setNotiAnchorEl(null);
-  // };
+  const handleLanguageClick = (event) => {
+    setNotiAnchorEl(event.currentTarget);
+    setNotiOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setNotiOpen(false);
+    setNotiAnchorEl(null);
+  };
 
 
+  const handleChangeLanguage = (lang) => {
+    const currentPathname = window.location.pathname.replace(/\/+$/, '');
+    const newPathname = currentPathname.replace(i18n.language, lang)
+    history.push(newPathname);
+  };
 
-  // const languageMenu = (
-  //   <StyledMenu
-  //     anchorEl={notiAnchorEl}
-  //     open={notiOpen}
-  //     onClose={handleClose}
-  //     onClick={handleClose}
-  //     classes={{ paper: classes.menuPaper }}
-  //     PaperProps={{
-  //       elevation: 0,
-  //     }}
-  //     transformOrigin={{ horizontal: "right", vertical: "top" }}
-  //     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-  //     getContentAnchorEl={null}
-  //   >
-  //     {languages.map((lang, index) => {
-  //       return (
-  //         <MenuItem onClick={() => i18n.changeLanguage(lang.code)}>
-  //           {/* <ListItemIcon>
-  //                   <PersonIcon fontSize="small" />
-  //               </ListItemIcon> */}
-  //           <Typography className={classes.menuTitle}>{lang.name}</Typography>
-  //         </MenuItem>
-  //       );
-  //     })}
-  //   </StyledMenu>
-  // );
+
+  const languageMenu = (
+    <StyledMenu
+      anchorEl={notiAnchorEl}
+      open={notiOpen}
+      onClose={handleClose}
+      onClick={handleClose}
+      classes={{ paper: classes.menuPaper }}
+      PaperProps={{
+        elevation: 0,
+      }}
+      transformOrigin={{ horizontal: "right", vertical: "top" }}
+      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      getContentAnchorEl={null}
+    >
+      {languages.map((lang, index) => {
+        return (
+          <MenuItem onClick={() => handleChangeLanguage(lang.code)}>
+            {/* <ListItemIcon>
+                    <PersonIcon fontSize="small" />
+                </ListItemIcon> */}
+            <Typography className={classes.menuTitle}>{lang.name}</Typography>
+          </MenuItem>
+        );
+      })}
+    </StyledMenu>
+  );
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -129,9 +136,9 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
 
             <Typography variant="h6" className={classes.appName}>
               <img
-                src="images/logo.png"
-                style={{ width: 80, height: 'auto', cursor: 'pointer' }}
-                onClick={() => history.push('/')}
+                src="/images/logo.png"
+
+                onClick={() => history.push(`/${i18n.language}`)}
               />
             </Typography>
 
@@ -155,30 +162,30 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
               <ListItem
                 button
                 className={classes.listItem}
-                onClick={() => { history.push('/'); handleDrawerToggle() }}
+                onClick={() => { history.push(`/${i18n.language}`); handleDrawerToggle() }}
               >
                 <ListItemIcon>
                   <HomeTwoTone />
                 </ListItemIcon>
 
-                <ListItemText primary="Home" />
+                <ListItemText primary={translate("HOME")} />
               </ListItem>
               <Divider />
               <ListItem
                 button
                 className={classes.listItem}
-                onClick={() => { history.push('/about'); handleDrawerToggle() }}
+                onClick={() => { history.push(`/${i18n.language}/about`); handleDrawerToggle() }}
               >
                 <ListItemIcon>
                   <AboutIcon />
                 </ListItemIcon>
 
-                <ListItemText primary="About" />
+                <ListItemText primary={translate("ABOUT")} />
               </ListItem>
               <Divider />
               <ListItem
                 button
-                onClick={() => history.push('/contact')}
+                onClick={() => { history.push(`/${i18n.language}/contact`); handleDrawerToggle() }}
                 // onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
                 className={classes.listItem}
               >
@@ -186,7 +193,7 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
                   <ContactIcon />
                 </ListItemIcon>
 
-                <ListItemText primary="Contact" />
+                <ListItemText primary={translate("CONTACT")} />
               </ListItem>
               <Divider />
             </List>
@@ -199,10 +206,10 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
                 <Button
                   color="inherit"
                   variant="text"
-                  onClick={() => history.push('/')}
+                  onClick={() => history.push(`/${i18n.language}`)}
                   className={clsx(classes.navLink, classes.active)}
                 >
-                  Home
+                  {translate("HOME")}
                 </Button>
               </div>
             </li>
@@ -210,25 +217,25 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
               <Button
                 color="inherit"
                 variant="text"
-                onClick={() => history.push('/about')}
+                onClick={() => history.push(`/${i18n.language}/about`)}
                 className={classes.navLink}
               >
-                About
+                {translate("ABOUT")}
               </Button>
             </li>
             <li className={classes.hideNav}>
               <Button
                 color="inherit"
                 variant="text"
-                onClick={() => history.push('/contact')}
+                onClick={() => history.push(`/${i18n.language}/contact`)}
                 // onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
 
                 className={classes.navLink}
               >
-                Contact
+                {translate("CONTACT")}
               </Button>
             </li>
-            {/* <li>
+            <li>
               <AppButton
                 variant="text"
                 color="inherit"
@@ -237,7 +244,7 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
                 {translate("LANGUAGE")}
               </AppButton>
             </li>
-            <li>
+            {/* <li>
               <AppButton
                 variant="contained"
                 color="black"
@@ -245,7 +252,7 @@ export default function Navbar({ showBg, position, showBack, ...props }) {
                 Login
               </AppButton>
             </li> */}
-            {/* {languageMenu} */}
+            {languageMenu}
             {/* {notificationMenu} */}
           </ul>
         </Toolbar>
@@ -342,6 +349,21 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     color: theme.palette.text.primary,
     whiteSpace: "nowrap",
+    '& img': {
+      cursor: 'pointer',
+      [theme.breakpoints.up("xs")]: {
+        width: 60,
+      },
+      [theme.breakpoints.up("sm")]: {
+        width: 80,
+      },
+      [theme.breakpoints.up("md")]: {
+        width: 80,
+      },
+      [theme.breakpoints.up("lg")]: {
+        width: 80,
+      },
+    },
   },
   title: {
     fontSize: theme.palette.fontSizes.base,

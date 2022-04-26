@@ -1,25 +1,28 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Button, Grid, Link, Stack, Typography } from "@mui/material";
-// import FacebookIcon from '@mui/icons-material/Facebook';
 import EmailIcon from '@mui/icons-material/Email';
-// import InstagramIcon from '@mui/icons-material/Instagram';
 import { Twitter as TwitterIcon } from "@mui/icons-material";
 import { useHistory } from "react-router-dom";
+import useLanguages from "../../hooks/useLanguage";
+import { useTranslation } from "react-i18next";
 
 const Index = (props) => {
     const classes = useStyles();
     const history = useHistory()
+    const translate = useLanguages()
+    const { i18n } = useTranslation();
+
     return (
         <div className={classes.footerContainer}>
             <Grid container spacing={2}>
                 <Grid item lg={4} sm={4} md={4} xs={12}>
                     <div className={classes.logoContainer}>
                         <Grid container spacing={2}>
-                            <Grid item lg={12}>
-                                <img src="images/logo.png" />
+                            <Grid item lg={12} xs={12} md={12} sm={12}>
+                                <img src="/images/logo.png" />
                             </Grid>
-                            <Grid item lg={12}>
+                            <Grid item lg={12} xs={12} md={12} sm={12}>
 
                                 <Stack flexDirection="row" alignItems="center" className={classes.socialIcons}>
                                     {/* <div className={classes.scInnerIcon}>
@@ -45,16 +48,16 @@ const Index = (props) => {
                         <Typography variant="h6">Discover</Typography>
                         <ul>
                             <li>
-                                <Button color="black" onClick={() => history.push('/')}>Home</Button>
+                                <Button color="black" onClick={() => history.push(`/${i18n.language}`)}>{translate("HOME")}</Button>
                             </li>
                             <li>
-                                <Button color="black" onClick={() => history.push('/about')}>About</Button>
+                                <Button color="black" onClick={() => history.push(`/${i18n.language}/about`)}>{translate("ABOUT")}</Button>
                             </li>
                             <li>
                                 <Button color="black"
-                                    // onClick={() => history.push('/contact')}
-                                    onClick={() => { window.location.href = "mailto:contact@mougli.school" }}
-                                >Contact</Button>
+                                    onClick={() => history.push(`/${i18n.language}/contact`)}
+
+                                >{translate("CONTACT")}</Button>
                             </li>
                         </ul>
                     </div>
@@ -65,10 +68,10 @@ const Index = (props) => {
                         <Typography variant="h6">Sitemap</Typography>
                         <ul>
                             <li>
-                                <Button color="black" onClick={() => history.push('/')}>Home</Button>
+                                <Button color="black" onClick={() => history.push(`/${i18n.language}`)}>Home</Button>
                             </li>
                             <li>
-                                <Button color="black" onClick={() => history.push('/about')}>About</Button>
+                                <Button color="black" onClick={() => history.push(`/${i18n.language}about`)}>About</Button>
                             </li>
                             <li>
                                 <Button color="black">Contact</Button>
@@ -82,12 +85,12 @@ const Index = (props) => {
             <Stack flexDirection="row" justifyContent="space-between" alignItems="center" className={classes.bottomFooter}>
                 <Grid container spacing={2}>
                     <Grid item lg={9} xs={12} sm={8} md={9}>
-                        <Typography>copyright {new Date().getFullYear()}</Typography>
+                        <Typography>{translate("COPYRIGHT")} {new Date().getFullYear()}</Typography>
                     </Grid>
                     <Grid item lg={3} xs={12} sm={4} md={3}>
                         <Stack flexDirection="row" justifyContent="space-between" alignItems="center">
-                            <Typography><a onClick={() => { }}>Privacy policy</a> </Typography>
-                            <Typography><a onClick={() => { }}>Terms & condition</a></Typography>
+                            <Typography><a onClick={() => { }}>{translate("PRIVACY_POLICY")}</a> </Typography>
+                            <Typography><a onClick={() => { }}>{translate("TERMS_CONDITION")}</a></Typography>
                         </Stack>
                     </Grid>
                 </Grid>
@@ -119,12 +122,19 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     logoContainer: {
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: "center",
-        flexDirection: 'column',
         '& img': {
-            width: 120,
+            [theme.breakpoints.up("xs")]: {
+                width: 80,
+            },
+            [theme.breakpoints.up("sm")]: {
+                width: 100,
+            },
+            [theme.breakpoints.up("md")]: {
+                width: 120,
+            },
+            [theme.breakpoints.up("lg")]: {
+                width: 120,
+            },
         },
     },
     navigateContainer: {
