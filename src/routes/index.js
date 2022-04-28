@@ -1,6 +1,6 @@
 import React from "react";
 // import { useSelector } from "react-redux";
-import { Route, BrowserRouter, Switch } from "react-router-dom";
+import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import Invitation from "../pages/Invitation";
@@ -13,12 +13,41 @@ import useAutoLogin from "../hooks/useAutoLogin";
 import Spinner from "../components/Spinner";
 import Privacy from "../pages/Privacy";
 // import AnimatedSwitch from "./AnimatedSwitch";
+import i18n from "../i18n";
+import languages from "../utils/languages.json";
 
 import Util from "./Util";
+const lang = i18n.language;
+const changeLanguage = lng => {
+  i18n.changeLanguage(lng);
+};
+
+let App = ({ match, location }) => {
+  if (lang != match.params.locale) {
+    changeLanguage(match.params.locale);
+  }
+  return (
+    <div>
+      <Switch>
+        <ProtectedRoute exact path={`${match.url}`} component={HomeRoutes} />
+        <Route exact path={`${match.url}/login`} component={Login} />
+        <Route exact path={`${match.url}/forgot-password`} component={Forgot} />
+        <Route exact path={`${match.url}/register`} component={Register} />
+        <Route exact path={`${match.url}/invitation/:type/:id`} component={Invitation} />
+        <Route exact path={`${match.url}/privacy`} component={Privacy} />
+      </Switch>
+    </div>
+  );
+};
 
 const RouteData = () => {
   const { ready } = useAutoLogin();
-
+  const handleDetectLanguage = () => {
+    const detectedLang = navigator.language || navigator.userLanguage
+    const findLang = detectedLang.indexOf('-') > -1 ? detectedLang.substr(0, detectedLang.indexOf('-')) : detectedLang
+    const checkLang = languages.findIndex(l => l.code === findLang)
+    return checkLang >= 0 ? findLang : 'en'
+  }
   return ready ? (
     <BrowserRouter>
       <Util />
@@ -32,13 +61,8 @@ const RouteData = () => {
         }}
       >
         <Switch>
-          <ProtectedRoute exact path="/" component={HomeRoutes} />
-
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/forgot-password" component={Forgot} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/invitation/:type/:id" component={Invitation} />
-          <Route exact path="/privacy" component={Privacy} />
+          <Route path="/:locale" component={App} />
+          <Redirect to={`/${handleDetectLanguage()}`} />
         </Switch>
       </div>
       {/* </AnimatedSwitch> */}
@@ -49,18 +73,7 @@ const RouteData = () => {
 };
 
 export default RouteData;
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-    width: "100vw",
-    // backgroundColor: theme.palette.white,
-  },
-  main: {
-    width: "90%",
-    margin: "auto",
-    height: "100vh",
-  },
-}));
+
 
 // /* global gapi */
 

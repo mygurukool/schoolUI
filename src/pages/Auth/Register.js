@@ -10,6 +10,7 @@ import { PERMISSIONS, ROLES } from "../../constants";
 import { loginUser, logoutUser } from "../../redux/action/userActions";
 import { openModal } from "../../redux/action/utilActions";
 import useLanguages from "../../hooks/useLanguage";
+import i18n from '../../i18n'
 
 const RegisterForm = () => {
   const classes = useStyles();
@@ -20,7 +21,7 @@ const RegisterForm = () => {
 
   React.useEffect(() => {
     if (isLogged) {
-      history.push("/");
+      history.push(`/${i18n.language}`);
     }
   }, [isLogged]);
   const getCountries = async () => {
@@ -202,7 +203,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     background: theme.palette.white,
-    backgroundImage: "url(background/bg1.jpg)",
+    backgroundImage: "url(/background/bg1.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",

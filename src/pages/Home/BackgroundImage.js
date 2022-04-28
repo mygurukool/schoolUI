@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 
   bg: {
     background: theme.palette.primary.main,
-    backgroundImage: "url(background/bg1.png)",
+    backgroundImage: "url(/background/bg1.png)",
     backgroundSize: "cover",
     flex: 1,
     height: 180,
@@ -81,15 +81,15 @@ const BackgroundImage = (props) => {
       />
       <div>
         <div className={classes.clouds}>
-          <img className="cloud1" src="images/cloud1.svg" />
-          <img className="cloud2" src="images/cloud2.svg" />
-          <img className="cloud3" src="images/cloud3.svg" />
-          <img className="cloud4" src="images/cloud4.svg" />
-          <img className="cloud5" src="images/cloud5.svg" />
-          <img className="cloud6" src="images/cloud6.svg" />
+          <img className="cloud1" src="/images/cloud1.svg" />
+          <img className="cloud2" src="/images/cloud2.svg" />
+          <img className="cloud3" src="/images/cloud3.svg" />
+          <img className="cloud4" src="/images/cloud4.svg" />
+          <img className="cloud5" src="/images/cloud5.svg" />
+          <img className="cloud6" src="/images/cloud6.svg" />
         </div>
         <div className={classes.layer1}>
-          <img src="images/Layer2.svg" />
+          <img src="/images/Layer2.svg" />
           <div className={classes.shadow}></div>
         </div>
       </div>

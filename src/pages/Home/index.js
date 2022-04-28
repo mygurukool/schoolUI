@@ -15,7 +15,6 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 
-import lang from "../../hooks/useLanguage";
 import CoursesList from "./CourseList";
 import SelectGroup from "./GroupSelector";
 import AssignmentList from "./AssignmentList";
@@ -29,7 +28,6 @@ import useConference from "../../hooks/useConference";
 import { getAllCourses } from "../../redux/action/coursesActions";
 
 import { deleteGroup, getAllGroups } from "../../redux/action/groupActions";
-import BackgroundImage from "./BackgroundImage";
 import TopSectionButtons from "./TopSectionButtons";
 import WhiteBoard from "./WhiteBoard";
 import Conference from "./Conference";

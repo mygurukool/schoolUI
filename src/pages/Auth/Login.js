@@ -17,9 +17,10 @@ import { useGoogleLogin } from "react-google-login";
 import * as _gconsts from "../../constants/gConsts";
 import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
-import useModal from "../../hooks/useModal";
 import useLanguages from "../../hooks/useLanguage";
 import ComingSoonModal from "../../components/Modals/CommingSoon";
+import i18n from "../../i18n";
+
 const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Login = (props) => {
 
   React.useEffect(() => {
     if (isLogged) {
-      history.push("/");
+      history.push(`/${i18n.language}`);
     }
   }, [isLogged]);
 
@@ -41,8 +42,7 @@ const Login = (props) => {
       handleLogin({ ...data.profileObj, token: token }, "google");
     },
 
-    clientId:
-      "629959808842-k1hnr6f2pkfbv9n1fnekpn8gkl659crc.apps.googleusercontent.com",
+    clientId: process.env.REACT_GOOGLE_CLIENT_ID,
 
     isSignedIn: false,
     fetchBasicProfile: true,
@@ -126,7 +126,7 @@ const Login = (props) => {
                   <CardContent>
                     <img
                       alt="microsoft"
-                      src="images/mt.svg"
+                      src="/images/mt.svg"
                       className={classes.icon}
                     />
                     <Typography variant="subtitle1">
@@ -142,7 +142,7 @@ const Login = (props) => {
                   onClick={() => handleGoogleLogin()}
                 >
                   <CardContent>
-                    <img src="images/gc.svg" className={classes.icon} />
+                    <img src="/images/gc.svg" className={classes.icon} />
                     <Typography variant="subtitle1">
                       {translate("LOGIN_TO_GC")}
                     </Typography>
@@ -154,7 +154,7 @@ const Login = (props) => {
           <div className={classes.centerLogo}>
             <div className={classes.hrLine} />
             <div className={classes.centerLogoImgCont}>
-              <img src="images/logo.png" />
+              <img src="/apple-touch-icon.png" />
             </div>
             <div className={classes.hrLine} />
           </div>
@@ -187,7 +187,7 @@ const Login = (props) => {
               <Link
                 color="inherit"
                 className={classes.link}
-                onClick={() => history.push("/forgot-password")}
+                onClick={() => history.push(`/${i18n.language}/forgot-password`)}
               >
                 {translate("FORGOT_PASSWORD")}
               </Link>
@@ -198,7 +198,7 @@ const Login = (props) => {
             {translate("CREATE_OWN")}{" "}
             <Link
               className={classes.link}
-              onClick={() => history.push("/register")}
+              onClick={() => history.push(`/${i18n.language}/register`)}
               color="inherit"
             >
               {translate("SCHOOL_ACCOUNT")}
@@ -222,7 +222,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     background: theme.palette.white,
-    backgroundImage: "url(images/bg.jpg)",
+    backgroundImage: "url(/images/bg.jpg)",
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -342,13 +342,16 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    padding: theme.spacing(1),
+    // padding: theme.spacing(1),
     boxShadow: "2px 2px 10px #ddd",
+    width: theme.spacing(17),
+    // height: theme.spacing(8),
     borderRadius: theme.palette.radius.bigger,
     "& img": {
-      width: theme.spacing(5.5),
-      height: theme.spacing(5.5),
-      objectFit: "contain"
+      width: '100%',
+      height: '100%',
+      objectFit: "contain",
+      borderRadius: theme.palette.radius.bigger,
     },
   },
 }));

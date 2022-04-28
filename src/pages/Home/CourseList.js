@@ -222,7 +222,7 @@ const CoursesList = () => {
       // >
       //   <div className={clsx(classes.courseBtn)}>
       //     <img
-      //       src="images/add.jpg"
+      //       src="/images/add.jpg"
       //       // className={isActive && classes.activeCourse}
       //       style={{ marginBottom: 10 }}
       //     />
@@ -239,7 +239,7 @@ const CoursesList = () => {
       >
         <div className={clsx(classes.courseBtn)}>
           <img
-            src="images/add.jpg"
+            src="/images/add.jpg"
             // className={isActive && classes.activeCourse}
             style={{ marginBottom: 10 }}
           />
@@ -343,7 +343,7 @@ const CoursesList = () => {
                   classes.courseBtnContainer,
                   isActive && classes.activeCourse
                 )}
-                // className={classes.courseBtnContainer}
+              // className={classes.courseBtnContainer}
               >
                 <PermissionGate
                   scopes={[

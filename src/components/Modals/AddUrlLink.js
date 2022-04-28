@@ -104,7 +104,7 @@ const AddYoutubeLink = ({ open, data, onClose, onSubmit }) => {
             <CardMedia
               component="img"
               sx={{ width: 151 }}
-              image={metaData?.ogImage?.url || "images/link.png"}
+              image={metaData?.ogImage?.url || "/images/link.png"}
               alt={metaData?.ogTitle}
             />
             <Stack

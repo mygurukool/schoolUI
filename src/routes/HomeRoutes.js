@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import BackgroundImage from "../pages/Home/BackgroundImage";
 import DesktopGuide from "../guide/DesktopGuide";
 import WelcomeGuide from "../guide/WelcomeGuide";
+import i18n from "../i18n";
 
 const HomeRoutes = () => {
   return (
@@ -18,7 +19,7 @@ const HomeRoutes = () => {
       {/* <NotificationHandler /> */}
       <BackgroundImage />
 
-      <Route exact path="/" component={Home} />
+      <Route exact path={`/${i18n.language}`} component={Home} />
     </>
   );
 };

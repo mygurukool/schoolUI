@@ -12,6 +12,8 @@ import { PERMISSIONS } from "../../constants";
 import removeToken from "../../helpers/removeToken";
 import { logoutUser } from "../../redux/action/userActions";
 import useLanguages from "../../hooks/useLanguage";
+import i18n from "../../i18n";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -46,7 +48,7 @@ const Invitation = (props) => {
         },
         () => {
           removeToken();
-          history.push("/login");
+          history.push(`/${i18n.language}/login`);
         }
       )
     );

@@ -30,7 +30,6 @@ import languages from "../../utils/languages.json";
 import useLanguage from "../../hooks/useLanguage";
 import { useTranslation } from "react-i18next";
 import MenuIcon from "@mui/icons-material/Menu";
-import clsx from "clsx";
 import Drawer from "../Drawer";
 import {
   ArrowBack,
@@ -90,7 +89,13 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    history.push("/login");
+    history.push(`/${i18n.language}/login`);
+  };
+
+  const handleChangeLanguage = (lang) => {
+    const currentPathname = window.location.pathname.replace(/\/+$/, '');
+    const newPathname = currentPathname.replace(i18n.language, lang)
+    history.push(newPathname);
   };
 
   const accountMenu = (
@@ -169,7 +174,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
     >
       {languages.map((lang, index) => {
         return (
-          <MenuItem onClick={() => i18n.changeLanguage(lang.code)}>
+          <MenuItem onClick={() => handleChangeLanguage(lang.code)}>
             <Typography className={classes.menuTitle}>{lang.name}</Typography>
           </MenuItem>
         );
@@ -266,7 +271,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
             {isGoogleLogin && (
               <>
                 <img
-                  src="images/gc.svg"
+                  src="/images/gc.svg"
                   style={{ width: 40, height: 40, marginRight: 10 }}
                 />
                 <Typography variant="h6" className={classes.appName}>
@@ -274,7 +279,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
                 </Typography>
               </>
             )}
-            {/* <img src="images/mygurukool.svg" style={{ width: 40, height: 40, marginRight: 10 }} /> */}
+            {/* <img src="/images/mygurukool.svg" style={{ width: 40, height: 40, marginRight: 10 }} /> */}
 
             {/* microsoft login not implented  */}
 
@@ -333,7 +338,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               <Divider />
               <ListItem
                 button
-                onClick={() => dispatch(toggleGuide())}
+                onClick={() => { dispatch(toggleGuide()); handleDrawerToggle(); }}
                 className={classes.listItem}
               >
                 <ListItemIcon>
@@ -345,7 +350,7 @@ export default function NavBar({ showBg, position, showBack, ...props }) {
               <Divider />
               <ListItem
                 button
-                onClick={() => dispatch(openModal("calendar"))}
+                onClick={() => { dispatch(openModal("calendar")); handleDrawerToggle(); }}
                 className={classes.listItem}
               >
                 <ListItemIcon>

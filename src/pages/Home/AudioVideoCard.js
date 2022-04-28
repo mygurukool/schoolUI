@@ -71,7 +71,7 @@ const getImage = (a) => {
     case "youtube":
       return a.metaData.thumbnail_url;
     case "link":
-      return a?.metaData?.ogImage?.url || 'images/link.png';
+      return a?.metaData?.ogImage?.url || '/images/link.png';
 
       break;
 

@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   bg: {
     width: "100%",
     height: 220,
-    backgroundImage: "url(images/welcome.jpg)",
+    backgroundImage: "url(/images/welcome.jpg)",
     backgroundSize: "100% 100%",
   },
 }));
