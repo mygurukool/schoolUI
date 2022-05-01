@@ -46,6 +46,7 @@ const ModalContainer = ({
   cancelText,
   fullScreen,
   hideButtons,
+  hideTitle,
 }) => {
   const classes = useStyles();
   const translate = useLanguages();
@@ -57,24 +58,26 @@ const ModalContainer = ({
       open={open}
       fullScreen={fullScreen}
     >
-      <DialogTitle style={{ padding: "5px 15px" }}>
-        <Box
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography className={classes.modalTitle} variant="subtitle1">
-            {title}
-          </Typography>
-          <Tooltip title={translate("CLOSE")}>
-            <IconButton color="error" aria-label="close" onClick={onClose}>
-              <CloseIcon />
-            </IconButton>
-          </Tooltip>
-        </Box>
-      </DialogTitle>
+      {!hideTitle && (
+        <DialogTitle style={{ padding: "5px 15px" }}>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography className={classes.modalTitle} variant="subtitle1">
+              {title}
+            </Typography>
+            <Tooltip title={translate("CLOSE")}>
+              <IconButton color="error" aria-label="close" onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </DialogTitle>
+      )}
       {children && <DialogContent dividers>{children}</DialogContent>}
 
       {!hideButtons && (

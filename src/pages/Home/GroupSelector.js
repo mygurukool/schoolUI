@@ -42,6 +42,7 @@ import { showSnackBar } from "../../redux/action/snackActions";
 import { getAllStudents } from "../../redux/action/studentActions";
 import { getAllTeachers } from "../../redux/action/teacherActions";
 import useLanguages from "../../hooks/useLanguage";
+import { checkUploadPermission } from "../../redux/action/organizationActions";
 
 const SelectGroup = () => {
   const dispatch = useDispatch();
@@ -72,6 +73,8 @@ const SelectGroup = () => {
         groupName: value?.groupName,
       })
     );
+    dispatch(checkUploadPermission(value.organizationId));
+
     // dispatch(
     //   getAllStudents({
     //     groupId: value?._id || value?.id,

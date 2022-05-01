@@ -17,6 +17,7 @@ const initialstate = {
   organization: undefined,
   isGoogleLogin: false,
   isMicrosoftLogin: false,
+  hasMutationPermission: true,
 };
 
 const checkIfTeacher = (role) => {
@@ -107,6 +108,29 @@ const sizeReducer = (state = initialstate, action) => {
       return {
         ...state,
         isTeacher: false,
+      };
+
+    case organizationTypes.CHANGE_UPLOAD_PERMISSION_SUCCESS:
+      console.log(
+        "permi CHANGE_UPLOAD_PERMISSION_SUCCESS",
+        getData().data.permission,
+        getData().data
+      );
+
+      return {
+        ...state,
+        hasMutationPermission: getData().data.permission,
+      };
+
+    case organizationTypes.CHECK_UPLOAD_PERMISSION_SUCCESS:
+      console.log(
+        "permi CHECK_UPLOAD_PERMISSION_SUCCESS",
+        getData().data.permission,
+        getData().data
+      );
+      return {
+        ...state,
+        hasMutationPermission: getData().data.permission,
       };
 
     case authTypes.LOGOUT_USER:

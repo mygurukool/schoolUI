@@ -14,12 +14,14 @@ import GoogleLoginWarning from "../components/Modals/GoogleLoginWarning";
 import CreateOrganization from "../components/Modals/CreateOrganizationModal";
 import DesclaimerModal from "../components/Modals/DesclamerModal";
 import GoogleDesclaimerModal from "../components/Modals/GoogleDesclaimerModal";
+import MutationModal from "../components/Modals/MutationModal";
 
 const Util = () => {
   return (
     <div>
       <Snack />
       <DesclaimerModal />
+      <MutationModal />
       <GoogleDesclaimerModal />
 
       <CreateOrganization />

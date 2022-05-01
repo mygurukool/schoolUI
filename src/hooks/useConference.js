@@ -11,11 +11,7 @@ let socket;
 
 const useConference = () => {
   const currentCourse = useSelector((state) => state.common.currentCourse);
-  const {
-    id: userId,
-    isTeacher,
-    name: userName,
-  } = useSelector((state) => state.user);
+  const { id: userId, name: userName } = useSelector((state) => state.user);
   const canCreateConference = usePermissions({
     scopes: [SCOPES.CAN_CREATE_CONFERENCE],
   });

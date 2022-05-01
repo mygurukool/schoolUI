@@ -40,6 +40,24 @@ export const getUserDetails = (data, cb, errorCb) => {
   };
 };
 
+export const sendMutationEmail = (data, cb, errorCb) => {
+  return {
+    type: userTypes.SEND_MUTATION_EMAIL,
+    payload: {
+      request: {
+        url: userApi.SEND_MUTATION_EMAIL,
+        method: "post",
+        data: data,
+      },
+      successMessage: "Notification send successfully",
+      errorMessage: "Failed to send notification",
+      enableMessage: false,
+      cb: cb,
+      errorCb: errorCb,
+    },
+  };
+};
+
 export const logoutUser = () => {
   return {
     type: authTypes.LOGOUT_USER,

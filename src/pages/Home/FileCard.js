@@ -19,7 +19,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import UploadIcon from "@mui/icons-material/BackupTwoTone";
 import DeleteIcon from "@mui/icons-material/DeleteTwoTone";
 import { makeStyles } from "@mui/styles";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal } from "../../redux/action/utilActions";
 import axios from "axios";
 import { BASEURL, SCOPES } from "../../constants";
@@ -44,9 +44,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Uploadexercise = ({ ...props }) => {
-  console.log("Uploadexercise", props);
+  const hasMutationPermission = useSelector(
+    (state) => state.user.hasMutationPermission
+  );
+  // console.log("Uploadexercise", props);
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const title = getTitle(props) || "No exercise material available";
   const assignmentId = props.assignmentId;
   const fileId = props.id || props._id;
@@ -76,7 +80,11 @@ const Uploadexercise = ({ ...props }) => {
   };
 
   const onUploadFile = (e, d) => {
-    uploadInputRef.current.click();
+    if (hasMutationPermission) {
+      uploadInputRef.current.click();
+    } else {
+      dispatch(openModal("mutation"));
+    }
   };
 
   const handleUpload = (file) => {

@@ -40,7 +40,7 @@ const getFilteredAssignments = (arr, data) => {
     (a) => a.id === data.assignmentId || a._id === data.assignmentId
   );
 
-  console.log("getFilteredAssignments", findIndex, arr, data.assignmentId);
+  // console.log("getFilteredAssignments", findIndex, arr, data.assignmentId);
 
   const findFile = arr[findIndex].uploadExercises.findIndex(
     (a) => a.id === data.fileId

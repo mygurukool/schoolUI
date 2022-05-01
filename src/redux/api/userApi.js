@@ -3,5 +3,6 @@ const userApi = {
   CREATE_USER: "/users/create",
   UPDATE_USER: "/users/update",
   DELETE_USER: "/users/delete",
+  SEND_MUTATION_EMAIL: "/notification/sendmutationpermissionmail",
 };
 export default userApi;
