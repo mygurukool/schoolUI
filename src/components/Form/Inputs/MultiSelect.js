@@ -107,6 +107,13 @@ const MultiSelect = React.forwardRef((props) => {
                           (o) => o[optionValueProp] === si
                         );
 
+                        console.log(
+                          "found options",
+                          optionValueProp,
+                          si,
+                          options
+                        );
+
                         return (
                           <Chip key={vi} label={`${found[optionLabelProp]}`} />
                         );

@@ -26,6 +26,8 @@ const CreateCourse = () => {
   const groupId = currentGroup?.id || currentGroup?._id;
   const isEditMode = modalData && !modalData.organizationId;
 
+  const hasSelectedGroup = modalData ? modalData?.selectedGroup : undefined;
+
   const mode = isEditMode ? "edit" : "add";
   const open = modalOpen === "course";
 
@@ -57,6 +59,23 @@ const CreateCourse = () => {
     }
   };
 
+  const [defaultGroup, setDefaultGroup] = React.useState([]);
+  const [defaultGroupIds, setDefaultGroupIds] = React.useState([]);
+
+  React.useEffect(() => {
+    if (open) {
+      setDefaultGroup([
+        ...groups,
+        ...(hasSelectedGroup ? [hasSelectedGroup] : []),
+      ]);
+      setDefaultGroupIds(
+        hasSelectedGroup
+          ? [hasSelectedGroup?._id || hasSelectedGroup?.id]
+          : [currentGroup?._id || currentGroup?.id]
+      );
+    }
+  }, [open]);
+
   const createformData = [
     {
       type: "text",
@@ -78,6 +97,17 @@ const CreateCourse = () => {
       optionValueProp: "_id",
     },
   ];
+
+  console.log(
+    "hasSelectedGroup",
+    hasSelectedGroup,
+    [...groups, ...(hasSelectedGroup ? [hasSelectedGroup] : [])],
+
+    hasSelectedGroup
+      ? [hasSelectedGroup?.id || hasSelectedGroup?._id]
+      : [currentGroup?.id || currentGroup?._id]
+  );
+
   return (
     <ModalContainer
       open={open}
@@ -92,11 +122,11 @@ const CreateCourse = () => {
         onCancel={handleClose}
         formData={createformData}
         data={{
-          groupId: [currentGroup?.id || currentGroup?._id],
+          groupId: defaultGroupIds,
           ...modalData,
         }}
         optionsData={{
-          groupId: groups,
+          groupId: defaultGroup,
         }}
       />
     </ModalContainer>

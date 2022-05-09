@@ -29,7 +29,9 @@ const TeacherAccept = () => {
   const currentGroup = useSelector((state) => state.common.currentGroup);
   const user = useSelector((state) => state.user);
 
-  const hasUploadPermission = user.hasMutationPermission;
+  const hasUploadPermission = !currentGroup?.organizationId
+    ? true
+    : user.hasMutationPermission;
 
   const {
     open,

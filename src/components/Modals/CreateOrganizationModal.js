@@ -11,6 +11,7 @@ import getFirstSessionOfOrganization from "../../helpers/getFirstSessionOfOrgani
 import { createOrganization } from "../../redux/action/organizationActions";
 import axios from "axios";
 import { platforms } from "../../constants";
+import setToken from "../../helpers/setToken";
 
 const CreateOrganization = () => {
   const translate = useLanguages();
@@ -46,12 +47,23 @@ const CreateOrganization = () => {
         },
         (res) => {
           const orgId = res.data.organization._id || res.data.organization.id;
-          console.log("organization res", orgId);
+          console.log("organization res", res);
+          if (res.data.tokens) {
+            setToken(res.data.tokens, res.data.userId);
+          }
+          // setToken(res.data.user.lo)
           if (modalData.type === "group") {
             // console.log("org", res.data.data);
             dispatch(openModal("group", { organizationId: orgId }));
           } else if (modalData.type === "course") {
-            dispatch(openModal("course", { organizationId: orgId }));
+            dispatch(
+              openModal("course", {
+                organizationId: orgId,
+                selectedGroup: res.data?.createdGroup
+                  ? res.data.createdGroup
+                  : undefined,
+              })
+            );
           } else if (modalData.type === "assignment") {
             dispatch(
               openModal("assignment", {
